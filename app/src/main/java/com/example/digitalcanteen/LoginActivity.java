@@ -21,7 +21,7 @@ LoginActivity extends AppCompatActivity {
     private Button admin_button = null;
     private EditText employee_id_edit = null;
     private String employee_id;
-    private DatabaseHandler db;
+    private UserDatabase db;
     private ProgressDialog progressDialog;
 
     @Override
@@ -33,7 +33,17 @@ LoginActivity extends AppCompatActivity {
         admin_button = (Button) findViewById(R.id.admin_button);
         register_button = (Button) findViewById(R.id.register_button);
         employee_id_edit = (EditText) findViewById(R.id.employee_id_edit);
-        db = new DatabaseHandler(this);
+        db = new UserDatabase(this);
+        progressDialog = new ProgressDialog(this);
+
+        register_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent redirectToRegister = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(redirectToRegister);
+            }
+        });
 
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +55,7 @@ LoginActivity extends AppCompatActivity {
                             .show();
                 } else {
                     showProgressDialog();
-
+                    employee_id = employee_id_edit.getText().toString();
                     Cursor results = db.checkEmployeeId(employee_id);
 
                     if (!results.moveToFirst()) {
@@ -54,7 +64,7 @@ LoginActivity extends AppCompatActivity {
                         AlertDialog.Builder alert = new AlertDialog.Builder(LoginActivity.this);
                         alert.setTitle("Invalid Employee ID!!");
 
-                        final String MessageToShow = "Please enter the deailts again...";
+                        final String MessageToShow = "Please enter the details again...";
                         alert.setMessage(MessageToShow);
 
                         alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
@@ -67,17 +77,17 @@ LoginActivity extends AppCompatActivity {
                         alert.show();
                         //employee_id_edit.setText("");
                     } else {
-                        String employee_id = results.getString();//pass index after making db
-                        String name = results.getString();//pass index of name
-                        Double balance = results.getDouble();
+                        String employee_id = results.getString(1);//pass index after making db
+                        String name = results.getString(2);//pass index of name
+                        Double balance = results.getDouble(3);
 
-                        Intent redirectToHome = new Intent(LoginActivity.this, MainPage.class);
-                        redirectToHome.putExtra("employee_id", employee_id);
-                        redirectToHome.putExtra("name", name);
-                        redirectToHome.putExtra("balance", balance);
+                        Intent refirectToMain = new Intent(LoginActivity.this, MainPage.class);
+                        refirectToMain.putExtra("employee_id", employee_id);
+                        refirectToMain.putExtra("name", name);
+                        refirectToMain.putExtra("balance", balance);
 
                         cancelProgressDialog();
-                        startActivity(redirectToHome);
+                        startActivity(refirectToMain);
                         finish();
 
                     }

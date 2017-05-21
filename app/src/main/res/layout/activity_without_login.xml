@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.example.digitalcanteen.WithoutLogin">
 
     <ImageButton
         android:id="@+id/nLLunch"
@@ -13,7 +14,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:backgroundTint="@android:drawable/dialog_holo_dark_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -27,7 +27,6 @@
         android:layout_height="50dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@android:drawable/dialog_holo_dark_frame"
         app:layout_constraintLeft_toLeftOf="@+id/nLLunch"
         app:layout_constraintTop_toBottomOf="@+id/nLLunch"
         app:srcCompat="@android:drawable/ic_input_add" />
@@ -74,7 +73,6 @@
         android:layout_height="50dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@android:drawable/dialog_holo_dark_frame"
         android:minHeight="35dp"
         android:minWidth="35dp"
         app:layout_constraintLeft_toLeftOf="@+id/nLLF"
