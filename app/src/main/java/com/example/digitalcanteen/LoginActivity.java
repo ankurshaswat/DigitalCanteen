@@ -43,7 +43,7 @@ LoginActivity extends AppCompatActivity {
                 if (employee_id_edit.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
                             .show();
-                } else () {
+                } else {
                     showProgressDialog();
 
                     Cursor results = db.checkEmployeeId(employee_id);
