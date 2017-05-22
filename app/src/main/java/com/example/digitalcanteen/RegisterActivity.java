@@ -1,9 +1,11 @@
 package com.example.digitalcanteen;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -73,7 +75,22 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Connection Error!! Please Try Again", Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Log.d(TAG, "onClick: User already registered...");
+                        employee_name = results.getString(2);
+
+                        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(RegisterActivity.this);
+                        alertDialog.setTitle("User already registered.");
+
+                        alertDialog.setMessage("Name :" + employee_name + "\n");
+
+                        alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                cancelProgressDialog();
+                            }
+                        });
+                        alertDialog.show();
+
                     }
 
                 }

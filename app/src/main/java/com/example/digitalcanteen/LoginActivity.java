@@ -19,6 +19,7 @@ LoginActivity extends AppCompatActivity {
     private Button login_button = null;
     private Button register_button = null;
     private Button admin_button = null;
+    private Button btnNoLogin = null;
     private EditText employee_id_edit = null;
     private String employee_id;
     private UserDatabase db;
@@ -33,6 +34,8 @@ LoginActivity extends AppCompatActivity {
         admin_button = (Button) findViewById(R.id.admin_button);
         register_button = (Button) findViewById(R.id.register_button);
         employee_id_edit = (EditText) findViewById(R.id.employee_id_edit);
+        btnNoLogin = (Button) findViewById(R.id.btnNoLogin);
+
         db = new UserDatabase(this);
         progressDialog = new ProgressDialog(this);
 
@@ -42,6 +45,24 @@ LoginActivity extends AppCompatActivity {
 
                 Intent redirectToRegister = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(redirectToRegister);
+            }
+        });
+
+        admin_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent redirectToAdmin = new Intent(LoginActivity.this, AdminActivity.class);
+                startActivity(redirectToAdmin);
+            }
+        });
+
+        btnNoLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent redirectToNoLogin = new Intent(LoginActivity.this, WithoutLogin.class);
+                startActivity(redirectToNoLogin);
             }
         });
 

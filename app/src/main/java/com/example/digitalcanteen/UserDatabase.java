@@ -12,6 +12,14 @@ import android.util.Log;
  * <p>
  * This class will refer to balance of different users
  * and store their active balance
+ *
+ *
+ * indexes are as follows
+ * 0: ID
+ * 1: Employee_id
+ * 2: Name
+ * 3: Balance
+ * 4: Date
  */
 
 //TODO :Extend this later to store history by creatinng another databse of histories
