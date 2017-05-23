@@ -20,7 +20,9 @@
         <activity android:name=".AdminActivity" />
         <activity android:name=".MainPage" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".WithoutLogin"></activity>
+        <activity android:name=".WithoutLogin" />
+        <activity android:name=".layoutMenu" />
+        <activity android:name=".selected"></activity>
     </application>
 
 </manifest>
