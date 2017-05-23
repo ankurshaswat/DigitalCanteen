@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SelectAdapter extends ArrayAdapter {
     private static final String TAG = "SelectedItems";
-    private List<selectedItems> order = new ArrayList<>();
+    public static List<selectedItems> order = new ArrayList<>();
     Context con;
 
     public SelectAdapter(Context context, int resource, List<selectedItems> order) {

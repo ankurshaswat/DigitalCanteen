@@ -65,7 +65,7 @@
         android:minWidth="50dp"
         android:text="0"
         android:textAlignment="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/price"
+        app:layout_constraintBaseline_toBaselineOf="@+id/quantity"
         app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintLeft_toRightOf="@+id/sub"
         app:layout_constraintRight_toRightOf="parent" />

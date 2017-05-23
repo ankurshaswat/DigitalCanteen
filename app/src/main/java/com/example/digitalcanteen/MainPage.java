@@ -39,7 +39,7 @@ public class MainPage extends AppCompatActivity {
         selectedThings = (ListView) findViewById(R.id.lstCart);
 
 
-        order.add(new selectedItems("pizza", "2", "600"));
+//        order.add(new selectedItems("pizza", "2", "600"));
         items.add(new menuItem("pizza", "300"));
         items.add(new menuItem("burger", "100"));
 
