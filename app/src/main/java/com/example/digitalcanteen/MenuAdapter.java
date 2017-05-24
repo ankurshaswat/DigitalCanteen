@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.digitalcanteen.MainPage.order;
 
 
 /**
@@ -34,6 +37,7 @@ public class MenuAdapter extends ArrayAdapter {
     private Button btminus;
     private Button buttonOK;
     public int[] numTimesClicked = new int[items.size()];
+
 
 
     public MenuAdapter(Context context, int resource, List<menuItem> items) {
@@ -75,7 +79,7 @@ public class MenuAdapter extends ArrayAdapter {
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
         final EditText quantity = (EditText) row.findViewById(R.id.quantity);
-        Button buttonOk = (Button) row.findViewById(R.id.OK);
+        Button buttonOK = (Button) row.findViewById(R.id.OK);
         //numTimesClicked=0;
 
 
@@ -91,7 +95,7 @@ public class MenuAdapter extends ArrayAdapter {
                 String result = "" + numTimesClicked[position] + "";
                 quantity.setText(result);
                 items.get(position).setQuantity(numTimesClicked[position]);
-                Log.d(TAG, "getView: " + items.get(position).getQuantity());
+                //Log.d(TAG, "getView: " + items.get(position).getQuantity());
 
 
             }
@@ -119,23 +123,27 @@ public class MenuAdapter extends ArrayAdapter {
         View.OnClickListener OKK = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String namee;
-                String pricee;
+                String name;
+                String price;
                 int price1;
                 int no;
                 int totalPrice;
                 String tP;
                 String q;
 
-                namee = items.get(position).getName();
-                pricee = items.get(position).getPrice();
-                price1 = Integer.parseInt(pricee);
+                name = items.get(position).getName();
+                price = items.get(position).getPrice();
+                price1 = Integer.parseInt(price);
                 no = items.get(position).getQuantity();
                 q = "" + no + "";
                 totalPrice = no * price1;
                 tP = "" + totalPrice + "";
-                selectedItems thing = new selectedItems(namee, q, tP);
-                SelectAdapter.order.add(thing);
+                selectedItems thing = new selectedItems("", "", "");
+                thing.setName(name);
+                thing.setPrice(tP);
+                thing.setQuantity(q);
+                MainPage.order.add(thing);
+                Log.d(TAG, "onClick: " + MainPage.order.get(position).getPrice());
 
 
             }
