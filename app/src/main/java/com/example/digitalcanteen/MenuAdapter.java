@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.digitalcanteen.MainPage.order;
+
 
 /**
  * Created by Saransh Verma on 23-05-2017.
@@ -30,10 +32,10 @@ public class MenuAdapter extends ArrayAdapter {
     public int[] numTimesClicked = new int[items.size()];
     private TextView txt1;
     private TextView txt2;
-    private EditText quantity;
+    public EditText quantity;
     private Button btplus;
     private Button btminus;
-    private Button buttonOK;
+//    private Button buttonOK;
 
 
     public MenuAdapter(Context context, int resource, List<menuItem> items) {
@@ -75,7 +77,7 @@ public class MenuAdapter extends ArrayAdapter {
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
         final EditText quantity = (EditText) row.findViewById(R.id.quantity);
-        Button buttonOK = (Button) row.findViewById(R.id.OK);
+//        Button buttonOK = (Button) row.findViewById(R.id.OK);
         //numTimesClicked=0;
 
 
@@ -94,7 +96,27 @@ public class MenuAdapter extends ArrayAdapter {
                 items.get(position).setQuantity(numTimesClicked[position]);
                 Log.d(TAG, "onClick: " + items.get(position).getQuantity());
                 //Log.d(TAG, "getView: " + items.get(position).getQuantity());
+                if (order.size() > 0) {
+                    int flag = 0;
+                    for (int z = 0; z < order.size(); z += 1) {
+                        if (items.get(position).getName() == order.get(z).getName()) {
+                            order.get(z).setQuantity("" + numTimesClicked[position] + "");
+                            int tempPrice = Integer.parseInt(order.get(z).getPrice());
+                            int cpi = Integer.parseInt(items.get(position).getPrice());
+                            tempPrice = tempPrice + cpi;
+                            order.get(z).setPrice("" + tempPrice + "");
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if (flag == 0) {
+                        order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                    }
+                } else {
+                    order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                }
 
+                MainPage.selectedItemsAdapter.notifyDataSetChanged();
 
             }
         };
@@ -112,44 +134,62 @@ public class MenuAdapter extends ArrayAdapter {
                     quantity.setText(result);
                     items.get(position).setQuantity(numTimesClicked[position]);
 //                    Log.d(TAG, "getView: "+items.get(position).getQuantity());
+                    int flag = 0;
+                    for (int z = 0; z < order.size(); z += 1) {
+                        if (items.get(position).getName() == order.get(z).getName()) {
 
+                            if (numTimesClicked[position] != 0) {
+                                order.get(z).setQuantity("" + numTimesClicked[position] + "");
+                                int tempPrice = Integer.parseInt(order.get(z).getPrice());
+                                int cpi = Integer.parseInt(items.get(position).getPrice());
+                                tempPrice = tempPrice - cpi;
+                                order.get(z).setPrice("" + tempPrice + "");
+                                flag = 1;
+                            } else {
+                                order.remove(z);
+                            }
+                            break;
+                        }
+                    }
+//                    if(flag==0){order.add(new selectedItems(items.get(position).getName(),"1",items.get(position).getPrice()));}
 
+                    MainPage.selectedItemsAdapter.notifyDataSetChanged();
                 }
             }
         };
         btminus.setOnClickListener(substraction);
 
-        View.OnClickListener OKK = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name;
-                String price;
-                int price1;
-                int no;
-                int totalPrice;
-                String tP;
-                String q;
-
-                name = items.get(position).getName();
-                price = items.get(position).getPrice();
-                price1 = Integer.parseInt(price);
-                no = items.get(position).getQuantity();
-                q = "" + no + "";
-                totalPrice = no * price1;
-                tP = "" + totalPrice + "";
-                selectedItems thing = new selectedItems("", "", "");
-                thing.setName(name);
-                thing.setPrice(tP);
-                thing.setQuantity(q);
-                MainPage.order.add(thing);
-                MainPage.selectedItemsAdapter.notifyDataSetChanged();
-                Log.d(TAG, "onClick: " + MainPage.order.get(position).getPrice());
-                Log.d(TAG, "onClick: thing added to selected items");
-
-
-            }
-        };
-        buttonOK.setOnClickListener(OKK);
+//        View.OnClickListener OKK = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String name;
+//                String price;
+//                int price1;
+//                int no;
+//                int totalPrice;
+//                String tP;
+//                String q;
+//
+//                name = items.get(position).getName();
+//                price = items.get(position).getPrice();
+//                price1 = Integer.parseInt(price);
+//                no = items.get(position).getQuantity();
+//                q = "" + no + "";
+//                totalPrice = no * price1;
+//                tP = "" + totalPrice + "";
+//                selectedItems thing = new selectedItems("", "", "");
+//                thing.setName(name);
+//                thing.setPrice(tP);
+//                thing.setQuantity(q);
+//                order.add(thing);
+//                MainPage.selectedItemsAdapter.notifyDataSetChanged();
+//                Log.d(TAG, "onClick: " + order.get(position).getPrice());
+//                Log.d(TAG, "onClick: thing added to selected items");
+//
+//
+//            }
+//        };
+//        buttonOK.setOnClickListener(OKK);
 
 
         txt1.setText(items.get(position).getName());

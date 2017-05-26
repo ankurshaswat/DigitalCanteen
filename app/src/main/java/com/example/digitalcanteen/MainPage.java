@@ -25,7 +25,7 @@ public class MainPage extends AppCompatActivity {
     private ListView listItems;
     private ProgressDialog progressDialog;
     //    private ListView selectedThings;
-    private List<menuItem> items = new ArrayList<>();
+    public static List<menuItem> items = new ArrayList<>();
     private Button btnExit = null;
     private Button btnSubmit = null;
     private EditText employee_id_edit = null;
