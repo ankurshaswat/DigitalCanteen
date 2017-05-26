@@ -10,14 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.example.digitalcanteen.MainPage.order;
 
 
 /**
@@ -26,18 +23,17 @@ import static com.example.digitalcanteen.MainPage.order;
 
 public class MenuAdapter extends ArrayAdapter {
     private static final String TAG = "MenuAdapter";
+    Context con;
     //    private final int layoutResource;
 //    private final LayoutInflater layoutInflater;
     private List<menuItem> items = new ArrayList<>();
-    Context con;
+    public int[] numTimesClicked = new int[items.size()];
     private TextView txt1;
     private TextView txt2;
     private EditText quantity;
     private Button btplus;
     private Button btminus;
     private Button buttonOK;
-    public int[] numTimesClicked = new int[items.size()];
-
 
 
     public MenuAdapter(Context context, int resource, List<menuItem> items) {
@@ -94,12 +90,15 @@ public class MenuAdapter extends ArrayAdapter {
                 numTimesClicked[position] = numTimesClicked[position] + 1;
                 String result = "" + numTimesClicked[position] + "";
                 quantity.setText(result);
+                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
                 items.get(position).setQuantity(numTimesClicked[position]);
+                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
                 //Log.d(TAG, "getView: " + items.get(position).getQuantity());
 
 
             }
         };
+        btplus.setOnClickListener(addition);
 
         View.OnClickListener substraction = new View.OnClickListener() {
             @Override
@@ -118,8 +117,8 @@ public class MenuAdapter extends ArrayAdapter {
                 }
             }
         };
-        btplus.setOnClickListener(addition);
         btminus.setOnClickListener(substraction);
+
         View.OnClickListener OKK = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +142,9 @@ public class MenuAdapter extends ArrayAdapter {
                 thing.setPrice(tP);
                 thing.setQuantity(q);
                 MainPage.order.add(thing);
+                MainPage.selectedItemsAdapter.notifyDataSetChanged();
                 Log.d(TAG, "onClick: " + MainPage.order.get(position).getPrice());
+                Log.d(TAG, "onClick: thing added to selected items");
 
 
             }

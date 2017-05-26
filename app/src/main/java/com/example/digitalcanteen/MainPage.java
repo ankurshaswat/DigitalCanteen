@@ -12,18 +12,18 @@ import java.util.List;
 
 public class MainPage extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private ListView listItems;
-    private ListView selectedThings;
-    private List<menuItem> items = new ArrayList<>();
     public static List<selectedItems> order = new ArrayList<>();
-
-
+    public static SelectAdapter selectedItemsAdapter = null;
+    public MenuAdapter renderMenuAdapter = null;
+    private ListView selectedThings;
+    private ListView listItems;
+    //    private ListView selectedThings;
+    private List<menuItem> items = new ArrayList<>();
     private Button btnExit = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_page);
-
 
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(new View.OnClickListener() {
@@ -43,12 +43,13 @@ public class MainPage extends AppCompatActivity {
         items.add(new menuItem("pizza", "300"));
         items.add(new menuItem("burger", "100"));
 
-        selectedThings.setAdapter(new SelectAdapter(MainPage.this, R.layout.activity_selected, order));
+        selectedItemsAdapter = new SelectAdapter(MainPage.this, R.layout.activity_selected, order);
+        selectedThings.setAdapter(selectedItemsAdapter);
 
         //Log.d(TAG, "onCreate: i am batman");
 
-
-        listItems.setAdapter(new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items));
+        renderMenuAdapter = new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items);
+        listItems.setAdapter(renderMenuAdapter);
 
 
 
