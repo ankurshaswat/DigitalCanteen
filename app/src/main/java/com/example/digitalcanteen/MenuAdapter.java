@@ -178,4 +178,5 @@ public class MenuAdapter extends ArrayAdapter {
 //            this.price = (TextView) v.findViewById(R.id.price);
 //
 
+
 }
