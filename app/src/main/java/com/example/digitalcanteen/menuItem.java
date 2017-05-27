@@ -14,7 +14,7 @@ public class menuItem {
     public menuItem(String name, String price) {
         this.name = name;
         this.price = price;
-
+        this.quantity = 0;
     }
 
     public String getName() {

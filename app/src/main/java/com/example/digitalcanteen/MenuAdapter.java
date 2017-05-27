@@ -25,6 +25,7 @@ import static com.example.digitalcanteen.MainPage.order;
 
 public class MenuAdapter extends ArrayAdapter {
     private static final String TAG = "MenuAdapter";
+    public EditText quantity;
     Context con;
     //    private final int layoutResource;
 //    private final LayoutInflater layoutInflater;
@@ -32,7 +33,6 @@ public class MenuAdapter extends ArrayAdapter {
     public int[] numTimesClicked = new int[items.size()];
     private TextView txt1;
     private TextView txt2;
-    public EditText quantity;
     private Button btplus;
     private Button btminus;
 //    private Button buttonOK;
@@ -42,6 +42,9 @@ public class MenuAdapter extends ArrayAdapter {
         super(context, resource);
         int[] arraytest = new int[items.size()];
         Arrays.fill(arraytest, 0);
+        for (int x = 0; x < items.size(); x += 1) {
+            arraytest[x] = items.get(x).getQuantity();
+        }
         this.numTimesClicked = arraytest;
 
 //        this.layoutResource = resource;
@@ -101,25 +104,29 @@ public class MenuAdapter extends ArrayAdapter {
                     for (int z = 0; z < order.size(); z += 1) {
                         if (items.get(position).getName() == order.get(z).getName()) {
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
+
                             int tempPrice = Integer.parseInt(order.get(z).getPrice());
                             int cpi = Integer.parseInt(items.get(position).getPrice());
-                            tempPrice = tempPrice + cpi;
+
+                            tempPrice = numTimesClicked[position] * cpi;
+
                             order.get(z).setPrice("" + tempPrice + "");
                             flag = 1;
                             break;
                         }
                     }
                     if (flag == 0) {
-                        order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                        order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                     }
                 } else {
-                    order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                    order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                 }
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
 
             }
         };
+
         btplus.setOnClickListener(addition);
 
         View.OnClickListener substraction = new View.OnClickListener() {
@@ -142,7 +149,9 @@ public class MenuAdapter extends ArrayAdapter {
                                 order.get(z).setQuantity("" + numTimesClicked[position] + "");
                                 int tempPrice = Integer.parseInt(order.get(z).getPrice());
                                 int cpi = Integer.parseInt(items.get(position).getPrice());
-                                tempPrice = tempPrice - cpi;
+
+                                tempPrice = numTimesClicked[position] * cpi;
+
                                 order.get(z).setPrice("" + tempPrice + "");
                                 flag = 1;
                             } else {

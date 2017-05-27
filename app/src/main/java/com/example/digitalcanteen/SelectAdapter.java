@@ -3,13 +3,12 @@ package com.example.digitalcanteen;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class SelectAdapter extends ArrayAdapter {
 
     public SelectAdapter(Context context, int resource, List<selectedItems> order) {
         super(context, resource);
-        this.order = order;
+        SelectAdapter.order = order;
         con = context;
     }
 
@@ -54,11 +53,16 @@ public class SelectAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 for (int x = 0; x < items.size(); x += 1) {
-                    if (items.get(x).getName() == order.get(position).getName()) {
+                    if (items.get(x).getName().equals(order.get(position).getName())) {
+                        Log.d(TAG, "onClick: " + items.get(x).getName().equals(order.get(position).getName()));
+                        Log.d(TAG, items.get(x).getName() + "      " + order.get(position).getName());
+                        items.get(x).setQuantity(0);
+                        break;
                     }
                 }
                 order.remove(position);
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
+                MainPage.renderMenuAdapter.notifyDataSetChanged();
             }
         };
         remove.setOnClickListener(rm);
