@@ -9,12 +9,12 @@ package com.example.digitalcanteen;
 public class menuItem {
     private String name;
     private String price;
-    private int quantity;
+//    private int quantity;
 
     public menuItem(String name, String price) {
         this.name = name;
         this.price = price;
-        this.quantity = 0;
+//        this.quantity = 0;
     }
 
     public String getName() {
@@ -32,13 +32,13 @@ public class menuItem {
     public void setPrice(String price) {
         this.price = price;
     }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+//
+//    public int getQuantity() {
+//        return quantity;
+//    }
+//
+//    public void setQuantity(int quantity) {
+//        this.quantity = quantity;
+//    }
 }
 

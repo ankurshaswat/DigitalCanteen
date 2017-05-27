@@ -25,12 +25,12 @@ import static com.example.digitalcanteen.MainPage.order;
 
 public class MenuAdapter extends ArrayAdapter {
     private static final String TAG = "MenuAdapter";
-    public EditText quantity;
-    Context con;
     //    private final int layoutResource;
 //    private final LayoutInflater layoutInflater;
-    private List<menuItem> items = new ArrayList<>();
-    public int[] numTimesClicked = new int[items.size()];
+    private static List<menuItem> items = new ArrayList<>();
+    public static int[] numTimesClicked = new int[items.size()];
+    public EditText quantity;
+    Context con;
     private TextView txt1;
     private TextView txt2;
     private Button btplus;
@@ -44,14 +44,14 @@ public class MenuAdapter extends ArrayAdapter {
 
         int[] arraytest = new int[items.size()];
         Arrays.fill(arraytest, 0);
-        for (int x = 0; x < items.size(); x += 1) {
-            arraytest[x] = items.get(x).getQuantity();
-        }
-        this.numTimesClicked = arraytest;
+//        for (int x = 0; x < items.size(); x += 1) {
+//            arraytest[x] = items.get(x).getQuantity();
+//        }
+        numTimesClicked = arraytest;
 
 //        this.layoutResource = resource;
 //        this.layoutInflater = LayoutInflater.from(context);
-        this.items = items;
+        MenuAdapter.items = items;
         con = context;
 
 
@@ -84,9 +84,9 @@ public class MenuAdapter extends ArrayAdapter {
         Button btminus = (Button) row.findViewById(R.id.sub);
         final EditText quantity = (EditText) row.findViewById(R.id.quantity);
 
-        for (int x = 0; x < items.size(); x += 1) {
-            numTimesClicked[x] = items.get(x).getQuantity();
-        }
+//        for (int x = 0; x < items.size(); x += 1) {
+//            numTimesClicked[x] = items.get(x).getQuantity();
+//        }
         quantity.setText(numTimesClicked[position] + "");
 //        Button buttonOK = (Button) row.findViewById(R.id.OK);
         //numTimesClicked=0;
@@ -103,9 +103,9 @@ public class MenuAdapter extends ArrayAdapter {
                 numTimesClicked[position] = numTimesClicked[position] + 1;
                 String result = "" + numTimesClicked[position] + "";
                 quantity.setText(result);
-                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
-                items.get(position).setQuantity(numTimesClicked[position]);
-                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
+//                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
+//                items.get(position).setQuantity(numTimesClicked[position]);
+//                Log.d(TAG, "onClick: " + items.get(position).getQuantity());
                 //Log.d(TAG, "getView: " + items.get(position).getQuantity());
                 if (order.size() > 0) {
                     int flag = 0;
@@ -151,7 +151,7 @@ public class MenuAdapter extends ArrayAdapter {
                     numTimesClicked[position] = numTimesClicked[position] - 1;
                     String result = "" + numTimesClicked[position] + "";
                     quantity.setText(result);
-                    items.get(position).setQuantity(numTimesClicked[position]);
+//                    items.get(position).setQuantity(numTimesClicked[position]);
 //                    Log.d(TAG, "getView: "+items.get(position).getQuantity());
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {

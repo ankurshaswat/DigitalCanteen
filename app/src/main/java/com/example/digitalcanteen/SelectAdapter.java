@@ -56,7 +56,7 @@ public class SelectAdapter extends ArrayAdapter {
                     if (items.get(x).getName() == order.get(position).getName()) {
                         Log.d(TAG, "onClick: " + items.get(x).getName().equals(order.get(position).getName()));
                         Log.d(TAG, items.get(x).getName() + "      " + order.get(position).getName());
-                        items.get(x).setQuantity(0);
+                        MenuAdapter.numTimesClicked[x] = 0;
 
                         break;
                     }
