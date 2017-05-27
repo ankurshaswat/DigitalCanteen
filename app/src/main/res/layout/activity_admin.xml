@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.digitalcanteen.AdminActivity">
+    tools:context="com.example.digitalcanteen.AdminActivity"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="89dp">
 
     <TextView
         android:id="@+id/textView3"
@@ -12,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="8dp"
         android:text="ACCOUNTS SECTION"
         android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,26 +25,29 @@
         android:id="@+id/btnExit2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="208dp"
         android:text="Exit"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBackup" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btnBackup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="173dp"
+        android:layout_marginTop="10dp"
         android:text="Backup Data"
-        app:layout_constraintHorizontal_bias="0.168"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnChangeDate" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.79" />
 
     <Button
         android:id="@+id/btnAccnts"
@@ -51,7 +56,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="Accounts"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnBackup"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnManageMenu"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -62,8 +68,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="Manage Menu"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnAccnts"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintBaseline_toBaselineOf="@+id/btnBackup"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -73,50 +78,42 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="90dp"
-        android:text="Change Date"
+        android:layout_marginTop="8dp"
+        android:text="Check For Date"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtVuNumCust" />
+        app:layout_constraintTop_toBottomOf="@+id/edtDate" />
+
+    <EditText
+        android:id="@+id/edtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:inputType="date"
+        android:text="Enter Date Here(dd/mm/yyyy)"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="99dp"
-        android:text="DATE"
-        app:layout_constraintHorizontal_bias="0.17"
+        android:layout_marginTop="8dp"
+        android:text="Click Check Button To View Number Of Customers"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.22000003" />
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="345dp"
-        android:text="NUMBER OF CUSTOMERS"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-        app:layout_constraintLeft_toRightOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/txtVuDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="0dp"
-        android:text="Enter Date Here(code)"
-        app:layout_constraintBaseline_toBaselineOf="@+id/txtVuNumCust"
-        app:layout_constraintLeft_toLeftOf="@+id/textView4" />
-
-    <TextView
-        android:id="@+id/txtVuNumCust"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="13dp"
-        android:text="Enter no. of cutomers here (Code)"
-        app:layout_constraintLeft_toLeftOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 </android.support.constraint.ConstraintLayout>
