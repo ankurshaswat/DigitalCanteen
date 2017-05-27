@@ -110,10 +110,12 @@ public class MenuAdapter extends ArrayAdapter {
                 if (order.size() > 0) {
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
-                        if (items.get(position).getName() == (items.get(z).getName())) {
+                        Log.d(TAG, "onClick: " + items.get(z).getName());
+                        if (items.get(position).getName() == (order.get(z).getName())) {
+                            Log.d(TAG, "onClick: fl0 " + items.get(position).getName());
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
 
-                            int tempPrice = Integer.parseInt(order.get(z).getPrice());
+                            int tempPrice;
                             int cpi = Integer.parseInt(items.get(position).getPrice());
 
                             tempPrice = numTimesClicked[position] * cpi;
@@ -124,9 +126,11 @@ public class MenuAdapter extends ArrayAdapter {
                         }
                     }
                     if (flag == 0) {
+                        Log.d(TAG, "onClick: fl " + items.get(position).getName());
                         order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                     }
                 } else {
+                    Log.d(TAG, "onClick: fl2 " + items.get(position).getName());
                     order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                 }
 

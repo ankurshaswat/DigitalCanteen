@@ -28,7 +28,7 @@ public class SelectAdapter extends ArrayAdapter {
 
     public SelectAdapter(Context context, int resource, List<selectedItems> order) {
         super(context, resource);
-        this.order = order;
+        SelectAdapter.order = order;
         con = context;
     }
 
@@ -40,7 +40,7 @@ public class SelectAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
+        Log.d(TAG, "getView: inflating new view");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View batman = inflater.inflate(R.layout.activity_selected, null, true);
@@ -67,6 +67,8 @@ public class SelectAdapter extends ArrayAdapter {
             }
         };
         remove.setOnClickListener(rm);
+
+        Log.d(TAG, "getView: " + order.get(position).getName());
 
         txt1.setText(order.get(position).getName());
         txt2.setText(order.get(position).getPrice());
