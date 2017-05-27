@@ -53,7 +53,7 @@ public class SelectAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 for (int x = 0; x < items.size(); x += 1) {
-                    if (items.get(x).getName().equals(order.get(position).getName())) {
+                    if (items.get(x).getName() == order.get(position).getName()) {
                         Log.d(TAG, "onClick: " + items.get(x).getName().equals(order.get(position).getName()));
                         Log.d(TAG, items.get(x).getName() + "      " + order.get(position).getName());
                         items.get(x).setQuantity(0);

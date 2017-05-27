@@ -110,7 +110,7 @@ public class MenuAdapter extends ArrayAdapter {
                 if (order.size() > 0) {
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
-                        if (items.get(position).getName().equals(items.get(z).getName())) {
+                        if (items.get(position).getName() == (items.get(z).getName())) {
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
 
                             int tempPrice = Integer.parseInt(order.get(z).getPrice());
@@ -151,7 +151,7 @@ public class MenuAdapter extends ArrayAdapter {
 //                    Log.d(TAG, "getView: "+items.get(position).getQuantity());
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
-                        if (items.get(position).getName() == order.get(z).getName()) {
+                        if (items.get(position).getName().equals(order.get(z).getName())) {
 
                             if (numTimesClicked[position] != 0) {
                                 order.get(z).setQuantity("" + numTimesClicked[position] + "");
