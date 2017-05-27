@@ -28,7 +28,7 @@ public class SelectAdapter extends ArrayAdapter {
 
     public SelectAdapter(Context context, int resource, List<selectedItems> order) {
         super(context, resource);
-        SelectAdapter.order = order;
+        this.order = order;
         con = context;
     }
 
