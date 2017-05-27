@@ -19,13 +19,18 @@ public class MainPage extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     public static List<selectedItems> order = new ArrayList<>();
+    public static List<menuItem> items = new ArrayList<>();
+
+
+
+
     public static SelectAdapter selectedItemsAdapter = null;
-    public MenuAdapter renderMenuAdapter = null;
+    public static MenuAdapter renderMenuAdapter = null;
     private ListView selectedThings;
     private ListView listItems;
     private ProgressDialog progressDialog;
     //    private ListView selectedThings;
-    public static List<menuItem> items = new ArrayList<>();
+
     private Button btnExit = null;
     private Button btnSubmit = null;
     private EditText employee_id_edit = null;

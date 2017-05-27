@@ -66,14 +66,14 @@
         android:id="@+id/add"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:minWidth="40dp"
         android:text="+"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/quantity"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.89" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

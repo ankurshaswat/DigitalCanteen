@@ -25,6 +25,7 @@ import static com.example.digitalcanteen.MainPage.order;
 
 public class MenuAdapter extends ArrayAdapter {
     private static final String TAG = "MenuAdapter";
+    public EditText quantity;
     Context con;
     //    private final int layoutResource;
 //    private final LayoutInflater layoutInflater;
@@ -32,7 +33,6 @@ public class MenuAdapter extends ArrayAdapter {
     public int[] numTimesClicked = new int[items.size()];
     private TextView txt1;
     private TextView txt2;
-    public EditText quantity;
     private Button btplus;
     private Button btminus;
 //    private Button buttonOK;
@@ -40,8 +40,13 @@ public class MenuAdapter extends ArrayAdapter {
 
     public MenuAdapter(Context context, int resource, List<menuItem> items) {
         super(context, resource);
+        Log.d(TAG, "MenuAdapter: started");
+
         int[] arraytest = new int[items.size()];
         Arrays.fill(arraytest, 0);
+        for (int x = 0; x < items.size(); x += 1) {
+            arraytest[x] = items.get(x).getQuantity();
+        }
         this.numTimesClicked = arraytest;
 
 //        this.layoutResource = resource;
@@ -68,6 +73,7 @@ public class MenuAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        Log.d(TAG, "getView: started");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View row = inflater.inflate(R.layout.activity_layout_menu, null, true);
@@ -77,6 +83,11 @@ public class MenuAdapter extends ArrayAdapter {
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
         final EditText quantity = (EditText) row.findViewById(R.id.quantity);
+
+        for (int x = 0; x < items.size(); x += 1) {
+            numTimesClicked[x] = items.get(x).getQuantity();
+        }
+        quantity.setText(numTimesClicked[position] + "");
 //        Button buttonOK = (Button) row.findViewById(R.id.OK);
         //numTimesClicked=0;
 
@@ -99,27 +110,31 @@ public class MenuAdapter extends ArrayAdapter {
                 if (order.size() > 0) {
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
-                        if (items.get(position).getName() == order.get(z).getName()) {
+                        if (items.get(position).getName().equals(items.get(z).getName())) {
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
+
                             int tempPrice = Integer.parseInt(order.get(z).getPrice());
                             int cpi = Integer.parseInt(items.get(position).getPrice());
-                            tempPrice = tempPrice + cpi;
+
+                            tempPrice = numTimesClicked[position] * cpi;
+
                             order.get(z).setPrice("" + tempPrice + "");
                             flag = 1;
                             break;
                         }
                     }
                     if (flag == 0) {
-                        order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                        order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                     }
                 } else {
-                    order.add(new selectedItems(items.get(position).getName(), "1", items.get(position).getPrice()));
+                    order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                 }
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
 
             }
         };
+
         btplus.setOnClickListener(addition);
 
         View.OnClickListener substraction = new View.OnClickListener() {
@@ -142,7 +157,9 @@ public class MenuAdapter extends ArrayAdapter {
                                 order.get(z).setQuantity("" + numTimesClicked[position] + "");
                                 int tempPrice = Integer.parseInt(order.get(z).getPrice());
                                 int cpi = Integer.parseInt(items.get(position).getPrice());
-                                tempPrice = tempPrice - cpi;
+
+                                tempPrice = numTimesClicked[position] * cpi;
+
                                 order.get(z).setPrice("" + tempPrice + "");
                                 flag = 1;
                             } else {
