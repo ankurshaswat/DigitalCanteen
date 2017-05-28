@@ -78,4 +78,18 @@ public class SelectAdapter extends ArrayAdapter {
 
 
     }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+        double tot = 0;
+        for (int i = 0; i < order.size(); i++) {
+            tot += Integer.parseInt(order.get(i).getQuantity()) * Integer.parseInt(order.get(i).getPrice());
+        }
+
+        MainPage.total.setText("Your Total is :- Rs." + tot);
+        MainPage.totalamt = tot;
+
+    }
 }

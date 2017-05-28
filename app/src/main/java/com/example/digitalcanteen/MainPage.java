@@ -5,13 +5,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainPage extends AppCompatActivity {
@@ -21,17 +26,15 @@ public class MainPage extends AppCompatActivity {
     public static List<selectedItems> order = new ArrayList<>();
 
     public static List<menuItem> items = new ArrayList<>();
-
-
-
-
     public static SelectAdapter selectedItemsAdapter = null;
     public static MenuAdapter renderMenuAdapter = null;
+    public static TextView total;
+    //    private ListView selectedThings;
+    public static double totalamt = 0;
+    private EditText amt2add = null;
     private ListView selectedThings;
     private ListView listItems;
     private ProgressDialog progressDialog;
-    //    private ListView selectedThings;
-
     private Button btnExit = null;
     private Button btnSubmit = null;
     private EditText employee_id_edit = null;
@@ -41,6 +44,9 @@ public class MainPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        amt2add = (EditText) findViewById(R.id.moneyAmt);
+        total = (TextView) findViewById(R.id.txtVuTot);
+
         setContentView(R.layout.activity_main_page);
         progressDialog = new ProgressDialog(this);
         btnExit = (Button) findViewById(R.id.btnExit);
@@ -93,6 +99,51 @@ public class MainPage extends AppCompatActivity {
                     if (!results.moveToFirst()) {
                         //  create new user with 0 balance instead of old code.
 
+                        Date date_x = new Date();
+                        DateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+                        final String date = sdf.format(date_x);
+
+                        Log.d(TAG, "onClick: inserting user");
+                        boolean check = db.insertUser(employee_id, 0, date);
+                        if (check) {
+                            Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+//
+
+                            //now take order
+                            for (int i = 0; i < order.size(); i++) {
+                                //here add each item to transactions table
+
+
+                            }
+                            db.updateinfo(employee_id, -1 * totalamt);
+                            if (amt2add.getText().toString() != "") {
+                                db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
+                            }
+                            double balance = db.getBal(employee_id);
+
+                            Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
+                            redirectToSuccess.putExtra("Employee_id", employee_id);
+                            redirectToSuccess.putExtra("Balance", balance);
+                            startActivity(redirectToSuccess);
+//TODO take amount to add money
+//                            Intent redirectToMain = new Intent(RegisterActivity.this, MainPage.class);
+//                            redirectToMain.putExtra("Employee_id", employee_id);
+////                            redirectToMain.putExtra("Name", employee_name);
+//                            redirectToMain.putExtra("Balance", 0);
+//                            redirectToMain.putExtra("Date", date);
+
+//                            startActivity(redirectToMain);
+
+
+                            //redirect to ordered successfully activity
+                            cancelProgressDialog();
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Connection Error!! Please Try Again", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
 //                        cancelProgressDialog();
 //
 //                        AlertDialog.Builder alert = new AlertDialog.Builder(MainPage.this);
@@ -115,9 +166,30 @@ public class MainPage extends AppCompatActivity {
 
 
                         String employee_id = results.getString(1);//pass index after making db
-                        String name = results.getString(2);//pass index of name
-                        Double balance = results.getDouble(3);
-//
+//                        String name = results.getString(2);//pass index of name
+                        Double balance = results.getDouble(2);
+//TODO take amount to add money
+
+                        for (int i = 0; i < order.size(); i++) {
+                            //here add each item to transactions table
+
+
+                        }
+                        db.updateinfo(employee_id, -1 * totalamt);
+                        if (amt2add.getText().toString() != "") {
+                            db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
+                        }
+                        balance = db.getBal(employee_id);
+
+                        Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
+                        redirectToSuccess.putExtra("Employee_id", employee_id);
+                        redirectToSuccess.putExtra("Balance", balance);
+                        startActivity(redirectToSuccess);
+                        //redirect to ordered and add transactions
+
+
+
+
 //                        Intent refirectToMain = new Intent(LoginActivity.this, MainPage.class);
 //                        refirectToMain.putExtra("employee_id", employee_id);
 //                        refirectToMain.putExtra("name", name);
