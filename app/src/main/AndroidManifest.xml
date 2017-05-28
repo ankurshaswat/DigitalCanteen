@@ -40,6 +40,8 @@
             android:name=".selected"
             android:screenOrientation="landscape" />
         <activity android:name=".OrderComplete" />
+        <activity android:name=".EditMenu" />
+        <activity android:name=".ChangeActivity" />
         <activity android:name=".AddMoreMoney"></activity>
     </application>
 

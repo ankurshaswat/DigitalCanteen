@@ -65,7 +65,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     public List<menuItem> getAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("Select * from Menu", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Menu", null);
 
         List<menuItem> itemlist = new ArrayList<>();
         while (cur.moveToNext()) {
@@ -75,8 +75,32 @@ public class MenuDatabase extends SQLiteOpenHelper {
             itemlist.add(new menuItem(st1, st2 + ""));
         }
         cur.close();
-
+        Log.d(TAG, "getAll: " + itemlist.size());
         return itemlist;
     }
 
+    public int getItem(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=?", new String[]{name});
+        Cursor cur = db.rawQuery("SELECT * FROM Menu", null);
+        cur.moveToFirst();
+//        Log.d(TAG, "getItem:toloooooooooooo      "+ cur.getInt(0)+"   "+cur.getString(1));
+        return cur.getInt(0);
+    }
+
+    public boolean editItem(int id, String item_name, double Cost) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("Cost", Cost);
+        newValues.put("Item_name", item_name);
+
+        String[] args = new String[]{String.valueOf(id)};
+        long result = db.update("Menu", newValues, "ID=?", args);
+        return result != -1;
+
+
+    }
 }

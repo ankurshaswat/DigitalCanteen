@@ -1,7 +1,7 @@
 package com.example.digitalcanteen;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,12 +21,15 @@ public class EditMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_menu);
-        Log.d(TAG, "onCreate: " + MainPage.items.size());
-
+//        Log.d(TAG, "onCreate: " + MainPage.items.size());
+        db = new MenuDatabase(this);
+//        db.insertItem("pizza",89.0);
+//        db.insertItem("burger",89.0);
+        eItems = db.getAll();
 //        eItems=MainPage.items;'
         for (int i = 0; i < MainPage.items.size(); i += 1) {
-            Log.d(TAG, "onCreate: " + MainPage.items.get(i).getName());
-            eItems.add(new menuItem(MainPage.items.get(i).getName(), MainPage.items.get(i).getPrice(), MainPage.items.get(i).getId()));
+//            Log.d(TAG, "onCreate: " + MainPage.items.get(i).getName());
+//            eItems.add(new menuItem(MainPage.items.get(i).getName(), MainPage.items.get(i).getPrice(), MainPage.items.get(i).getId()));
 
         }
         Log.d(TAG, "onCreate: " + eItems.size());
