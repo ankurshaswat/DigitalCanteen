@@ -38,7 +38,11 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".selected"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".EditMenu"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ChangeActivity"></activity>
     </application>
 
 </manifest>

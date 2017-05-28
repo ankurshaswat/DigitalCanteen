@@ -3,6 +3,7 @@ package com.example.digitalcanteen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,13 +20,16 @@ public class AdminActivity extends AppCompatActivity {
     private Button btnExit = null;
     private Button btnAccounts = null;
     private EditText edtDate = null;
-
+    private Button btnMM = null;
+    private static final String TAG = "AdminActivity";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         edtDate = (EditText) findViewById(R.id.edtDate);
         btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
+        Log.d(TAG, "onCreate: i was here");
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +77,17 @@ public class AdminActivity extends AppCompatActivity {
 
                 Intent redirectToAccounts = new Intent(AdminActivity.this, AccountsActivity.class);
                 startActivity(redirectToAccounts);
+            }
+        });
+        btnMM = (Button) findViewById(R.id.btnManageMenu);
+        btnMM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: I was here");
+                Intent redirectTOMM = new Intent(AdminActivity.this, EditMenu.class);
+                Log.d(TAG, "onClick: I was here");
+                startActivity(redirectTOMM);
+
             }
         });
     }

@@ -36,6 +36,8 @@ LoginActivity extends AppCompatActivity {
 
         db = new UserDatabase(this);
         progressDialog = new ProgressDialog(this);
+        MainPage.items.add(new menuItem("pizza", "300"));
+        MainPage.items.add(new menuItem("burger", "100"));
 
 //        register_button.setOnClickListener(new View.OnClickListener() {
 //            @Override

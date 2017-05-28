@@ -19,6 +19,7 @@ public class MainPage extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     public static List<selectedItems> order = new ArrayList<>();
+
     public static List<menuItem> items = new ArrayList<>();
 
 
@@ -57,8 +58,11 @@ public class MainPage extends AppCompatActivity {
 
 
 //       order.add(new selectedItems("pizza", "2", "600"));
-        items.add(new menuItem("pizza", "300"));
-        items.add(new menuItem("burger", "100"));
+
+
+        for (int i = 0; i < items.size(); i += 1) {
+            items.get(i).setId(i);
+        }
 
         selectedItemsAdapter = new SelectAdapter(MainPage.this, R.layout.activity_selected, order);
         selectedThings.setAdapter(selectedItemsAdapter);

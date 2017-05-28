@@ -68,6 +68,7 @@ public class MenuAdapter extends ArrayAdapter {
     @Override
     public int getCount() {
         return items.size();
+
     }
 
     @NonNull
