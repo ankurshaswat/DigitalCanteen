@@ -58,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.d(TAG, "onClick: employee_id checked");
                     if (!results.moveToFirst()) {
                         Log.d(TAG, "onClick: inserting user");
-                        boolean check = db.insertUser(employee_id, employee_name, 0, date);
+                        boolean check = db.insertUser(employee_id, 0, date);
                         if (check) {
                             Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
 
