@@ -103,4 +103,11 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
 
     }
+
+    public boolean deleteItem(String name) {
+        int res = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        res = db.delete("Menu", "Item_name=?", new String[]{name});
+        return (res != 0);
+    }
 }

@@ -22,13 +22,13 @@ import java.util.List;
 
 public class EditAdapter extends ArrayAdapter {
     public static final String TAG = "EditAdapter";
-    public TextView name;
-    private TextView price;
     private static List<menuItem> eItems = new ArrayList<>();
+    public TextView name;
+    Context con;
+    private TextView price;
     private Button edit;
     private Button rem;
-    Context con;
-
+    private MenuDatabase db;
     public EditAdapter(@NonNull Context context, @LayoutRes int resource, List<menuItem> Items) {
         super(context, resource);
         EditAdapter.eItems = Items;
@@ -55,14 +55,19 @@ public class EditAdapter extends ArrayAdapter {
         TextView price = (TextView) ww.findViewById(R.id.currPrice);
         Button edit = (Button) ww.findViewById(R.id.buttonEdit);
         Button rem = (Button) ww.findViewById(R.id.buttonRemove);
-
+        db = new MenuDatabase(con);
         name.setText(eItems.get(position).getName());
         price.setText(eItems.get(position).getPrice());
 
         View.OnClickListener rm = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                db.deleteItem(eItems.get(position).getName());
+//attach testing to deleted or not.......
                 eItems.remove(position);
+
             }
         };
         rem.setOnClickListener(rm);
