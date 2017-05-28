@@ -67,7 +67,7 @@ public class EditAdapter extends ArrayAdapter {
                 db.deleteItem(eItems.get(position).getName());
 //attach testing to deleted or not.......
                 eItems.remove(position);
-
+////////IMPORTANT TODO notify update to adapter
             }
         };
         rem.setOnClickListener(rm);
