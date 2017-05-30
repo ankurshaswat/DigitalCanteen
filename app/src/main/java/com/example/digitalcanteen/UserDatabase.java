@@ -3,6 +3,7 @@ package com.example.digitalcanteen;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class UserDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance REAL,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance DOUBLE,Date TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -49,7 +50,7 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance REAL,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance DOUBLE,Date TEXT)";
         db.execSQL(query);
     }
 
@@ -77,21 +78,42 @@ public class UserDatabase extends SQLiteOpenHelper {
     public double getBal(String employee_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+        cur.moveToFirst();
         return cur.getDouble(2);
 
     }
 
-    public boolean updateinfo(String employee_id, double amt) {
+    public boolean updateinfo(String employee_id, Double amt) {
 
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+//        ContentValues newValues = new ContentValues();
+//        Log.d(TAG, "updateinfo: "+getBal(employee_id));
+////        Log.d(TAG, "updateinfo: "+(getBal(employee_id)+amt));
+//        amt=amt+getBal(employee_id);
+//        newValues.put("Balance", amt);
+//        Log.d(TAG, "updateinfo: "+amt);
+//        String[] args = new String[]{employee_id};
+//        long result = db.update("Users", newValues, "Employee_code=?", args);
+//
+//
+//        String query=
+//        Log.d(TAG, "updateinfo: "+getBal(employee_id));
+//        return result != -1;
+        try {
+            amt = amt + getBal(employee_id);
+            Log.d(TAG, "updateinfo: " + getBal(employee_id));
+            Log.d(TAG, "updateinfo: " + amt);
+            db.execSQL("UPDATE Users SET Balance =" + amt + " WHERE Employee_code='" + employee_id + "'");
+            Log.d(TAG, "updateinfo: " + getBal(employee_id));
+            return true;
+        } catch (SQLException e) {
+            Log.d(TAG, "updateinfo: ");
+            e.printStackTrace();
+            return false;
+        }
 
-        ContentValues newValues = new ContentValues();
-        newValues.put("Balance", amt + getBal(employee_id));
 
-        String[] args = new String[]{employee_id};
-        long result = db.update("Users", newValues, "Employee_code=?", args);
-        return result != -1;
     }
 }

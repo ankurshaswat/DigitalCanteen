@@ -28,7 +28,7 @@ public class MainPage extends AppCompatActivity {
     public static List<menuItem> items = new ArrayList<>();
     public static SelectAdapter selectedItemsAdapter = null;
     public static MenuAdapter renderMenuAdapter = null;
-    public static TextView total;
+    public static TextView total = null;
     //    private ListView selectedThings;
     public static double totalamt = 0;
     private EditText amt2add = null;
@@ -40,15 +40,20 @@ public class MainPage extends AppCompatActivity {
     private EditText employee_id_edit = null;
     private UserDatabase db;
     private TransactionDatabase tranDB;
+    private MenuDatabase menuDB;
     private String employee_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        amt2add = (EditText) findViewById(R.id.moneyAmt);
-        total = (TextView) findViewById(R.id.txtVuTot);
 
         setContentView(R.layout.activity_main_page);
+
+
+        amt2add = (EditText) findViewById(R.id.moneyAmt);
+        total = (TextView) findViewById(R.id.txtVuTotal);
+//        total.setText("howdy");
+//        setContentView(R.layout.activity_main_page);
         progressDialog = new ProgressDialog(this);
         btnExit = (Button) findViewById(R.id.btnExit);
         btnExit.setOnClickListener(new View.OnClickListener() {
@@ -61,16 +66,18 @@ public class MainPage extends AppCompatActivity {
         });
         db = new UserDatabase(this);
         tranDB = new TransactionDatabase(this);
+        menuDB = new MenuDatabase(this);
+
         listItems = (ListView) findViewById(R.id.lstMenu);
         selectedThings = (ListView) findViewById(R.id.lstCart);
 
 
 //       order.add(new selectedItems("pizza", "2", "600"));
 
-
-        for (int i = 0; i < items.size(); i += 1) {
-            items.get(i).setId(i);
-        }
+        items = menuDB.getAll();
+//        for (int i = 0; i < items.size(); i += 1) {
+//            items.get(i).setId(i);
+//        }
 
         selectedItemsAdapter = new SelectAdapter(MainPage.this, R.layout.activity_selected, order);
         selectedThings.setAdapter(selectedItemsAdapter);
@@ -114,7 +121,7 @@ public class MainPage extends AppCompatActivity {
                             //now take order
                             for (int i = 0; i < order.size(); i++) {
                                 //here add each item to transactions table
-                                tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()), date);
+                                tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
 
                             }
                             db.updateinfo(employee_id, -1 * totalamt);
@@ -178,7 +185,7 @@ public class MainPage extends AppCompatActivity {
 
                         }
                         db.updateinfo(employee_id, -1 * totalamt);
-                        if (amt2add.getText().toString() != "") {
+                        if (!amt2add.getText().toString().matches("")) {
                             db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
                         }
                         balance = db.getBal(employee_id);

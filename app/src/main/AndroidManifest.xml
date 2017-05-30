@@ -42,7 +42,8 @@
         <activity android:name=".OrderComplete" />
         <activity android:name=".EditMenu" />
         <activity android:name=".ChangeActivity" />
-        <activity android:name=".AddMoreMoney"></activity>
+        <activity android:name=".AddMoreMoney" />
+        <activity android:name=".CheckBalance"></activity>
     </application>
 
 </manifest>

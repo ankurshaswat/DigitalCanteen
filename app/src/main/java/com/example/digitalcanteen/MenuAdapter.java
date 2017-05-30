@@ -116,8 +116,8 @@ public class MenuAdapter extends ArrayAdapter {
                             Log.d(TAG, "onClick: fl0 " + items.get(position).getName());
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
 
-                            int tempPrice;
-                            int cpi = Integer.parseInt(items.get(position).getPrice());
+                            Double tempPrice;
+                            Double cpi = Double.parseDouble(items.get(position).getPrice());
 
                             tempPrice = numTimesClicked[position] * cpi;
 
@@ -128,11 +128,14 @@ public class MenuAdapter extends ArrayAdapter {
                     }
                     if (flag == 0) {
                         Log.d(TAG, "onClick: fl " + items.get(position).getName());
-                        order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
+                        order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Double.parseDouble(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                     }
                 } else {
                     Log.d(TAG, "onClick: fl2 " + items.get(position).getName());
-                    order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Integer.parseInt(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
+
+                    Double Price = Double.parseDouble(items.get(position).getPrice());
+
+                    order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", (Price * numTimesClicked[position]) + ""));
                 }
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();

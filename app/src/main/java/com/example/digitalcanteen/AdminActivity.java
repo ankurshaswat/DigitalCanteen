@@ -23,6 +23,7 @@ public class AdminActivity extends AppCompatActivity {
     private Button btnAccounts = null;
     private EditText edtDate = null;
     private Button btnMM = null;
+    private Button checkBal = null;
     private TextView custNum = null;
     private TransactionDatabase db;
     
@@ -35,6 +36,7 @@ public class AdminActivity extends AppCompatActivity {
         custNum = (TextView) findViewById(R.id.CustNum);
         db = new TransactionDatabase(this);
         Log.d(TAG, "onCreate: i was here");
+        checkBal = (Button) findViewById(R.id.btnCheckBal);
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,5 +99,20 @@ public class AdminActivity extends AppCompatActivity {
 
             }
         });
+
+
+        checkBal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent redirectToCheckBal = new Intent(AdminActivity.this, CheckBalance.class);
+                startActivity(redirectToCheckBal);
+
+
+            }
+        });
     }
+
+
 }

@@ -72,7 +72,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
             Integer iid = cur.getInt(0);
             String st1 = cur.getString(1);
             Double st2 = cur.getDouble(2);
-            itemlist.add(new menuItem(st1, st2 + ""));
+            itemlist.add(new menuItem(st1, st2 + "", iid));
         }
         cur.close();
         Log.d(TAG, "getAll: " + itemlist.size());

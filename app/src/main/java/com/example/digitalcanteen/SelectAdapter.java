@@ -85,7 +85,7 @@ public class SelectAdapter extends ArrayAdapter {
 
         double tot = 0;
         for (int i = 0; i < order.size(); i++) {
-            tot += Integer.parseInt(order.get(i).getQuantity()) * Integer.parseInt(order.get(i).getPrice());
+            tot += Double.parseDouble(order.get(i).getPrice());
         }
 
         MainPage.total.setText("Your Total is :- Rs." + tot);

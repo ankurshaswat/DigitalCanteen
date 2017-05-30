@@ -31,12 +31,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="7dp"
         android:layout_marginStart="8dp"
         android:text="Item"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintHorizontal_bias="0.189"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -48,7 +48,7 @@
         android:layout_marginRight="16dp"
         android:text="Cost Per Item"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView7"
-        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -62,7 +62,7 @@
         android:layout_marginStart="8dp"
         android:text="Quantity"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
-        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintHorizontal_bias="0.66"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -72,10 +72,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="92dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="92dp"
-        android:layout_marginTop="65dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="Total"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnGenerate" />
@@ -146,4 +146,16 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editEndDate" />
+
+    <TextView
+        android:id="@+id/txtEmpId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Employee ID"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/txtVuTot"
+        android:id="@+id/txtVuTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -87,7 +87,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtVuTot"
+        app:layout_constraintBottom_toTopOf="@+id/txtVuTotal"
         app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15"
