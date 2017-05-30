@@ -95,13 +95,13 @@
         android:hint="Enter Date Here(dd/mm/yyyy)"
         android:inputType="date"
         android:text="Enter Date Here(dd/mm/yyyy)"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
+        app:layout_constraintBaseline_toBaselineOf="@+id/CustNum"
         app:layout_constraintHorizontal_bias="0.129"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/CustNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

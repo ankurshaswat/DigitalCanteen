@@ -1,0 +1,97 @@
+package com.example.digitalcanteen;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+/**
+ * Created by ankurshaswat on 30/5/17.
+ */
+
+public class TransactionDatabase extends SQLiteOpenHelper {
+
+
+    public static final String DATABASE_NAME = "Transactions.db";
+    private static final String TAG = "TransactionDatabase";
+
+
+    public TransactionDatabase(Context context) {
+        super(context, DATABASE_NAME, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG, "onCreate: creating db");
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem REAL,Total REAL,Date TEXT)";
+        db.execSQL(query);
+        Log.d(TAG, "onCreate: db created");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS Transactions");
+        onCreate(db);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem REAL,Total REAL,Date TEXT)";
+        db.execSQL(query);
+    }
+
+    public Cursor getEmployeeHistory(String employee_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
+    }
+
+    public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues new_content = new ContentValues();
+
+        Log.d(TAG, "insertUser: writing to new content");
+
+        new_content.put("Employee_code", Employee_id);
+//        new_content.put("Name", employee_name);
+        new_content.put("Order_name", Order_name);
+        new_content.put("Quantity", Quantity);
+        new_content.put("Cost_perItem", cpi);
+        new_content.put("Date", date);
+        new_content.put("Total", Quantity * cpi);
+        Log.d(TAG, "insertUser: inseting to db");
+        long result = db.insert("Users", null, new_content);
+
+        return result != -1;
+    }
+
+    public Integer numCustomers(String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT COUNT(DISTINCT Employee_code) FROM Transactions WHERE Date=?", new String[]{date});
+        cur.moveToFirst();
+        return cur.getInt(0);
+
+
+    }
+
+//    public double getBal(String employee_id) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+//        return cur.getDouble(2);
+//    }
+
+//    public boolean updateinfo(String employee_id, double amt) {
+//
+//
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//
+//        ContentValues newValues = new ContentValues();
+//        newValues.put("Balance", amt + getBal(employee_id));
+//
+//        String[] args = new String[]{employee_id};
+//        long result = db.update("Users", newValues, "Employee_code=?", args);
+//        return result != -1;
+//    }
+}

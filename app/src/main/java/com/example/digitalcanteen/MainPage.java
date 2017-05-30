@@ -39,6 +39,7 @@ public class MainPage extends AppCompatActivity {
     private Button btnSubmit = null;
     private EditText employee_id_edit = null;
     private UserDatabase db;
+    private TransactionDatabase tranDB;
     private String employee_id;
 
     @Override
@@ -59,6 +60,7 @@ public class MainPage extends AppCompatActivity {
             }
         });
         db = new UserDatabase(this);
+        tranDB = new TransactionDatabase(this);
         listItems = (ListView) findViewById(R.id.lstMenu);
         selectedThings = (ListView) findViewById(R.id.lstCart);
 
@@ -112,7 +114,7 @@ public class MainPage extends AppCompatActivity {
                             //now take order
                             for (int i = 0; i < order.size(); i++) {
                                 //here add each item to transactions table
-
+                                tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()), date);
 
                             }
                             db.updateinfo(employee_id, -1 * totalamt);

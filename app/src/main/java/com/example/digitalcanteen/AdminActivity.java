@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -16,12 +17,14 @@ import java.util.Date;
 public class AdminActivity extends AppCompatActivity {
 
 
+    private static final String TAG = "AdminActivity";
     private Button btnChangeDate = null;
     private Button btnExit = null;
     private Button btnAccounts = null;
     private EditText edtDate = null;
     private Button btnMM = null;
-    private static final String TAG = "AdminActivity";
+    private TextView custNum = null;
+    private TransactionDatabase db;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,8 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
         edtDate = (EditText) findViewById(R.id.edtDate);
         btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
+        custNum = (TextView) findViewById(R.id.CustNum);
+        db = new TransactionDatabase(this);
         Log.d(TAG, "onCreate: i was here");
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +50,9 @@ public class AdminActivity extends AppCompatActivity {
                     strtDate = new SimpleDateFormat("dd/MM/yyyy").format(strDateObject);
 
 
+
                     //TODO     here check database for number of customers visited on that date
+                    custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
                 } catch (java.text.ParseException e) {
                     Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
 
