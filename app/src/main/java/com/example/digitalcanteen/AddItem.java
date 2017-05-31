@@ -1,8 +1,8 @@
 package com.example.digitalcanteen;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,17 +48,20 @@ public class AddItem extends AppCompatActivity {
                 }
                 if (flag==0){
                     db.insertItem(nName,nPrice);
-                    int i=db.getAll().size();
-                    db.getAll().get(i-1).setId(i-1);
+                    Toast.makeText(AddItem.this, "Item Has Been Added", Toast.LENGTH_SHORT).show();
+                    name.setText("");
+                    price.setText("");
                 }
             }
         };
         submit.setOnClickListener(onSubmit);
+
         View.OnClickListener onExit = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent exitAdd = new Intent(AddItem.this,LoginActivity.class);
+                Intent exitAdd = new Intent(AddItem.this, EditMenu.class);
                 startActivity(exitAdd);
+                finish();
             }
         };
         exit.setOnClickListener(onExit);

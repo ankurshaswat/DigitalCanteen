@@ -125,7 +125,8 @@ public class MainPage extends AppCompatActivity {
 
                             }
                             db.updateinfo(employee_id, -1 * totalamt);
-                            if (amt2add.getText().toString() != "") {
+
+                            if (!amt2add.getText().toString().isEmpty()) {
                                 db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
                             }
                             double balance = db.getBal(employee_id);

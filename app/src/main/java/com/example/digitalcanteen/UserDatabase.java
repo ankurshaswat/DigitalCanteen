@@ -3,7 +3,6 @@ package com.example.digitalcanteen;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -84,35 +83,22 @@ public class UserDatabase extends SQLiteOpenHelper {
     }
 
     public boolean updateinfo(String employee_id, Double amt) {
-
-
         SQLiteDatabase db = this.getWritableDatabase();
 
-//        ContentValues newValues = new ContentValues();
-//        Log.d(TAG, "updateinfo: "+getBal(employee_id));
-////        Log.d(TAG, "updateinfo: "+(getBal(employee_id)+amt));
-//        amt=amt+getBal(employee_id);
-//        newValues.put("Balance", amt);
-//        Log.d(TAG, "updateinfo: "+amt);
+        ContentValues newValues = new ContentValues();
+        amt = amt + getBal(employee_id);
+        Log.d(TAG, "updateinfo: " + amt);
+
+        newValues.put("Balance", amt);
+
+        newValues.put("Employee_code", employee_id);
+
+        Log.d(TAG, "updateinfo: " + getBal(employee_id));
+
 //        String[] args = new String[]{employee_id};
-//        long result = db.update("Users", newValues, "Employee_code=?", args);
-//
-//
-//        String query=
-//        Log.d(TAG, "updateinfo: "+getBal(employee_id));
-//        return result != -1;
-        try {
-            amt = amt + getBal(employee_id);
-            Log.d(TAG, "updateinfo: " + getBal(employee_id));
-            Log.d(TAG, "updateinfo: " + amt);
-            db.execSQL("UPDATE Users SET Balance =" + amt + " WHERE Employee_code='" + employee_id + "'");
-            Log.d(TAG, "updateinfo: " + getBal(employee_id));
-            return true;
-        } catch (SQLException e) {
-            Log.d(TAG, "updateinfo: ");
-            e.printStackTrace();
-            return false;
-        }
+
+        long result = db.update("Users", newValues, "Employee_code=?", new String[]{employee_id});
+        return result != -1;
 
 
     }
