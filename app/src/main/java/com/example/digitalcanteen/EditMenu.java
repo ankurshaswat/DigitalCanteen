@@ -1,8 +1,10 @@
 package com.example.digitalcanteen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -37,6 +39,17 @@ public class EditMenu extends AppCompatActivity {
         currItems = (ListView) findViewById(R.id.listView);
         editItemsAdapter = new EditAdapter(EditMenu.this, R.layout.edititem, eItems);
         currItems.setAdapter(editItemsAdapter);
+
+        newitem = (Button) findViewById(R.id.addItem);
+
+        View.OnClickListener toAdd = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent add = new Intent(EditMenu.this,AddItem.class);
+                startActivity(add);
+            }
+        };
+        newitem.setOnClickListener(toAdd);
 
 
     }

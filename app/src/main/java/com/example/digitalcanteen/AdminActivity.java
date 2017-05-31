@@ -26,6 +26,7 @@ public class AdminActivity extends AppCompatActivity {
     private Button checkBal = null;
     private TextView custNum = null;
     private TransactionDatabase db;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {

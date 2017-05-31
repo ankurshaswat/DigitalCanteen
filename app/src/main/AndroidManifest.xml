@@ -43,7 +43,8 @@
         <activity android:name=".EditMenu" />
         <activity android:name=".ChangeActivity" />
         <activity android:name=".AddMoreMoney" />
-        <activity android:name=".CheckBalance"></activity>
+        <activity android:name=".CheckBalance" />
+        <activity android:name=".AddItem"></activity>
     </application>
 
 </manifest>
