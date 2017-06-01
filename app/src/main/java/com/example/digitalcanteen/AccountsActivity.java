@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AccountsActivity extends AppCompatActivity {
 
@@ -18,6 +21,8 @@ public class AccountsActivity extends AppCompatActivity {
     private Button btnDone = null;
     private EditText strtDateBox = null;
     private EditText endDateBox = null;
+    private List<EHistory> EmployeeHistory=new ArrayList<>();
+    private ListView transactions=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,7 @@ public class AccountsActivity extends AppCompatActivity {
         btnDone = (Button) findViewById(R.id.btnDone);
         strtDateBox = (EditText) findViewById(R.id.editStartDate);
         endDateBox = (EditText) findViewById(R.id.editEndDate);
-
+        transactions=(ListView) findViewById(R.id.accntList);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +54,9 @@ public class AccountsActivity extends AppCompatActivity {
                     endDate = new SimpleDateFormat("dd/MM/yyyy").format(endDateObject);
 
                     //TODO   Here write rest code for adapter to fill list view with given date objects......i have made a template already for it
+                    //TODO please make a list of EHistory containig employee's transactions name it as employeeHistory
+                    acccountAdapter adapterForAccounts= new acccountAdapter(AccountsActivity.this,R.layout.template_accounts,EmployeeHistory);
+                    transactions.setAdapter(adapterForAccounts);
                 } catch (java.text.ParseException e) {
                     Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
 
