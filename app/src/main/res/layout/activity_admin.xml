@@ -78,9 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-25dp"
         android:text="Check For Date"
-        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtDate" />
@@ -94,9 +93,8 @@
         android:ems="10"
         android:hint="Enter Date Here(dd/mm/yyyy)"
         android:inputType="date"
-        android:text="Enter Date Here(dd/mm/yyyy)"
         app:layout_constraintBaseline_toBaselineOf="@+id/CustNum"
-        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -111,11 +109,11 @@
         android:text="Click Check Button To View Number Of Customers"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.22000003" />
+        app:layout_constraintVertical_bias="0.028" />
 
     <Button
         android:id="@+id/btnCheckBal"
@@ -124,9 +122,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:text="Check Balance"
         app:layout_constraintBottom_toTopOf="@+id/btnManageMenu"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChangeDate" />
 
 </android.support.constraint.ConstraintLayout>

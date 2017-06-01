@@ -70,7 +70,9 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT COUNT(DISTINCT Employee_code) FROM Transactions WHERE Date=?", new String[]{date});
         cur.moveToFirst();
-        return cur.getInt(0);
+        Integer numCustomers = cur.getInt(0);
+        cur.close();
+        return numCustomers;
 
 
     }
