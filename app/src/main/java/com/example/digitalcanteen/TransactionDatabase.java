@@ -7,6 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by ankurshaswat on 30/5/17.
  */
@@ -25,7 +31,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem REAL,Total REAL,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -38,14 +44,14 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem REAL,Total REAL,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT)";
         db.execSQL(query);
     }
 
-    public Cursor getEmployeeHistory(String employee_id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
-    }
+//    public Cursor getEmployeeHistory(String employee_id) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        return db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
+//    }
 
     public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -77,6 +83,37 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
+    public List<EHistory> getEmpHist(String employee_id) {
+
+        List<EHistory> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
+        while (cur.moveToNext()) {
+//            Integer iid = cur.getInt(0);
+//            String st1 = cur.getString(1);
+//            Double st2 = cur.getDouble(2);
+//            itemlist.add(new menuItem(st1, st2 + "", iid));
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Integer quan = cur.getInt(3);
+            Double tot = cur.getDouble(5);
+            Double cpi = cur.getDouble(4);
+            String date = cur.getString(5);
+            Date date_ = null;
+            try {
+                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+
+        }
+        cur.close();
+        Log.d(TAG, "getAll: " + empHis.size());
+        return empHis;
+
+    }
 //    public double getBal(String employee_id) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});

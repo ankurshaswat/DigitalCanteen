@@ -1,6 +1,6 @@
 package com.example.digitalcanteen;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Saransh Verma on 01-06-2017.
@@ -10,12 +10,12 @@ public class EHistory {
     private String name;
     private double cpi;
     private int  quantity;
-    private SimpleDateFormat date;
+    private Date date;
     private int Id;
-    private int employeeCode;
+    private String employeeCode;
     private double total;
 
-    public EHistory(String name, double cpi, int quantity, SimpleDateFormat date, int id, int employeeCode, double total) {
+    public EHistory(String name, double cpi, int quantity, Date date, int id, String employeeCode, double total) {
         this.name = name;
         this.cpi = cpi;
         this.quantity = quantity;
@@ -49,11 +49,11 @@ public class EHistory {
         this.quantity = quantity;
     }
 
-    public SimpleDateFormat getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(SimpleDateFormat date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -65,11 +65,11 @@ public class EHistory {
         Id = id;
     }
 
-    public int getEmployeeCode() {
+    public String getEmployeeCode() {
         return employeeCode;
     }
 
-    public void setEmployeeCode(int employeeCode) {
+    public void setEmployeeCode(String employeeCode) {
         this.employeeCode = employeeCode;
     }
 
