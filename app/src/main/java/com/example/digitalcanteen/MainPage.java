@@ -121,6 +121,7 @@ public class MainPage extends AppCompatActivity {
                             //now take order
                             for (int i = 0; i < order.size(); i++) {
                                 //here add each item to transactions table
+                                Log.d(TAG, "onClick: inserting " + order.get(i).getName());
                                 tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
 
                             }

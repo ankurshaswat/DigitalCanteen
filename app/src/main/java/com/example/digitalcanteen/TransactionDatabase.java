@@ -67,7 +67,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         new_content.put("Date", date);
         new_content.put("Total", Quantity * cpi);
         Log.d(TAG, "insertUser: inseting to db");
-        long result = db.insert("Users", null, new_content);
+        long result = db.insert("Transactions", null, new_content);
 
         return result != -1;
     }
@@ -83,11 +83,13 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
-    public List<EHistory> getEmpHist(String employee_id) {
+    public List<EHistory> getEmpHist(String employee_id, Date strtDate, Date endDate) {
 
         List<EHistory> empHis = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
         Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
@@ -98,6 +100,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
             String name = cur.getString(2);
             Integer quan = cur.getInt(3);
             Double tot = cur.getDouble(5);
+
             Double cpi = cur.getDouble(4);
             String date = cur.getString(5);
             Date date_ = null;
@@ -114,7 +117,80 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         return empHis;
 
     }
-//    public double getBal(String employee_id) {
+
+    public List<EHistory> getAllHistory(Date strtDate, Date endDate) {
+
+        List<EHistory> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{});
+        while (cur.moveToNext()) {
+//            Integer iid = cur.getInt(0);
+//            String st1 = cur.getString(1);
+//            Double st2 = cur.getDouble(2);
+//            itemlist.add(new menuItem(st1, st2 + "", iid));
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Integer quan = cur.getInt(3);
+            Double tot = cur.getDouble(5);
+
+            Double cpi = cur.getDouble(4);
+            String date = cur.getString(5);
+            Date date_ = null;
+            try {
+                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+
+        }
+        cur.close();
+        Log.d(TAG, "getAll: " + empHis.size());
+        return empHis;
+
+    }
+
+    public List<EHistory> getAll() {
+
+        List<EHistory> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions", null);
+//        Log.d(TAG, "getAll: "+cur.moveToFirst());
+        while (cur.moveToNext()) {
+            Log.d(TAG, "getAll: im in");
+//            Integer iid = cur.getInt(0);
+//            String st1 = cur.getString(1);
+//            Double st2 = cur.getDouble(2);
+//            itemlist.add(new menuItem(st1, st2 + "", iid));
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Integer quan = cur.getInt(3);
+            Double tot = cur.getDouble(5);
+
+            Double cpi = cur.getDouble(4);
+            String date = cur.getString(5);
+            Date date_ = null;
+            try {
+                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+
+        }
+        cur.close();
+        Log.d(TAG, "getAll: " + empHis.size());
+        return empHis;
+
+    }
+
+    //    public double getBal(String employee_id) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
 //        return cur.getDouble(2);

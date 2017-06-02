@@ -29,17 +29,24 @@ public class AccountsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accounts);
 
+        final TransactionDatabase db = new TransactionDatabase(this);
         btnGenerate = (Button) findViewById(R.id.btnGenerate);
+        EmployeeHistory = db.getAll();
+        transactions = (ListView) findViewById(R.id.accntList);
+        acccountAdapter adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.template_accounts, EmployeeHistory);
+//
+//  transactions.setAdapter(adapterForAccounts);
+        transactions.setAdapter(adapterForAccounts);
         btnDone = (Button) findViewById(R.id.btnDone);
         strtDateBox = (EditText) findViewById(R.id.editStartDate);
         endDateBox = (EditText) findViewById(R.id.editEndDate);
-        transactions=(ListView) findViewById(R.id.accntList);
+
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+                DateFormat formatter = new SimpleDateFormat("dd/mm/yyyy"); // Make sure user insert date into edittext in this format.
 
                 Date strDateObject, endDateObject;
                 String strtDate, endDate = null;
@@ -47,16 +54,18 @@ public class AccountsActivity extends AppCompatActivity {
                 try {
                     String dob_var = (strtDateBox.getText().toString());
                     strDateObject = formatter.parse(dob_var);
-                    strtDate = new SimpleDateFormat("dd/MM/yyyy").format(strDateObject);
+                    strtDate = new SimpleDateFormat("dd/mm/yyyy").format(strDateObject);
 
                     dob_var = (endDateBox.getText().toString());
                     endDateObject = formatter.parse(dob_var);
-                    endDate = new SimpleDateFormat("dd/MM/yyyy").format(endDateObject);
+                    endDate = new SimpleDateFormat("dd/mm/yyyy").format(endDateObject);
 
+
+                    EmployeeHistory = db.getAll();
                     //TODO   Here write rest code for adapter to fill list view with given date objects......i have made a template already for it
                     //TODO please make a list of EHistory containig employee's transactions name it as employeeHistory
-                    acccountAdapter adapterForAccounts= new acccountAdapter(AccountsActivity.this,R.layout.template_accounts,EmployeeHistory);
-                    transactions.setAdapter(adapterForAccounts);
+
+
                 } catch (java.text.ParseException e) {
                     Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
 
