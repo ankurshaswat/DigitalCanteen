@@ -163,7 +163,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         Cursor cur = db.rawQuery("SELECT * FROM Transactions", null);
 //        Log.d(TAG, "getAll: "+cur.moveToFirst());
         while (cur.moveToNext()) {
-            Log.d(TAG, "getAll: im in");
+//            Log.d(TAG, "getAll: im in");
 //            Integer iid = cur.getInt(0);
 //            String st1 = cur.getString(1);
 //            Double st2 = cur.getDouble(2);
@@ -174,7 +174,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
             Double tot = cur.getDouble(5);
 
             Double cpi = cur.getDouble(4);
-            String date = cur.getString(5);
+            String date = cur.getString(6);
             Date date_ = null;
             try {
                 date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
@@ -185,7 +185,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
         }
         cur.close();
-        Log.d(TAG, "getAll: " + empHis.size());
+//        Log.d(TAG, "getAll: " + empHis.size());
         return empHis;
 
     }

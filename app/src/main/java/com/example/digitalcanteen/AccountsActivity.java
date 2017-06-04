@@ -33,6 +33,12 @@ public class AccountsActivity extends AppCompatActivity {
         btnGenerate = (Button) findViewById(R.id.btnGenerate);
         EmployeeHistory = db.getAll();
         transactions = (ListView) findViewById(R.id.accntList);
+
+
+        View header = getLayoutInflater().inflate(R.layout.accounttemplate, null);
+        transactions.addHeaderView(header);
+
+
         acccountAdapter adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.template_accounts, EmployeeHistory);
 //
 //  transactions.setAdapter(adapterForAccounts);

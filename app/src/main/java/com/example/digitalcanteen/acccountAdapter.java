@@ -47,7 +47,7 @@ public class acccountAdapter extends ArrayAdapter {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 //        return super.getView(position, convertView, parent);
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View damian = inflater.inflate(R.layout.template_accounts,null,true);
+        View damian = inflater.inflate(R.layout.accounttemplate, null, true);
 
         TextView name =(TextView) damian.findViewById(R.id.tempItemName);
         TextView cpi =(TextView) damian.findViewById(R.id.tempCPI);
@@ -62,8 +62,10 @@ public class acccountAdapter extends ArrayAdapter {
         cpi.setText("" + EmpHistory.get(position).getCpi() + "");
         eId.setText(EmpHistory.get(position).getEmployeeCode());
         date.setText(EmpHistory.get(position).getDate().toString());
+        Log.d(TAG, "getView: " + EmpHistory.get(position).getDate());
         total.setText("" + EmpHistory.get(position).getTotal() + "");
-        quantity.setText(EmpHistory.get(position).getQuantity());
+//        Log.d(TAG, "getView: "+EmpHistory.get(position).getQuantity());
+        quantity.setText(String.valueOf(EmpHistory.get(position).getQuantity()));
 
         return damian;
             }
