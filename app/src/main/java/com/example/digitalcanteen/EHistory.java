@@ -1,7 +1,5 @@
 package com.example.digitalcanteen;
 
-import java.util.Date;
-
 /**
  * Created by Saransh Verma on 01-06-2017.
  */
@@ -10,12 +8,12 @@ public class EHistory {
     private String name;
     private double cpi;
     private int  quantity;
-    private Date date;
+    private String date;
     private int Id;
     private String employeeCode;
     private double total;
 
-    public EHistory(String name, double cpi, int quantity, Date date, int id, String employeeCode, double total) {
+    public EHistory(String name, double cpi, int quantity, String date, int id, String employeeCode, double total) {
         this.name = name;
         this.cpi = cpi;
         this.quantity = quantity;
@@ -49,11 +47,11 @@ public class EHistory {
         this.quantity = quantity;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

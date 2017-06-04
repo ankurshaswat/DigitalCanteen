@@ -7,10 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,7 +80,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
-    public List<EHistory> getEmpHist(String employee_id, Date strtDate, Date endDate) {
+    public List<EHistory> getEmpHist(String employee_id) {
 
         List<EHistory> empHis = new ArrayList<>();
 
@@ -103,13 +100,13 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
             Double cpi = cur.getDouble(4);
             String date = cur.getString(5);
-            Date date_ = null;
-            try {
-                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+//            Date date_ = null;
+//            try {
+//                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
 
         }
         cur.close();
@@ -118,14 +115,14 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
-    public List<EHistory> getAllHistory(Date strtDate, Date endDate) {
+    public List<EHistory> getAllHistory(String strtDate, String endDate) {
 
         List<EHistory> empHis = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         //TODO change this query for dates
-        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{});
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Date BETWEEN '" + strtDate + "' AND '" + endDate + "'", null);
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
 //            String st1 = cur.getString(1);
@@ -138,17 +135,17 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
             Double cpi = cur.getDouble(4);
             String date = cur.getString(5);
-            Date date_ = null;
-            try {
-                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+//            Date date_ = null;
+//            try {
+//                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
 
         }
         cur.close();
-        Log.d(TAG, "getAll: " + empHis.size());
+        Log.d(TAG, "getAllHistory: " + empHis.size());
         return empHis;
 
     }
@@ -175,13 +172,18 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
             Double cpi = cur.getDouble(4);
             String date = cur.getString(6);
-            Date date_ = null;
-            try {
-                date_ = new SimpleDateFormat("dd/mm/yyyy").parse(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            empHis.add(new EHistory(name, cpi, quan, date_, cur.getInt(0), emp_code, tot));
+//            Date date_ = null;
+//            try {
+//                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Log.d(TAG, "getAll: "+date);
+//            Log.d(TAG, "getAll: "+date_);
+
+
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
 
         }
         cur.close();

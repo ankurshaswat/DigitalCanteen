@@ -26,6 +26,7 @@ public class MainPage extends AppCompatActivity {
     public static List<selectedItems> order = new ArrayList<>();
 
     public static List<menuItem> items = new ArrayList<>();
+
     public static SelectAdapter selectedItemsAdapter = null;
     public static MenuAdapter renderMenuAdapter = null;
     public static TextView total = null;
@@ -109,10 +110,10 @@ public class MainPage extends AppCompatActivity {
                         //  create new user with 0 balance instead of old code.
 
                         Date date_x = new Date();
-                        DateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         final String date = sdf.format(date_x);
-
-                        Log.d(TAG, "onClick: inserting user");
+                        Log.d(TAG, "onClick: inserting user and date is " + date_x);
+                        Log.d(TAG, "onClick: inserting user and date is " + date);
                         boolean check = db.insertUser(employee_id, 0, date);
                         if (check) {
                             Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
