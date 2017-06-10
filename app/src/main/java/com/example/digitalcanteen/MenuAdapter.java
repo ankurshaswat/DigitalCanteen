@@ -1,6 +1,7 @@
 package com.example.digitalcanteen;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -77,7 +78,7 @@ public class MenuAdapter extends ArrayAdapter {
         Log.d(TAG, "getView: started");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View row = inflater.inflate(R.layout.activity_layout_menu, null, true);
+        final View  row = inflater.inflate(R.layout.activity_layout_menu, null, true);
 
         TextView txt1 = (TextView) row.findViewById(R.id.name);
         TextView txt2 = (TextView) row.findViewById(R.id.price);
@@ -139,7 +140,9 @@ public class MenuAdapter extends ArrayAdapter {
                 }
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
-
+               if(numTimesClicked[position]==1) {
+                   row.setBackgroundColor(Color.YELLOW);
+               }
             }
         };
 
@@ -163,15 +166,19 @@ public class MenuAdapter extends ArrayAdapter {
 
                             if (numTimesClicked[position] != 0) {
                                 order.get(z).setQuantity("" + numTimesClicked[position] + "");
-                                int tempPrice = Integer.parseInt(order.get(z).getPrice());
-                                int cpi = Integer.parseInt(items.get(position).getPrice());
+
+                                Double tempPrice;
+                                Double cpi = Double.parseDouble(items.get(position).getPrice());
 
                                 tempPrice = numTimesClicked[position] * cpi;
 
                                 order.get(z).setPrice("" + tempPrice + "");
                                 flag = 1;
+                                break;
                             } else {
                                 order.remove(z);
+                                row.setBackgroundColor(Color.WHITE);
+
                             }
                             break;
                         }
