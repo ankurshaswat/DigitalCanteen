@@ -7,6 +7,6 @@ package com.example.digitalcanteen;
 public class AppConfig {
 
 
-    public static String URL_ADD_TRANSACTION = "http://";
+    public static String URL_ADD_TRANSACTION = "http://10.17.6.39/lunch_club/addTransaction.php";
 
 }

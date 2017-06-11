@@ -43,6 +43,7 @@ public class MainPage extends AppCompatActivity {
     public static TextView total = null;
     //    private ListView selectedThings;
     public static double totalamt = 0;
+    private static int flagg = 0;
     private EditText amt2add = null;
     private ListView selectedThings;
     private ListView listItems;
@@ -54,7 +55,6 @@ public class MainPage extends AppCompatActivity {
     private TransactionDatabase tranDB;
     private MenuDatabase menuDB;
     private String employee_id;
-    private static int flagg=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,9 +267,9 @@ public class MainPage extends AppCompatActivity {
                         public void onClick(View v) {
                             double money = Double.parseDouble(amount.getText().toString());
                             double balNow=db.getBal(employee_id_edit.getText().toString());
-                            Log.d(TAG, "onClick: "+balNow);
+                            Log.d(TAG, "onClick: " + money);
                             balNow+=money;
-                            db.updateinfo(employee_id_edit.getText().toString(),balNow);
+                            db.updateinfo(employee_id_edit.getText().toString(), money);
                             balNow=db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: coming again"+balNow);
                             EditText currBalance= (EditText) findViewById(R.id.currBalance);
