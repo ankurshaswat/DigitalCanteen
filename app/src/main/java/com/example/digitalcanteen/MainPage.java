@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,7 @@ public class MainPage extends AppCompatActivity {
     private TransactionDatabase tranDB;
     private MenuDatabase menuDB;
     private String employee_id;
+    private static int flagg=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,10 @@ public class MainPage extends AppCompatActivity {
 
         listItems = (ListView) findViewById(R.id.lstMenu);
         selectedThings = (ListView) findViewById(R.id.lstCart);
+        Button addMoney= (Button) findViewById(R.id.mPAddMoney);
+
+
+
 
 
 //       order.add(new selectedItems("pizza", "2", "600"));
@@ -98,10 +104,24 @@ public class MainPage extends AppCompatActivity {
         renderMenuAdapter = new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items);
         listItems.setAdapter(renderMenuAdapter);
 
+
+        Button IdEntered = (Button) findViewById(R.id.mPIdE);
+        IdEntered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                TODO checking if id is entered correctly
+                String tempId=employee_id_edit.getText().toString();
+                final EditText currBalance=(EditText) findViewById(R.id.currBalance);
+
+                currBalance.setText(String.valueOf(db.getBal(tempId)));
+                flagg=1;
+            }
+        });
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
 //                TODO : take list of selected items here and store
 //                TODO : check employee code.....if not already present start it with zero balance
@@ -225,6 +245,42 @@ public class MainPage extends AppCompatActivity {
             }
 
 
+        });
+
+        addMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flagg==1) {
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainPage.this);
+                    Log.d(TAG, "onClick: I am here");
+                    View mView = getLayoutInflater().inflate(R.layout.addmoney, null);
+
+                    final EditText amount = (EditText) mView.findViewById(R.id.addMoneyAmount);
+                    Button aMOK = (Button) mView.findViewById(R.id.addMoneyOK);
+                    Button aMCancel = (Button) mView.findViewById(R.id.addMoneyCancel);
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    dialog.show();
+
+                    aMOK.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            double money = Double.parseDouble(amount.getText().toString());
+                            double balNow=db.getBal(employee_id_edit.getText().toString());
+                            Log.d(TAG, "onClick: "+balNow);
+                            balNow+=money;
+                            db.updateinfo(employee_id_edit.getText().toString(),balNow);
+                            balNow=db.getBal(employee_id_edit.getText().toString());
+                            Log.d(TAG, "onClick: coming again"+balNow);
+                            EditText currBalance= (EditText) findViewById(R.id.currBalance);
+
+                            String tempId=employee_id_edit.getText().toString();
+                            currBalance.setText(String.valueOf(db.getBal(tempId)));
+
+                        }
+                    });
+                }
+            }
         });
 
 

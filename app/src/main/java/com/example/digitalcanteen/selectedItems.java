@@ -9,7 +9,6 @@ public class selectedItems {
     private String quantity;
     private String price;
 
-
     public selectedItems(String name, String quantity, String price) {
         this.name = name;
         this.quantity = quantity;
