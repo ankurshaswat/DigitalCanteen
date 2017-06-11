@@ -60,6 +60,7 @@ public class MainPage extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Button btnExit = null;
     private Button btnSubmit = null;
+    private Button btnAddUser=null;
     private EditText employee_id_edit = null;
     private UserDatabase db;
     private TransactionDatabase tranDB;
@@ -73,6 +74,58 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
 
+
+        btnAddUser=(Button) findViewById(R.id.useradd);
+        btnAddUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder qBuilder = new AlertDialog.Builder(MainPage.this);
+                Log.d(TAG, "onClick: I am here");
+                View qView = getLayoutInflater().inflate(R.layout.adduser, null);
+                final EditText newName= (EditText) qView.findViewById(R.id.addName);
+                final EditText newCode=(EditText) qView.findViewById(R.id.addEC) ;
+                Button addSubmit=(Button) qView.findViewById(R.id.addSubmit);
+                Button addCancel=(Button) qView.findViewById(R.id.addCancel);
+
+
+
+                qBuilder.setView(qView);
+                final AlertDialog dialog = qBuilder.create();
+                dialog.show();
+
+                addSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String addId=newCode.getText().toString();
+                        String addName=newName.getText().toString();
+
+                        if(addId.length()==0||addName.length()==0) {
+                            Toast.makeText(getApplicationContext(), "No field can be Empty", Toast.LENGTH_SHORT)
+                                    .show();
+
+                        }
+                        else{
+                            Date date_x = new Date();
+                            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            final String date = sdf.format(date_x);
+                            Log.d(TAG, "onClick: inserting user and date is " + date_x);
+                            Log.d(TAG, "onClick: inserting user and date is " + date);
+                            boolean check = db.insertUser(addId, 0, date);
+                            if (check) {
+                                Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    }
+                });
+
+
+
+
+
+
+            }
+        });
         amt2add = (EditText) findViewById(R.id.moneyAmt);
         total = (TextView) findViewById(R.id.txtVuTotal);
 //        total.setText("howdy");
@@ -120,12 +173,30 @@ public class MainPage extends AppCompatActivity {
         IdEntered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TODO checking if id is entered correctly
-                String tempId=employee_id_edit.getText().toString();
-                final EditText currBalance=(EditText) findViewById(R.id.currBalance);
 
-                currBalance.setText(String.valueOf(db.getBal(tempId)));
-                flagg=1;
+                if (employee_id_edit.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+                            .show();
+                }
+//                TODO checking if id is entered correctly
+                else{
+
+                    employee_id = employee_id_edit.getText().toString();
+                    Cursor results = db.checkEmployeeId(employee_id);
+                    if(results.moveToFirst()){
+                        String tempId=employee_id_edit.getText().toString();
+                        final EditText currBalance=(EditText) findViewById(R.id.currBalance);
+
+                        currBalance.setText(String.valueOf(db.getBal(tempId)));
+                        flagg=1;
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+
+
             }
         });
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
@@ -263,7 +334,8 @@ public class MainPage extends AppCompatActivity {
         addMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flagg==1) {
+
+              if (flagg==1) {
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainPage.this);
                     Log.d(TAG, "onClick: I am here");
                     View mView = getLayoutInflater().inflate(R.layout.addmoney, null);
