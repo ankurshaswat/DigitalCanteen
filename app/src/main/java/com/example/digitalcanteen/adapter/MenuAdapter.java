@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.activity.MainPage;
+import com.example.digitalcanteen.menuItem;
+import com.example.digitalcanteen.selectedItems;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.example.digitalcanteen.MainPage.order;
+import static com.example.digitalcanteen.activity.MainPage.order;
 
 
 /**

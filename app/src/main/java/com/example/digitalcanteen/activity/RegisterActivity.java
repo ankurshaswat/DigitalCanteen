@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.database.UserDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

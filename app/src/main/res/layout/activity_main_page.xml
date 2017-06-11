@@ -4,64 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.digitalcanteen.MainPage">
+    tools:context="com.example.digitalcanteen.activity.MainPage"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="89dp">
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
         android:layout_marginTop="8dp"
         android:text="Menu"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/moneyAmt"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintRight_toLeftOf="@+id/anchor_DND"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtVuTotal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="41dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:text="Your Total is:-"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:textSize="35sp"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currBalance" />
 
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btnExit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
         android:text="Exit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toRightOf="@+id/anchor_DND" />
 
     <ListView
         android:id="@+id/lstMenu"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnExit"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/anchor_DND"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -70,9 +73,10 @@
         android:id="@+id/anchor_DND"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.58"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,88 +85,75 @@
         android:id="@+id/employeeCodeInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="17dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="Employee Code"
         android:inputType="textPersonName"
         android:textAlignment="center"
         android:textSize="35sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/anchor_DND"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/mPIdE"
+        app:layout_constraintHorizontal_bias="0.43"
+        app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
+        app:layout_constraintRight_toLeftOf="@+id/mPIdE" />
 
     <EditText
         android:id="@+id/moneyAmt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
         android:ems="10"
         android:hint="Add Money(Optional)"
         android:inputType="number"
-        tools:layout_editor_absoluteY="97dp"
-        tools:layout_editor_absoluteX="533dp" />
+        app:layout_constraintBottom_toBottomOf="@+id/lstCart"
+        app:layout_constraintLeft_toRightOf="@+id/anchor_DND" />
 
     <ListView
         android:id="@+id/lstCart"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:layout_editor_absoluteX="907dp"
-        tools:layout_editor_absoluteY="314dp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@+id/anchor_DND" />
 
     <Button
         android:id="@+id/mPAddMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Money"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
         android:layout_marginLeft="8dp"
-        app:layout_constraintRight_toLeftOf="@+id/currBalance"
-        android:layout_marginRight="8dp"
-        app:layout_constraintHorizontal_bias="0.571" />
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="8dp"
+        android:text="Add Money"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
 
     <Button
         android:id="@+id/mPIdE"
         android:layout_width="85dp"
         android:layout_height="63dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:text="OK"
         android:textSize="20sp"
-        app:layout_constraintLeft_toRightOf="@+id/employeeCodeInput"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/employeeCodeInput"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/moneyAmt"
-        app:layout_constraintVertical_bias="0.428"
-        app:layout_constraintHorizontal_bias="0.1" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32999998" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="7dp"
         android:text="Your Balance Is :-"
         android:textSize="20sp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.739"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.20999998" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/currBalance"
+        app:layout_constraintRight_toLeftOf="@+id/currBalance" />
 
     <EditText
         android:id="@+id/currBalance"
@@ -170,39 +161,35 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="25dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-        app:layout_constraintLeft_toRightOf="@+id/textView6"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintHorizontal_bias="0.69"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
 
     <Button
         android:id="@+id/employeeTransactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Past Tansactions"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/mPAddMoney"
-        app:layout_constraintRight_toRightOf="@+id/mPAddMoney"
-        app:layout_constraintTop_toBottomOf="@+id/mPAddMoney"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintHorizontal_bias="0.561" />
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="8dp"
+        android:text="View Past Tansactions"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
 
     <Button
         android:id="@+id/mainPAgeAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:text="Admin"
-        app:layout_constraintBaseline_toBaselineOf="@+id/employeeCodeInput"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

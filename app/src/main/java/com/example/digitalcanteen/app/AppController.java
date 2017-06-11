@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.app;
 
 import android.app.Application;
 import android.text.TextUtils;

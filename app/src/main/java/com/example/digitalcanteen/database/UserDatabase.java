@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.database;
 
 import android.content.ContentValues;
 import android.content.Context;

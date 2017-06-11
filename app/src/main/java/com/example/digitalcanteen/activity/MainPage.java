@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.adapter.MenuAdapter;
+import com.example.digitalcanteen.adapter.SelectAdapter;
+import com.example.digitalcanteen.app.AppConfig;
+import com.example.digitalcanteen.app.AppController;
+import com.example.digitalcanteen.database.MenuDatabase;
+import com.example.digitalcanteen.database.TransactionDatabase;
+import com.example.digitalcanteen.database.UserDatabase;
+import com.example.digitalcanteen.menuItem;
+import com.example.digitalcanteen.selectedItems;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,6 +84,7 @@ public class MainPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent redirectToLogin = new Intent(MainPage.this, LoginActivity.class);
                 startActivity(redirectToLogin);
+                order.clear();
                 finish();
             }
         });
@@ -167,6 +178,7 @@ public class MainPage extends AppCompatActivity {
                             redirectToSuccess.putExtra("Employee_id", employee_id);
                             redirectToSuccess.putExtra("Balance", balance);
                             startActivity(redirectToSuccess);
+                            order.clear();
 //TODO take amount to add money
 //                            Intent redirectToMain = new Intent(RegisterActivity.this, MainPage.class);
 //                            redirectToMain.putExtra("Employee_id", employee_id);
@@ -228,6 +240,7 @@ public class MainPage extends AppCompatActivity {
                         redirectToSuccess.putExtra("Employee_id", employee_id);
                         redirectToSuccess.putExtra("Balance", balance);
                         startActivity(redirectToSuccess);
+                        order.clear();
                         //redirect to ordered and add transactions
 
 
@@ -267,11 +280,11 @@ public class MainPage extends AppCompatActivity {
                         public void onClick(View v) {
                             double money = Double.parseDouble(amount.getText().toString());
                             double balNow=db.getBal(employee_id_edit.getText().toString());
-                            Log.d(TAG, "onClick: " + money);
+                            Log.d(TAG, "onClick: Balance Before adding" + balNow);
                             balNow+=money;
                             db.updateinfo(employee_id_edit.getText().toString(), money);
                             balNow=db.getBal(employee_id_edit.getText().toString());
-                            Log.d(TAG, "onClick: coming again"+balNow);
+                            Log.d(TAG, "onClick: After Adding " + balNow);
                             EditText currBalance= (EditText) findViewById(R.id.currBalance);
 
                             String tempId=employee_id_edit.getText().toString();

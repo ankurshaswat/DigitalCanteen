@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.database.TransactionDatabase;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

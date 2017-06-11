@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.database.UserDatabase;
 
 public class CheckBalance extends AppCompatActivity {
     private UserDatabase db = null;

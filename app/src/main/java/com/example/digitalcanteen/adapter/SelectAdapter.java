@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,10 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.activity.MainPage;
+import com.example.digitalcanteen.selectedItems;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.digitalcanteen.MainPage.items;
+import static com.example.digitalcanteen.activity.MainPage.items;
 
 /**
  * Created by Saransh Verma on 23-05-2017.

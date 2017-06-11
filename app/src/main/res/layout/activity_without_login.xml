@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.digitalcanteen.WithoutLogin">
+    tools:context="com.example.digitalcanteen.activity.WithoutLogin">
 
     <ImageButton
         android:id="@+id/nLLunch"
