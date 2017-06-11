@@ -13,11 +13,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainPage extends AppCompatActivity {
 
@@ -124,7 +134,7 @@ public class MainPage extends AppCompatActivity {
                                 //here add each item to transactions table
                                 Log.d(TAG, "onClick: inserting " + order.get(i).getName());
                                 tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-
+                                addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
                             }
                             db.updateinfo(employee_id, -1 * totalamt);
 
@@ -155,7 +165,6 @@ public class MainPage extends AppCompatActivity {
                         }
 
 
-
 //                        cancelProgressDialog();
 //
 //                        AlertDialog.Builder alert = new AlertDialog.Builder(MainPage.this);
@@ -181,11 +190,13 @@ public class MainPage extends AppCompatActivity {
 //                        String name = results.getString(2);//pass index of name
                         Double balance = results.getDouble(2);
 //TODO take amount to add money
-
+                        Date date_x = new Date();
+                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        final String date = sdf.format(date_x);
                         for (int i = 0; i < order.size(); i++) {
                             //here add each item to transactions table
-
-
+                            tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+                            addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
                         }
                         db.updateinfo(employee_id, -1 * totalamt);
                         if (!amt2add.getText().toString().matches("")) {
@@ -198,8 +209,6 @@ public class MainPage extends AppCompatActivity {
                         redirectToSuccess.putExtra("Balance", balance);
                         startActivity(redirectToSuccess);
                         //redirect to ordered and add transactions
-
-
 
 
 //                        Intent refirectToMain = new Intent(LoginActivity.this, MainPage.class);
@@ -220,6 +229,95 @@ public class MainPage extends AppCompatActivity {
 
 
     }
+
+    private void addTransaction(final String Employee_id, final String Order_name, final Integer Quantity, final Double cpi, final String date) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_register";
+
+//        pDialog.setMessage("Registering ...");
+//        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_ADD_TRANSACTION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+//                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+
+
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+//                        // User successfully stored in MySQL
+//                        // Now store the user in sqlite
+//                        String uid = jObj.getString("uid");
+//
+//                        JSONObject user = jObj.getJSONObject("user");
+//                        String name = user.getString("name");
+//                        String email = user.getString("email");
+//                        String created_at = user
+//                                .getString("created_at");
+//
+//                        // Inserting row in users table
+//                        db.addUser(name, email, uid, created_at);
+//
+//                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+//
+//                        // Launch login activity
+//                        Intent intent = new Intent(
+//                                RegisterActivity.this,
+//                                LoginActivity.class);
+//                        startActivity(intent);
+//                        finish();
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+//                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Employee_code", Employee_id);
+//        new_content.put("Name", employee_name);
+                params.put("Order_name", Order_name);
+                params.put("Quantity", String.valueOf(Quantity));
+                params.put("Cost_perItem", String.valueOf(cpi));
+                params.put("Date", date);
+                params.put("Total", String.valueOf(Quantity * cpi));
+//                Log.d(TAG, "insertUser: inseting to db");
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
 
     private void showProgressDialog() {
         if (!progressDialog.isShowing()) {

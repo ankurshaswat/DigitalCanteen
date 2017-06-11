@@ -50,7 +50,7 @@ public class AdminActivity extends AppCompatActivity {
                 try {
                     String dob_var = (edtDate.getText().toString());
                     strDateObject = formatter.parse(dob_var);
-                    strtDate = new SimpleDateFormat("dd/MM/yyyy").format(strDateObject);
+                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
 
 
 
