@@ -32,10 +32,7 @@ import com.example.digitalcanteen.selectedItems;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,11 +71,13 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
 
+        btnAddUser = (Button) findViewById(R.id.add_user);
 
-        btnAddUser=(Button) findViewById(R.id.useradd);
+
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 AlertDialog.Builder qBuilder = new AlertDialog.Builder(MainPage.this);
                 Log.d(TAG, "onClick: I am here");
                 View qView = getLayoutInflater().inflate(R.layout.adduser, null);
@@ -105,15 +104,21 @@ public class MainPage extends AppCompatActivity {
 
                         }
                         else{
-                            Date date_x = new Date();
-                            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                            final String date = sdf.format(date_x);
-                            Log.d(TAG, "onClick: inserting user and date is " + date_x);
-                            Log.d(TAG, "onClick: inserting user and date is " + date);
-                            boolean check = db.insertUser(addId, 0, date);
-                            if (check) {
-                                Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+//                            Date date_x = new Date();
+//                            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                            final String date = sdf.format(date_x);
+//                            Log.d(TAG, "onClick: inserting user and date is " + date_x);
+//                            Log.d(TAG, "onClick: inserting user and date is " + date);
+
+                            if (db.checkEmployeeId(addId).moveToFirst()) {
+                                Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
+                            } else {
+                                boolean check = db.insertUser(addId, addName, 0.0);
+                                if (check) {
+                                    Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                }
                             }
+
                         }
 
                     }
@@ -210,122 +215,122 @@ public class MainPage extends AppCompatActivity {
                 //the code is commented out in login activity code    reuse it..........
 
 
-                if (employee_id_edit.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    showProgressDialog();
-                    employee_id = employee_id_edit.getText().toString();
-                    Cursor results = db.checkEmployeeId(employee_id);
-
-                    if (!results.moveToFirst()) {
-                        //  create new user with 0 balance instead of old code.
-
-                        Date date_x = new Date();
-                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        final String date = sdf.format(date_x);
-                        Log.d(TAG, "onClick: inserting user and date is " + date_x);
-                        Log.d(TAG, "onClick: inserting user and date is " + date);
-                        boolean check = db.insertUser(employee_id, 0, date);
-                        if (check) {
-                            Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+//                if (employee_id_edit.getText().toString().trim().isEmpty()) {
+//                    Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+//                            .show();
+//                } else {
+//                    showProgressDialog();
+//                    employee_id = employee_id_edit.getText().toString();
+//                    Cursor results = db.checkEmployeeId(employee_id);
 //
-
-                            //now take order
-                            for (int i = 0; i < order.size(); i++) {
-                                //here add each item to transactions table
-                                Log.d(TAG, "onClick: inserting " + order.get(i).getName());
-                                tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                                addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                            }
-                            db.updateinfo(employee_id, -1 * totalamt);
-
-                            if (!amt2add.getText().toString().isEmpty()) {
-                                db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
-                            }
-                            double balance = db.getBal(employee_id);
-
-                            Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
-                            redirectToSuccess.putExtra("Employee_id", employee_id);
-                            redirectToSuccess.putExtra("Balance", balance);
-                            startActivity(redirectToSuccess);
-                            order.clear();
-//TODO take amount to add money
-//                            Intent redirectToMain = new Intent(RegisterActivity.this, MainPage.class);
-//                            redirectToMain.putExtra("Employee_id", employee_id);
-////                            redirectToMain.putExtra("Name", employee_name);
-//                            redirectToMain.putExtra("Balance", 0);
-//                            redirectToMain.putExtra("Date", date);
-
-//                            startActivity(redirectToMain);
-
-
-                            //redirect to ordered successfully activity
-                            cancelProgressDialog();
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Connection Error!! Please Try Again", Toast.LENGTH_SHORT).show();
-                        }
-
-
-//                        cancelProgressDialog();
+//                    if (!results.moveToFirst()) {
+//                        //  create new user with 0 balance instead of old code.
 //
-//                        AlertDialog.Builder alert = new AlertDialog.Builder(MainPage.this);
-//                        alert.setTitle("Invalid Employee ID!!");
+////                        Date date_x = new Date();
+////                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+////                        final String date = sdf.format(date_x);
+////                        Log.d(TAG, "onClick: inserting user and date is " + date_x);
+////                        Log.d(TAG, "onClick: inserting user and date is " + date);
+//                        boolean check = db.insertUser(employee_id,name, 0);
+//                        if (check) {
+//                            Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+////
 //
-//                        final String MessageToShow = "Please enter the details again...";
-//                        alert.setMessage(MessageToShow);
-//
-//                        alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                                employee_id_edit.setText("");
+//                            //now take order
+//                            for (int i = 0; i < order.size(); i++) {
+//                                //here add each item to transactions table
+//                                Log.d(TAG, "onClick: inserting " + order.get(i).getName());
+//                                tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+//                                addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
 //                            }
-//                        });
-//                        alert.show();
-//                        //employee_id_edit.setText("");
-                    } else {
-                        //after submitting what else to do??????????????????
+//                            db.updateinfo(employee_id, -1 * totalamt);
+//
+//                            if (!amt2add.getText().toString().isEmpty()) {
+//                                db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
+//                            }
+//                            double balance = db.getBal(employee_id);
+//
+//                            Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
+//                            redirectToSuccess.putExtra("Employee_id", employee_id);
+//                            redirectToSuccess.putExtra("Balance", balance);
+//                            startActivity(redirectToSuccess);
+//                            order.clear();
+////TODO take amount to add money
+////                            Intent redirectToMain = new Intent(RegisterActivity.this, MainPage.class);
+////                            redirectToMain.putExtra("Employee_id", employee_id);
+//////                            redirectToMain.putExtra("Name", employee_name);
+////                            redirectToMain.putExtra("Balance", 0);
+////                            redirectToMain.putExtra("Date", date);
+//
+////                            startActivity(redirectToMain);
+//
+//
+//                            //redirect to ordered successfully activity
+//                            cancelProgressDialog();
+//                            finish();
+//                        } else {
+//                            Toast.makeText(getApplicationContext(), "Connection Error!! Please Try Again", Toast.LENGTH_SHORT).show();
+//                        }
+//
+//
+////                        cancelProgressDialog();
+////
+////                        AlertDialog.Builder alert = new AlertDialog.Builder(MainPage.this);
+////                        alert.setTitle("Invalid Employee ID!!");
+////
+////                        final String MessageToShow = "Please enter the details again...";
+////                        alert.setMessage(MessageToShow);
+////
+////                        alert.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+////                            @Override
+////                            public void onClick(DialogInterface dialog, int which) {
+////                                dialog.cancel();
+////                                employee_id_edit.setText("");
+////                            }
+////                        });
+////                        alert.show();
+////                        //employee_id_edit.setText("");
+//                    } else {
+//                        //after submitting what else to do??????????????????
+//
+//
+//                        String employee_id = results.getString(1);//pass index after making db
+////                        String name = results.getString(2);//pass index of name
+//                        Double balance = results.getDouble(2);
+////TODO take amount to add money
+//                        Date date_x = new Date();
+//                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                        final String date = sdf.format(date_x);
+//                        for (int i = 0; i < order.size(); i++) {
+//                            //here add each item to transactions table
+//                            tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+//                            addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+//                        }
+//                        db.updateinfo(employee_id, -1 * totalamt);
+//                        if (!amt2add.getText().toString().matches("")) {
+//                            db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
+//                        }
+//                        balance = db.getBal(employee_id);
+//
+//                        Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
+//                        redirectToSuccess.putExtra("Employee_id", employee_id);
+//                        redirectToSuccess.putExtra("Balance", balance);
+//                        startActivity(redirectToSuccess);
+//                        order.clear();
+//                        //redirect to ordered and add transactions
+//
+//
+////                        Intent refirectToMain = new Intent(LoginActivity.this, MainPage.class);
+////                        refirectToMain.putExtra("employee_id", employee_id);
+////                        refirectToMain.putExtra("name", name);
+////                        refirectToMain.putExtra("balance", balance);
+//
+//                        cancelProgressDialog();
+////                        startActivity(refirectToMain);
+//                        finish();
 
-
-                        String employee_id = results.getString(1);//pass index after making db
-//                        String name = results.getString(2);//pass index of name
-                        Double balance = results.getDouble(2);
-//TODO take amount to add money
-                        Date date_x = new Date();
-                        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        final String date = sdf.format(date_x);
-                        for (int i = 0; i < order.size(); i++) {
-                            //here add each item to transactions table
-                            tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                            addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                        }
-                        db.updateinfo(employee_id, -1 * totalamt);
-                        if (!amt2add.getText().toString().matches("")) {
-                            db.updateinfo(employee_id, Double.parseDouble(amt2add.getText().toString()));
-                        }
-                        balance = db.getBal(employee_id);
-
-                        Intent redirectToSuccess = new Intent(MainPage.this, OrderComplete.class);
-                        redirectToSuccess.putExtra("Employee_id", employee_id);
-                        redirectToSuccess.putExtra("Balance", balance);
-                        startActivity(redirectToSuccess);
-                        order.clear();
-                        //redirect to ordered and add transactions
-
-
-//                        Intent refirectToMain = new Intent(LoginActivity.this, MainPage.class);
-//                        refirectToMain.putExtra("employee_id", employee_id);
-//                        refirectToMain.putExtra("name", name);
-//                        refirectToMain.putExtra("balance", balance);
-
-                        cancelProgressDialog();
-//                        startActivity(refirectToMain);
-                        finish();
-
-                    }
-                }
+//                    }
+//                }
             }
 
 

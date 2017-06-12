@@ -61,15 +61,15 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.d(TAG, "onClick: employee_id checked");
                     if (!results.moveToFirst()) {
                         Log.d(TAG, "onClick: inserting user");
-                        boolean check = db.insertUser(employee_id, 0, date);
+                        boolean check = db.insertUser(employee_id, employee_name, 0.0);
                         if (check) {
                             Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
 
                             Intent redirectToMain = new Intent(RegisterActivity.this, MainPage.class);
                             redirectToMain.putExtra("Employee_id", employee_id);
                             redirectToMain.putExtra("Name", employee_name);
-                            redirectToMain.putExtra("Balance", 0);
-                            redirectToMain.putExtra("Date", date);
+                            redirectToMain.putExtra("Balance", 0.0);
+//                            redirectToMain.putExtra("Date", date);
 
                             startActivity(redirectToMain);
                             cancelProgressDialog();

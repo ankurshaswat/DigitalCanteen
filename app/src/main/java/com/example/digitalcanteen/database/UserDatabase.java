@@ -36,7 +36,7 @@ public class UserDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance DOUBLE,Date DATE)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -49,7 +49,7 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Balance DOUBLE,Date DATE)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE)";
         db.execSQL(query);
     }
 
@@ -60,14 +60,14 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     }
 
-    public boolean insertUser(String employee_id, double balance, String date) {
+    public boolean insertUser(String employee_id, String name, Double balance) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues new_content = new ContentValues();
         Log.d(TAG, "insertUser: writing to new content");
         new_content.put("Employee_code", employee_id);
 //        new_content.put("Name", employee_name);
         new_content.put("Balance", balance);
-        new_content.put("Date", date);
+        new_content.put("Name", name);
         Log.d(TAG, "insertUser: inseting to db");
         long result = db.insert("Users", null, new_content);
 
@@ -78,7 +78,7 @@ public class UserDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
         cur.moveToFirst();
-        return cur.getDouble(2);
+        return cur.getDouble(3);
 
     }
 
