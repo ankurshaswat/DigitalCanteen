@@ -7,6 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.digitalcanteen.Employee;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ankurshaswat on 21/5/17.
  * <p>
@@ -102,4 +107,38 @@ public class UserDatabase extends SQLiteOpenHelper {
 
 
     }
+
+    public List<Employee> getAll() {
+
+        List<Employee> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
+        Cursor cur = db.rawQuery("SELECT * FROM Users", null);
+        while (cur.moveToNext()) {
+//            Integer iid = cur.getInt(0);
+//            String st1 = cur.getString(1);
+//            Double st2 = cur.getDouble(2);
+//            itemlist.add(new menuItem(st1, st2 + "", iid));
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Double bal = cur.getDouble(3);
+
+
+//            Date date_ = null;
+//            try {
+//                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            empHis.add(new Employee(emp_code, name, bal, cur.getInt(0)));
+
+        }
+        cur.close();
+        Log.d(TAG, "getAllHistory: " + empHis.size());
+        return empHis;
+
+    }
+
 }
