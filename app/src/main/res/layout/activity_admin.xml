@@ -129,4 +129,30 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnChangeDate" />
 
+    <Button
+        android:id="@+id/EmployeeBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Balance"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccnts"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/pWiseTransactions"
+        android:layout_width="158dp"
+        android:layout_height="69dp"
+        android:text="Employeewise Transactions"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/EmployeeBalance"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

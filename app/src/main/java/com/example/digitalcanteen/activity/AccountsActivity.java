@@ -44,8 +44,8 @@ public class AccountsActivity extends AppCompatActivity {
         transactions = (ListView) findViewById(R.id.accntList);
 //        db.insertTransaction("g", "kuchbhi", 2, 3.0, "2017-06-06");
         EmployeeHistory = db.getAll();
-//        View header = getLayoutInflater().inflate(R.layout.accounttemplate, null);
-//        transactions.addHeaderView(header);
+        View header = getLayoutInflater().inflate(R.layout.accounttemplate, null);
+        transactions.addHeaderView(header);
 
 
         adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, EmployeeHistory);

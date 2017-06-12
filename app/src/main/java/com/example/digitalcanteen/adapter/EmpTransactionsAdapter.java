@@ -17,26 +17,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Saransh Verma on 01-06-2017.
+ * Created by Saransh Verma on 13-06-2017.
  */
 
-public class acccountAdapter extends ArrayAdapter {
+public class EmpTransactionsAdapter extends ArrayAdapter {
     private static final String TAG="AccountAdapter";
     private static List<EHistory> EmpHistory = new ArrayList<>();
-//    private int EId;
+    //    private int EId;
     Context con;
     private TextView name;
     private TextView cpi;
-    private TextView eId;
+
     private TextView date;
     private TextView total;
     private TextView quantity;
 
-    public acccountAdapter(@NonNull Context context, @LayoutRes int resource,List<EHistory> EmpHistory) {
+    public EmpTransactionsAdapter(@NonNull Context context, @LayoutRes int resource, List<EHistory> EmpHistory) {
 
         super(context, resource);
         this.con = context;
-        acccountAdapter.EmpHistory = EmpHistory;
+        this.EmpHistory = EmpHistory;
     }
 
     @Override
@@ -48,21 +48,21 @@ public class acccountAdapter extends ArrayAdapter {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 //        return super.getView(position, convertView, parent);
-            LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View damian = inflater.inflate(R.layout.accounttemplate, null, true);
+        LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View damian = inflater.inflate(R.layout.empaccounttemplate, null, true);
 
-        TextView name =(TextView) damian.findViewById(R.id.tempItemName);
-        TextView cpi =(TextView) damian.findViewById(R.id.tempCPI);
-        TextView eId = (TextView) damian.findViewById(R.id.tempEId);
-        TextView date =(TextView) damian.findViewById(R.id.tempDate);
-        TextView total=(TextView) damian.findViewById(R.id.tempTotal);
-        TextView quantity=(TextView) damian.findViewById(R.id.tempQuantity);
+        TextView name =(TextView) damian.findViewById(R.id.tempItemName2);
+        TextView cpi =(TextView) damian.findViewById(R.id.tempCPI2);
+//        TextView eId = (TextView) damian.findViewById(R.id.tempEId);
+        TextView date =(TextView) damian.findViewById(R.id.tempDate2);
+        TextView total=(TextView) damian.findViewById(R.id.tempTotal2);
+        TextView quantity=(TextView) damian.findViewById(R.id.tempQuantity2);
 
 //        int i=EmpHistory.size()-1;
 //        Log.d(TAG, "getView: " + EmpHistory.get(position).getName());
         name.setText(EmpHistory.get(position).getName());
         cpi.setText("" + EmpHistory.get(position).getCpi() + "");
-        eId.setText(EmpHistory.get(position).getEmployeeCode());
+//        eId.setText(EmpHistory.get(position).getEmployeeCode());
         date.setText(EmpHistory.get(position).getDate());
 //        Log.d(TAG, "getView: " + EmpHistory.get(position).getDate());
         total.setText("" + EmpHistory.get(position).getTotal() + "");
@@ -70,5 +70,5 @@ public class acccountAdapter extends ArrayAdapter {
         quantity.setText(String.valueOf(EmpHistory.get(position).getQuantity()));
 
         return damian;
-            }
+    }
 }

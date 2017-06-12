@@ -47,7 +47,9 @@
         <activity android:name=".activity.ChangeActivity" />
         <activity android:name=".activity.AddMoreMoney" />
         <activity android:name=".activity.CheckBalance" />
-        <activity android:name=".activity.AddItem"></activity>
+        <activity android:name=".activity.AddItem" />
+        <activity android:name=".activity.Balance" />
+        <activity android:name=".activity.TransactionActivity"></activity>
     </application>
 
 </manifest>
