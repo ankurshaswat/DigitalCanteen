@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,12 +59,12 @@ public class acccountAdapter extends ArrayAdapter {
         TextView quantity=(TextView) damian.findViewById(R.id.tempQuantity);
 
 //        int i=EmpHistory.size()-1;
-        Log.d(TAG, "getView: " + EmpHistory.get(position).getName());
+//        Log.d(TAG, "getView: " + EmpHistory.get(position).getName());
         name.setText(EmpHistory.get(position).getName());
         cpi.setText("" + EmpHistory.get(position).getCpi() + "");
         eId.setText(EmpHistory.get(position).getEmployeeCode());
-        date.setText(EmpHistory.get(position).getDate().toString());
-        Log.d(TAG, "getView: " + EmpHistory.get(position).getDate());
+        date.setText(EmpHistory.get(position).getDate());
+//        Log.d(TAG, "getView: " + EmpHistory.get(position).getDate());
         total.setText("" + EmpHistory.get(position).getTotal() + "");
 //        Log.d(TAG, "getView: "+EmpHistory.get(position).getQuantity());
         quantity.setText(String.valueOf(EmpHistory.get(position).getQuantity()));

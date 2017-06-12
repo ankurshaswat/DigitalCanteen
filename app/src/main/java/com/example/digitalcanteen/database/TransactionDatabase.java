@@ -101,7 +101,8 @@ public class TransactionDatabase extends SQLiteOpenHelper {
             Double tot = cur.getDouble(5);
 
             Double cpi = cur.getDouble(4);
-            String date = cur.getString(5);
+            String date = cur.getString(6);
+//            Log.d(TAG, "getEmpHist: setting date ="+ date  );
 //            Date date_ = null;
 //            try {
 //                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
@@ -136,7 +137,8 @@ public class TransactionDatabase extends SQLiteOpenHelper {
             Double tot = cur.getDouble(5);
 
             Double cpi = cur.getDouble(4);
-            String date = cur.getString(5);
+            String date = cur.getString(6);
+            Log.d(TAG, "getAllHistory: setting date = " + date);
 //            Date date_ = null;
 //            try {
 //                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
@@ -213,4 +215,6 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 //        long result = db.update("Users", newValues, "Employee_code=?", args);
 //        return result != -1;
 //    }
+
+
 }
