@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.activity.ChangeActivity;
 import com.example.digitalcanteen.activity.EditMenu;
+import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.database.MenuDatabase;
-import com.example.digitalcanteen.menuItem;
 
 import java.util.ArrayList;
 import java.util.List;

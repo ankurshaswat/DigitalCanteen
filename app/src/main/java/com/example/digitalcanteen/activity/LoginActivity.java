@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.database.UserDatabase;
-import com.example.digitalcanteen.menuItem;
 
 public class
 LoginActivity extends AppCompatActivity {

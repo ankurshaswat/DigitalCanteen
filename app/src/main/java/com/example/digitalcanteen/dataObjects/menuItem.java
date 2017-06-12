@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.dataObjects;
 
 //package saransh.menutesting;
 

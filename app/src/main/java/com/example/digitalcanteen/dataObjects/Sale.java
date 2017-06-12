@@ -1,4 +1,4 @@
-package com.example.digitalcanteen;
+package com.example.digitalcanteen.dataObjects;
 
 /**
  * Created by ankurshaswat on 21/5/17.

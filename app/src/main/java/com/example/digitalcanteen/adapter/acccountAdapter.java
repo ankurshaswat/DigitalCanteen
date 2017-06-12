@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.digitalcanteen.EHistory;
 import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.dataObjects.EHistory;
 
 import java.util.ArrayList;
 import java.util.List;

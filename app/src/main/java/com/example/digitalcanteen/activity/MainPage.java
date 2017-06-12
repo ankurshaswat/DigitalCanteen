@@ -23,11 +23,11 @@ import com.example.digitalcanteen.adapter.MenuAdapter;
 import com.example.digitalcanteen.adapter.SelectAdapter;
 import com.example.digitalcanteen.app.AppConfig;
 import com.example.digitalcanteen.app.AppController;
+import com.example.digitalcanteen.dataObjects.menuItem;
+import com.example.digitalcanteen.dataObjects.selectedItems;
 import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 import com.example.digitalcanteen.database.UserDatabase;
-import com.example.digitalcanteen.menuItem;
-import com.example.digitalcanteen.selectedItems;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -10,8 +10,8 @@ import android.widget.ListView;
 
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.adapter.EditAdapter;
+import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.database.MenuDatabase;
-import com.example.digitalcanteen.menuItem;
 
 import java.util.ArrayList;
 import java.util.List;

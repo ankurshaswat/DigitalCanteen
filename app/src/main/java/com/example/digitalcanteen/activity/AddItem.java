@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.digitalcanteen.R;
+import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.database.MenuDatabase;
-import com.example.digitalcanteen.menuItem;
 
 public class AddItem extends AppCompatActivity {
 

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.digitalcanteen.EHistory;
+import com.example.digitalcanteen.dataObjects.EHistory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.digitalcanteen.EHistory;
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.adapter.acccountAdapter;
+import com.example.digitalcanteen.dataObjects.EHistory;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
 import java.text.DateFormat;

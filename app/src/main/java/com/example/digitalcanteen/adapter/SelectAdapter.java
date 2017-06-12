@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.activity.MainPage;
-import com.example.digitalcanteen.selectedItems;
+import com.example.digitalcanteen.dataObjects.selectedItems;
 
 import java.util.ArrayList;
 import java.util.List;
