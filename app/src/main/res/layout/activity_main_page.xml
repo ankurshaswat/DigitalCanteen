@@ -28,7 +28,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="Your Total is:-"
         android:textSize="35sp"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintLeft_toRightOf="@+id/lstMenu"
@@ -151,12 +150,12 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="7dp"
         android:layout_marginTop="8dp"
-        android:text="Enter Employee ID and press OK to see balance"
+        android:text="Enter Employee ID and press OK"
         android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
+        app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
     <Button
         android:id="@+id/mainPAgeAdmin"
@@ -180,5 +179,19 @@
         app:layout_constraintLeft_toLeftOf="@+id/mPAddMoney"
         app:layout_constraintRight_toRightOf="@+id/mPAddMoney"
         app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="6dp"
+        android:text="Please Login To Proceed"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
 
 </android.support.constraint.ConstraintLayout>

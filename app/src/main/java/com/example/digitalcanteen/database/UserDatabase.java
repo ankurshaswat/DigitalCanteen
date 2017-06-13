@@ -87,6 +87,14 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     }
 
+    public String getName(String employee_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+        cur.moveToFirst();
+        return cur.getString(2);
+
+    }
+
     public boolean updateinfo(String employee_id, Double amt) {
         SQLiteDatabase db = this.getWritableDatabase();
 

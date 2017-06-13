@@ -149,10 +149,10 @@
         android:id="@+id/pWiseTransactions"
         android:layout_width="158dp"
         android:layout_height="69dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="3dp"
         android:text="Employeewise Transactions"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/EmployeeBalance"
-        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -154,6 +154,19 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getAllHistoryCursor(String strtDate, String endDate) {
+
+        List<EHistory> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Date BETWEEN '" + strtDate + "' AND '" + endDate + "'", null);
+
+        return cur;
+
+    }
+
     public List<EHistory> getAll() {
 
         List<EHistory> empHis = new ArrayList<>();

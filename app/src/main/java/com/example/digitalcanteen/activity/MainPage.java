@@ -207,10 +207,12 @@ public class MainPage extends AppCompatActivity {
                     if (results.moveToFirst()) {
 
                         String tempId = employee_id_edit.getText().toString();
+                        final TextView nameText = (TextView) findViewById(R.id.txtName);
+                        nameText.setText("Welcome " + db.getName(tempId));
                         final TextView bal = (TextView) findViewById(R.id.balance);
                         bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
-                        Toast.makeText(MainPage.this, "Logged in Succesfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
