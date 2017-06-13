@@ -128,7 +128,7 @@ public class AddItem extends AppCompatActivity {
 //                        // Launch login activity
 //                        Intent intent = new Intent(
 //                                RegisterActivity.this,
-//                                LoginActivity.class);
+//                                MainPage.class);
 //                        startActivity(intent);
 //                        finish();
                     } else {

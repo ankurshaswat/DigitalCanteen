@@ -39,7 +39,7 @@ public class AddMoreMoney extends AppCompatActivity {
 
                 if (db.updateinfo(employee_id, amt)) {
                     Toast.makeText(AddMoreMoney.this, "Money Added Successfully", Toast.LENGTH_SHORT).show();
-                    Intent redirectToMain = new Intent(AddMoreMoney.this, LoginActivity.class);
+                    Intent redirectToMain = new Intent(AddMoreMoney.this, MainPage.class);
                     startActivity(redirectToMain);
                     finish();
                 } else {

@@ -77,7 +77,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent redirectToLogin = new Intent(AdminActivity.this, LoginActivity.class);
+                Intent redirectToLogin = new Intent(AdminActivity.this, MainPage.class);
                 startActivity(redirectToLogin);
                 finish();
             }

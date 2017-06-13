@@ -31,7 +31,7 @@ public class OrderComplete extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent redirectToMain = new Intent(OrderComplete.this, LoginActivity.class);
+                Intent redirectToMain = new Intent(OrderComplete.this, MainPage.class);
                 startActivity(redirectToMain);
                 finish();
             }

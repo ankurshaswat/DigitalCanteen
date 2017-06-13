@@ -159,7 +159,7 @@ public class MainPage extends AppCompatActivity {
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent redirectToLogin = new Intent(MainPage.this, LoginActivity.class);
+                Intent redirectToLogin = new Intent(MainPage.this, MainPage.class);
                 startActivity(redirectToLogin);
                 order.clear();
                 finish();
@@ -468,7 +468,7 @@ public class MainPage extends AppCompatActivity {
 //                        // Launch login activity
 //                        Intent intent = new Intent(
 //                                RegisterActivity.this,
-//                                LoginActivity.class);
+//                                MainPage.class);
 //                        startActivity(intent);
 //                        finish();
                     } else {
@@ -556,7 +556,7 @@ public class MainPage extends AppCompatActivity {
 //                        // Launch login activity
 //                        Intent intent = new Intent(
 //                                RegisterActivity.this,
-//                                LoginActivity.class);
+//                                MainPage.class);
 //                        startActivity(intent);
 //                        finish();
                     } else {
