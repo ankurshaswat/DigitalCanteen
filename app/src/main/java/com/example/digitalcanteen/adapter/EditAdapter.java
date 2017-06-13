@@ -13,14 +13,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.activity.EditMenu;
+import com.example.digitalcanteen.app.AppConfig;
+import com.example.digitalcanteen.app.AppController;
 import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.database.MenuDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Saransh Verma on 27-05-2017.
@@ -71,6 +83,7 @@ public class EditAdapter extends ArrayAdapter {
 
 
                 db.deleteItem(eItems.get(position).getName());
+                syncItem();
 //attach testing to deleted or not.......
                 EditMenu.eItems.remove(position);
                 EditMenu.editItemsAdapter.notifyDataSetChanged();
@@ -105,7 +118,7 @@ public class EditAdapter extends ArrayAdapter {
                     public void onClick(View v) {
 
                         db.editItem(eItems.get(position).getId(), eItems.get(position).getName(), Double.parseDouble(newPrIce.getText().toString()));
-
+                        syncItem();
                         EditMenu.eItems.get(position).setPrice(newPrIce.getText().toString());
                         EditMenu.editItemsAdapter.notifyDataSetChanged();
                         dialog.cancel();
@@ -129,5 +142,145 @@ public class EditAdapter extends ArrayAdapter {
         edit.setOnClickListener(editI);
 
         return ww;
+    }
+
+    public void syncItem() {
+        List<menuItem> list = db.get(MenuDatabase.Status.NEW);
+        for (menuItem entry : list) {
+            addItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
+        }
+
+        list = db.get(MenuDatabase.Status.UPDATED);
+        for (menuItem entry : list) {
+            updateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
+        }
+
+        list = db.get(MenuDatabase.Status.DELETED);
+        for (menuItem entry : list) {
+            deleteItem(entry.getName(), entry.getId());
+        }
+    }
+
+
+    private void addItem(final String Item_name, final Double Cost, final Integer ID) {
+        String tag_string_req = "req_register4";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_ADD_MENU, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        db.updateStatus(ID);
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(con.getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(con.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Item_name", Item_name);
+                params.put("Cost", String.valueOf(Cost));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void updateItem(final String Item_name, final Double Cost, final Integer ID) {
+        String tag_string_req = "req_register5";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_ADD_MENU, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        db.updateStatus(ID);
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(con.getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(con.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Item_name", Item_name);
+                params.put("Cost", String.valueOf(Cost));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void deleteItem(final String Item_name, final Integer ID) {
+        String tag_string_req = "req_register6";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_DELETE_MENU, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        db.finalDelete(ID);
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(con.getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(con.getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Item_name", Item_name);
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 }

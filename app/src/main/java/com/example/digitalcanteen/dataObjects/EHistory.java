@@ -18,7 +18,7 @@ public class EHistory {
         this.cpi = cpi;
         this.quantity = quantity;
         this.date = date;
-        Id = id;
+        this.Id = id;
         this.employeeCode = employeeCode;
         this.total = total;
     }

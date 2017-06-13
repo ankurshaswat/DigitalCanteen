@@ -19,10 +19,8 @@ import java.util.List;
 public class TransactionDatabase extends SQLiteOpenHelper {
 
 
-    public static final String DATABASE_NAME = "Transactions.db";
+    private static final String DATABASE_NAME = "Transactions.db";
     private static final String TAG = "TransactionDatabase";
-
-
     public TransactionDatabase(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -30,7 +28,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -43,33 +41,36 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT)";
         db.execSQL(query);
+    }
+
+    public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues new_content = new ContentValues();
+
+        Log.d(TAG, "insertTransaction: checking enum " + String.valueOf(Status.NEW));
+        Log.d(TAG, "insertUser: writing to new content");
+
+//        new_content.put("Name", employee_name);
+        new_content.put("Employee_code", Employee_id);
+        new_content.put("Order_name", Order_name);
+        new_content.put("Quantity", Quantity);
+        new_content.put("Cost_perItem", cpi);
+        new_content.put("Date", date);
+        new_content.put("Total", Quantity * cpi);
+        new_content.put("Status", String.valueOf(Status.NEW));
+
+        Log.d(TAG, "insertUser: inseting to db");
+        long result = db.insert("Transactions", null, new_content);
+
+        return result != -1;
     }
 
 //    public Cursor getEmployeeHistory(String employee_id) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        return db.rawQuery("SELECT * FROM Transactions WHERE Employee_code=?", new String[]{employee_id});
 //    }
-
-    public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues new_content = new ContentValues();
-
-        Log.d(TAG, "insertUser: writing to new content");
-
-        new_content.put("Employee_code", Employee_id);
-//        new_content.put("Name", employee_name);
-        new_content.put("Order_name", Order_name);
-        new_content.put("Quantity", Quantity);
-        new_content.put("Cost_perItem", cpi);
-        new_content.put("Date", date);
-        new_content.put("Total", Quantity * cpi);
-        Log.d(TAG, "insertUser: inseting to db");
-        long result = db.insert("Transactions", null, new_content);
-
-        return result != -1;
-    }
 
     public Integer numCustomers(String date) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -95,13 +96,14 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 //            String st1 = cur.getString(1);
 //            Double st2 = cur.getDouble(2);
 //            itemlist.add(new menuItem(st1, st2 + "", iid));
+
             String emp_code = cur.getString(1);
             String name = cur.getString(2);
             Integer quan = cur.getInt(3);
-            Double tot = cur.getDouble(5);
-
             Double cpi = cur.getDouble(4);
+            Double tot = cur.getDouble(5);
             String date = cur.getString(6);
+
 //            Log.d(TAG, "getEmpHist: setting date ="+ date  );
 //            Date date_ = null;
 //            try {
@@ -125,7 +127,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //TODO change this query for dates
-        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Date BETWEEN '" + strtDate + "' AND '" + endDate + "'", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE (Date BETWEEN ? AND ?)", new String[]{strtDate, endDate});
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
 //            String st1 = cur.getString(1);
@@ -134,10 +136,10 @@ public class TransactionDatabase extends SQLiteOpenHelper {
             String emp_code = cur.getString(1);
             String name = cur.getString(2);
             Integer quan = cur.getInt(3);
-            Double tot = cur.getDouble(5);
-
             Double cpi = cur.getDouble(4);
+            Double tot = cur.getDouble(5);
             String date = cur.getString(6);
+
             Log.d(TAG, "getAllHistory: setting date = " + date);
 //            Date date_ = null;
 //            try {
@@ -156,14 +158,10 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     public Cursor getAllHistoryCursor(String strtDate, String endDate) {
 
-        List<EHistory> empHis = new ArrayList<>();
-
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //TODO change this query for dates
-        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Date BETWEEN '" + strtDate + "' AND '" + endDate + "'", null);
 
-        return cur;
+        return db.rawQuery("SELECT * FROM Transactions WHERE (Date BETWEEN ? AND ?)", new String[]{strtDate, endDate});
 
     }
 
@@ -174,7 +172,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //TODO change this query for dates
-        Cursor cur = db.rawQuery("SELECT * FROM Transactions", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions", new String[]{});
 //        Log.d(TAG, "getAll: "+cur.moveToFirst());
         while (cur.moveToNext()) {
 //            Log.d(TAG, "getAll: im in");
@@ -209,6 +207,40 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     }
 
+    public List<EHistory> get(Status status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE Status=?", new String[]{String.valueOf(status)});
+
+        List<EHistory> newItems = new ArrayList<>();
+        while (cur.moveToNext()) {
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Integer quan = cur.getInt(3);
+            Double tot = cur.getDouble(5);
+
+            Double cpi = cur.getDouble(4);
+            String date = cur.getString(6);
+            newItems.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
+        }
+        cur.close();
+        return newItems;
+    }
+
+    public boolean updateStatus(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("Status", String.valueOf(Status.SYNCED));
+
+        String[] args = new String[]{String.valueOf(id)};
+        long result = db.update("Transactions", newValues, "ID=?", args);
+        return result != -1;
+    }
+
+    public enum Status {
+        NEW,
+        SYNCED,
+    }
     //    public double getBal(String employee_id) {
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});

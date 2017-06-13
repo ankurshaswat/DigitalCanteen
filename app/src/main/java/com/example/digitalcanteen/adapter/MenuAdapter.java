@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,7 @@ public class MenuAdapter extends ArrayAdapter {
 
     public MenuAdapter(Context context, int resource, List<menuItem> items) {
         super(context, resource);
-        Log.d(TAG, "MenuAdapter: started");
+//        Log.d(TAG, "MenuAdapter: started");
 
         int[] arraytest = new int[items.size()];
         Arrays.fill(arraytest, 0);
@@ -79,7 +78,7 @@ public class MenuAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Log.d(TAG, "getView: started");
+//        Log.d(TAG, "getView: started");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         final View  row = inflater.inflate(R.layout.activity_layout_menu, null, true);
@@ -89,7 +88,7 @@ public class MenuAdapter extends ArrayAdapter {
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
         final TextView quantity = (TextView) row.findViewById(R.id.quantity);
-        Log.d(TAG, "getView: " + quantity.getText().toString());
+//        Log.d(TAG, "getView: " + quantity.getText().toString());
 
 
 //        for (int x = 0; x < items.size(); x += 1) {
@@ -121,9 +120,9 @@ public class MenuAdapter extends ArrayAdapter {
                 if (order.size() > 0) {
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
-                        Log.d(TAG, "onClick: " + items.get(z).getName());
+//                        Log.d(TAG, "onClick: " + items.get(z).getName());
                         if (items.get(position).getName() == (order.get(z).getName())) {
-                            Log.d(TAG, "onClick: fl0 " + items.get(position).getName());
+//                            Log.d(TAG, "onClick: fl0 " + items.get(position).getName());
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
 
                             Double tempPrice;
@@ -137,11 +136,11 @@ public class MenuAdapter extends ArrayAdapter {
                         }
                     }
                     if (flag == 0) {
-                        Log.d(TAG, "onClick: fl " + items.get(position).getName());
+//                        Log.d(TAG, "onClick: fl " + items.get(position).getName());
                         order.add(new selectedItems(items.get(position).getName(), numTimesClicked[position] + "", ((Double.parseDouble(items.get(position).getPrice())) * numTimesClicked[position]) + ""));
                     }
                 } else {
-                    Log.d(TAG, "onClick: fl2 " + items.get(position).getName());
+//                    Log.d(TAG, "onClick: fl2 " + items.get(position).getName());
 
                     Double Price = Double.parseDouble(items.get(position).getPrice());
 

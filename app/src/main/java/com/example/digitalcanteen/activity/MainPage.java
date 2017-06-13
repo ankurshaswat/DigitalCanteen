@@ -23,6 +23,8 @@ import com.example.digitalcanteen.adapter.MenuAdapter;
 import com.example.digitalcanteen.adapter.SelectAdapter;
 import com.example.digitalcanteen.app.AppConfig;
 import com.example.digitalcanteen.app.AppController;
+import com.example.digitalcanteen.dataObjects.EHistory;
+import com.example.digitalcanteen.dataObjects.Employee;
 import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.dataObjects.selectedItems;
 import com.example.digitalcanteen.database.MenuDatabase;
@@ -93,10 +95,43 @@ public class MainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main_page);
-//        Log.d(TAG, "addUser: Network availability is "+isNetworkAvailable());
 
+        setContentView(R.layout.activity_main_page);
+//        AppController.getInstance().getRequestQueue().stop();
+//        Log.d(TAG, "addUser: Network availability is "+AppController.getInstance().isInternetAvailable());
+
+
+        addMoney = (Button) findViewById(R.id.mPAddMoney);
+        IdEntered = (Button) findViewById(R.id.mPIdE);
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
+        employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
+        amt2add = (EditText) findViewById(R.id.moneyAmt);
+        total = (TextView) findViewById(R.id.txtVuTotal);
+        btnAddUser = (Button) findViewById(R.id.add_user);
+        btnExit = (Button) findViewById(R.id.btnExit);
+        listItems = (ListView) findViewById(R.id.lstMenu);
+        selectedThings = (ListView) findViewById(R.id.lstCart);
+        final TextView nameText = (TextView) findViewById(R.id.txtName);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        final TextView bal = (TextView) findViewById(R.id.balance);
+        final TextView currBalance = (TextView) findViewById(R.id.balance);
+        logout = (Button) findViewById(R.id.mPLogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
+
+        employee_id_edit.setText("");
+        IdEntered.setVisibility(View.VISIBLE);
+        logout.setVisibility(View.GONE);
+        addMoney.setVisibility(View.GONE);
+        btnSubmit.setVisibility(View.GONE);
+        btnAddUser.setVisibility(View.VISIBLE);
+        btn2Admin.setVisibility(View.VISIBLE);
+
+
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +142,6 @@ public class MainPage extends AppCompatActivity {
         });
 
 //
-        btnAddUser = (Button) findViewById(R.id.add_user);
 
 
         btnAddUser.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +184,7 @@ public class MainPage extends AppCompatActivity {
                                 boolean check = db.insertUser(addId, addName, 0.0);
                                 if (check) {
                                     Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
-                                    addUser(addId, addName, 0.0);
+                                    syncUser();
                                     dialog.cancel();
                                 }
                             }
@@ -171,12 +205,11 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
-        amt2add = (EditText) findViewById(R.id.moneyAmt);
-        total = (TextView) findViewById(R.id.txtVuTotal);
+
 //        total.setText("howdy");
 //        setContentView(R.layout.activity_main_page);
         progressDialog = new ProgressDialog(this);
-        btnExit = (Button) findViewById(R.id.btnExit);
+
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,10 +223,6 @@ public class MainPage extends AppCompatActivity {
         tranDB = new TransactionDatabase(this);
         menuDB = new MenuDatabase(this);
 
-        listItems = (ListView) findViewById(R.id.lstMenu);
-        selectedThings = (ListView) findViewById(R.id.lstCart);
-        Button addMoney = (Button) findViewById(R.id.mPAddMoney);
-
 
 //       order.add(new selectedItems("pizza", "2", "600"));
 
@@ -204,14 +233,13 @@ public class MainPage extends AppCompatActivity {
 
         selectedItemsAdapter = new SelectAdapter(MainPage.this, R.layout.activity_selected, order);
         selectedThings.setAdapter(selectedItemsAdapter);
-        employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
+
         //Log.d(TAG, "onCreate: i am batman");
 
         renderMenuAdapter = new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items);
         listItems.setAdapter(renderMenuAdapter);
 
 
-        Button IdEntered = (Button) findViewById(R.id.mPIdE);
         IdEntered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,12 +256,18 @@ public class MainPage extends AppCompatActivity {
                     if (results.moveToFirst()) {
 
                         String tempId = employee_id_edit.getText().toString();
-                        final TextView nameText = (TextView) findViewById(R.id.txtName);
+
                         nameText.setText("Welcome " + db.getName(tempId));
-                        final TextView bal = (TextView) findViewById(R.id.balance);
+
                         bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+                        IdEntered.setVisibility(View.GONE);
+                        logout.setVisibility(View.VISIBLE);
+                        addMoney.setVisibility(View.VISIBLE);
+                        btnSubmit.setVisibility(View.VISIBLE);
+                        btnAddUser.setVisibility(View.GONE);
+                        btn2Admin.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
@@ -243,7 +277,7 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,7 +291,8 @@ public class MainPage extends AppCompatActivity {
                         //here add each item to transactions table
                         Log.d(TAG, "onClick: inserting " + order.get(i).getName());
                         tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                        addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+                        syncTransaction();
+//     addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
                     }
                     db.updateinfo(employee_id, -1 * totalamt);
                     Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_SHORT).show();
@@ -425,11 +460,12 @@ public class MainPage extends AppCompatActivity {
                             db.updateinfo(employee_id_edit.getText().toString(), money);
                             balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: After Adding " + balNow);
-                            TextView currBalance = (TextView) findViewById(R.id.balance);
+
 
 //TODO put check here to see balance added or not and proceed accordingly
 
                             String tempId = employee_id_edit.getText().toString();
+
                             currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
 
                             dialog.cancel();
@@ -451,7 +487,29 @@ public class MainPage extends AppCompatActivity {
 
     }
 
-    private void addTransaction(final String Employee_id, final String Order_name, final Integer Quantity, final Double cpi, final String date) {
+    private void syncUser() {
+        List<Employee> list = db.get(UserDatabase.Status.NEW);
+        for (Employee entry : list) {
+            addUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId());
+        }
+
+        list = db.get(UserDatabase.Status.UPDATED);
+        for (Employee entry : list) {
+            updateUser(entry.getEmployee_id(), entry.getBalance(), entry.getId());
+        }
+
+
+    }
+
+    private void syncTransaction() {
+        List<EHistory> list = tranDB.get(TransactionDatabase.Status.NEW);
+
+        for (EHistory entry : list) {
+            addTransaction(entry.getEmployeeCode(), entry.getName(), entry.getQuantity(), entry.getCpi(), entry.getDate(), entry.getId());
+        }
+    }
+
+    private void addTransaction(final String Employee_id, final String Order_name, final Integer Quantity, final Double cpi, final String date, final Integer ID) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
@@ -472,7 +530,8 @@ public class MainPage extends AppCompatActivity {
                     if (!error) {
 
 
-                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        Log.d(TAG, "onResponse: Succesfully posted to net " + Employee_id + " " + Order_name);
+                        tranDB.updateStatus(ID);
 //                        // User successfully stored in MySQL
 //                        // Now store the user in sqlite
 //                        String uid = jObj.getString("uid");
@@ -511,9 +570,9 @@ public class MainPage extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Log.e(TAG, "Registration Error: from add transaction " + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
 //                hideDialog();
             }
         }) {
@@ -536,10 +595,13 @@ public class MainPage extends AppCompatActivity {
         };
 
         // Adding request to request queue
+//        strReq.setPriority(Request.Priority.LOW);
+//        checkNet();
+//        AppController.getInstance().getRequestQueue().stop();
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void addUser(final String Employee_id, final String name, final Double Balance) {
+    private void addUser(final String Employee_id, final String name, final Double Balance, final Integer ID) {
         // Tag used to cancel the request
         String tag_string_req = "req_register2";
 
@@ -552,6 +614,7 @@ public class MainPage extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Register Response: " + response);
+
 //                hideDialog();
 
                 try {
@@ -561,6 +624,7 @@ public class MainPage extends AppCompatActivity {
 
 
                         Log.d(TAG, "onResponse: Succesfully posted to net");
+                        db.updateStatus(ID);
 //                        // User successfully stored in MySQL
 //                        // Now store the user in sqlite
 //                        String uid = jObj.getString("uid");
@@ -599,9 +663,9 @@ public class MainPage extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Log.e(TAG, "Registration Error: from add user" + error.getMessage());
                 Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
+                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
 //                hideDialog();
             }
         }) {
@@ -622,9 +686,100 @@ public class MainPage extends AppCompatActivity {
         };
 
         // Adding request to request queue
+//        strReq.setPriority(Request.Priority.LOW);
+//        checkNet();
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    private void updateUser(final String Employee_id, final Double Balance, final Integer ID) {
+        String tag_string_req = "req_register3";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_UPDATE_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        db.updateStatus(ID);
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: from add user" + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Employee_code", Employee_id);
+                params.put("Balance", String.valueOf(Balance));
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+//    private void checkNet() {
+//        final String tag_string_req = "req_register3";
+//        StringRequest strReq = new StringRequest(Request.Method.POST,
+//                AppConfig.URL_TEST_CONNECTION, new Response.Listener<String>() {
+//
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d(TAG, "Register Response: Response received by checknet " + response);
+//                try {
+//                    JSONObject jObj = new JSONObject(response);
+//                    boolean error = jObj.getBoolean("error");
+//                    if (!error) {
+////                        Log.d(TAG, "onResponse: Succesfully posted to net");
+//                        AppController.getInstance().getRequestQueue().start();
+//                        AppController.getInstance().cancelPendingRequests2(tag_string_req);
+//                        Log.d(TAG, "onResponse: Queue Started due to proper response");
+//                    } else {
+//                        AppController.getInstance().getRequestQueue().stop();
+//                        Log.d(TAG, "onResponse: Queue Stopped due to error in response");
+////                        String errorMsg = jObj.getString("error_msg");
+////                        Toast.makeText(getApplicationContext(),
+////                                errorMsg, Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                AppController.getInstance().getRequestQueue().stop();
+//                Log.d(TAG, "onErrorResponse: No net or interruption");
+////     Log.e(TAG, "Registration Error: " + error.getMessage());
+////                Toast.makeText(getApplicationContext(),
+////                        error.getMessage()+" Possibly no internet", Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                return new HashMap<>();
+//            }
+//        };
+////        strReq.setPriority(Request.Priority.IMMEDIATE);
+//        AppController.getInstance().getRequestQueue().stop();
+////        Log.d(TAG, "checkNet: "+AppController.getInstance().getRequestQueue().;
+//        AppController.getInstance().addToRequestQueue2(strReq, tag_string_req);
+////        Log.d(TAG, "checkNet: Starting Queue for checkNet Function");
+//    }
 
     private void showProgressDialog() {
         if (!progressDialog.isShowing()) {

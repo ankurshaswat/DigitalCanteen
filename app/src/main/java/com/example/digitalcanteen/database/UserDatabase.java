@@ -32,8 +32,6 @@ import java.util.List;
 public class UserDatabase extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Users.db";
     private static final String TAG = "UserDatabase";
-
-
     public UserDatabase(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -41,7 +39,7 @@ public class UserDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -54,7 +52,7 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT)";
         db.execSQL(query);
     }
 
@@ -73,6 +71,8 @@ public class UserDatabase extends SQLiteOpenHelper {
 //        new_content.put("Name", employee_name);
         new_content.put("Balance", balance);
         new_content.put("Name", name);
+        new_content.put("Status", String.valueOf(Status.NEW));
+
         Log.d(TAG, "insertUser: inseting to db");
         long result = db.insert("Users", null, new_content);
 
@@ -83,7 +83,9 @@ public class UserDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
         cur.moveToFirst();
-        return cur.getDouble(3);
+        Double balance = cur.getDouble(3);
+        cur.close();
+        return balance;
 
     }
 
@@ -91,7 +93,9 @@ public class UserDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
         cur.moveToFirst();
-        return cur.getString(2);
+        String name = cur.getString(2);
+        cur.close();
+        return name;
 
     }
 
@@ -103,7 +107,7 @@ public class UserDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "updateinfo: " + amt);
 
         newValues.put("Balance", amt);
-
+        newValues.put("Status", String.valueOf(Status.UPDATED));
         newValues.put("Employee_code", employee_id);
 
         Log.d(TAG, "updateinfo: " + getBal(employee_id));
@@ -121,8 +125,6 @@ public class UserDatabase extends SQLiteOpenHelper {
         List<Employee> empHis = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
-
-        //TODO change this query for dates
         Cursor cur = db.rawQuery("SELECT * FROM Users", null);
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
@@ -147,6 +149,38 @@ public class UserDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "getAllHistory: " + empHis.size());
         return empHis;
 
+    }
+
+    public List<Employee> get(Status status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Status=?", new String[]{String.valueOf(status)});
+
+        List<Employee> newItems = new ArrayList<>();
+        while (cur.moveToNext()) {
+            String emp_code = cur.getString(1);
+            String name = cur.getString(2);
+            Double bal = cur.getDouble(3);
+            newItems.add(new Employee(emp_code, name, bal, cur.getInt(0)));
+        }
+        cur.close();
+        return newItems;
+    }
+
+    public boolean updateStatus(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("Status", String.valueOf(Status.SYNCED));
+
+        String[] args = new String[]{String.valueOf(id)};
+        long result = db.update("Users", newValues, "ID=?", args);
+        return result != -1;
+    }
+
+    public enum Status {
+        NEW,
+        UPDATED,
+        SYNCED
     }
 
 }

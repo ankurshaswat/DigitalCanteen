@@ -18,10 +18,8 @@ import java.util.List;
 
 public class MenuDatabase extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "Menu.db";
+    private static final String DATABASE_NAME = "Menu.db";
     private static final String TAG = "MenuDatabase";
-
-
     public MenuDatabase(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -29,7 +27,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL,Status TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -42,8 +40,23 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL,Status TEXT)";
         db.execSQL(query);
+    }
+
+    public boolean insertItem(String Item_name, double Cost) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues new_content = new ContentValues();
+        Log.d(TAG, "insertItem: writing to new content");
+
+        new_content.put("Item_name", Item_name);
+        new_content.put("Cost", Cost);
+        new_content.put("Status", String.valueOf(Status.NEW));
+
+        Log.d(TAG, "insertItem: inseting to db");
+        long result = db.insert("Menu", null, new_content);
+
+        return result != -1;
     }
 //
 //    public Cursor checkEmployeeId(String employee_id) {
@@ -53,21 +66,9 @@ public class MenuDatabase extends SQLiteOpenHelper {
 //
 //    }
 
-    public boolean insertItem(String Item_name, double Cost) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues new_content = new ContentValues();
-        Log.d(TAG, "insertItem: writing to new content");
-        new_content.put("Item_name", Item_name);
-        new_content.put("Cost", Cost);
-        Log.d(TAG, "insertItem: inseting to db");
-        long result = db.insert("Menu", null, new_content);
-
-        return result != -1;
-    }
-
     public List<menuItem> getAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("SELECT * FROM Menu", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE NOT Status=?", new String[]{String.valueOf(Status.DELETED)});
 
         List<menuItem> itemlist = new ArrayList<>();
         while (cur.moveToNext()) {
@@ -84,10 +85,12 @@ public class MenuDatabase extends SQLiteOpenHelper {
     public int getItem(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         // Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=?", new String[]{name});
-        Cursor cur = db.rawQuery("SELECT * FROM Menu", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=? AND NOT Status=?", new String[]{name, String.valueOf(Status.DELETED)});
         cur.moveToFirst();
 //        Log.d(TAG, "getItem:toloooooooooooo      "+ cur.getInt(0)+"   "+cur.getString(1));
-        return cur.getInt(0);
+        Integer itemid = cur.getInt(0);
+        cur.close();
+        return itemid;
     }
 
     public boolean editItem(int id, String item_name, double Cost) {
@@ -98,6 +101,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
         newValues.put("Cost", Cost);
         newValues.put("Item_name", item_name);
+        newValues.put("Status", String.valueOf(Status.UPDATED));
 
         String[] args = new String[]{String.valueOf(id)};
         long result = db.update("Menu", newValues, "ID=?", args);
@@ -107,9 +111,55 @@ public class MenuDatabase extends SQLiteOpenHelper {
     }
 
     public boolean deleteItem(String name) {
-        int res = 0;
         SQLiteDatabase db = this.getWritableDatabase();
-        res = db.delete("Menu", "Item_name=?", new String[]{name});
+
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("Status", String.valueOf(Status.DELETED));
+
+        String[] args = new String[]{name};
+        long result = db.update("Menu", newValues, "Item_name=?", args);
+        return result != -1;
+    }
+
+    public boolean finalDelete(int id) {
+        int res;
+        SQLiteDatabase db = this.getWritableDatabase();
+        res = db.delete("Menu", "ID=?", new String[]{String.valueOf(id)});
         return (res != 0);
     }
+
+    public List<menuItem> get(Status status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Status=?", new String[]{String.valueOf(status)});
+
+        List<menuItem> newItems = new ArrayList<>();
+        while (cur.moveToNext()) {
+            Integer iid = cur.getInt(0);
+            String Item_name = cur.getString(1);
+            Double Cost = cur.getDouble(2);
+            newItems.add(new menuItem(Item_name, String.valueOf(Cost), iid));
+        }
+        cur.close();
+        return newItems;
+    }
+
+    public boolean updateStatus(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("Status", String.valueOf(Status.SYNCED));
+
+        String[] args = new String[]{String.valueOf(id)};
+        long result = db.update("Menu", newValues, "ID=?", args);
+        return result != -1;
+    }
+
+    public enum Status {
+        NEW,
+        UPDATED,
+        SYNCED,
+        DELETED
+    }
+
 }
