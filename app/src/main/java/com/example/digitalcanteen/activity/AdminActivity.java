@@ -29,6 +29,10 @@ public class AdminActivity extends AppCompatActivity {
     private Button checkBal = null;
     private TextView custNum = null;
     private TransactionDatabase db;
+    //    private Button exit=null ;
+    private Button toAccounts = null;
+    private Button toETransactions = null;
+    private Button toBalance = null;
 
     
     @Override
@@ -83,6 +87,7 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+
         btnAccounts = (Button) findViewById(R.id.btnAccnts);
         btnAccounts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +95,27 @@ public class AdminActivity extends AppCompatActivity {
 
                 Intent redirectToAccounts = new Intent(AdminActivity.this, AccountsActivity.class);
                 startActivity(redirectToAccounts);
+            }
+        });
+
+        toBalance = (Button) findViewById(R.id.EmployeeBalance);
+        toBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent redirectToBalance = new Intent(AdminActivity.this, Balance.class);
+                startActivity(redirectToBalance);
+                finish();
+            }
+        });
+
+        toETransactions = (Button) findViewById(R.id.pWiseTransactions);
+        toETransactions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent redirectToET = new Intent(AdminActivity.this, TransactionActivity.class);
+                startActivity(redirectToET);
+                finish();
             }
         });
         btnMM = (Button) findViewById(R.id.btnManageMenu);
