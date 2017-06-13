@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.digitalcanteen.R;
@@ -35,7 +34,7 @@ public class MenuAdapter extends ArrayAdapter {
 //    private final LayoutInflater layoutInflater;
     private static List<menuItem> items = new ArrayList<>();
     public static int[] numTimesClicked = new int[items.size()];
-    public EditText quantity;
+    //    public TextView quantity;
     Context con;
     private TextView txt1;
     private TextView txt2;
@@ -90,11 +89,16 @@ public class MenuAdapter extends ArrayAdapter {
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
         final TextView quantity = (TextView) row.findViewById(R.id.quantity);
+        Log.d(TAG, "getView: " + quantity.getText().toString());
+
 
 //        for (int x = 0; x < items.size(); x += 1) {
 //            numTimesClicked[x] = items.get(x).getQuantity();
 //        }
         quantity.setText(numTimesClicked[position] + "");
+        if (numTimesClicked[position] != 0) {
+            row.setBackgroundColor(Color.YELLOW);
+        }
 //        Button buttonOK = (Button) row.findViewById(R.id.OK);
         //numTimesClicked=0;
 
@@ -145,7 +149,7 @@ public class MenuAdapter extends ArrayAdapter {
                 }
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
-               if(numTimesClicked[position]==1) {
+                if (numTimesClicked[position] != 0) {
                    row.setBackgroundColor(Color.YELLOW);
                }
             }
@@ -178,6 +182,7 @@ public class MenuAdapter extends ArrayAdapter {
                                 tempPrice = numTimesClicked[position] * cpi;
 
                                 order.get(z).setPrice("" + tempPrice + "");
+                                row.setBackgroundColor(Color.YELLOW);
                                 flag = 1;
                                 break;
                             } else {
