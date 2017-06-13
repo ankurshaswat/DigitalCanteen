@@ -93,10 +93,42 @@ public class MainPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_main_page);
 //        Log.d(TAG, "addUser: Network availability is "+isNetworkAvailable());
 
+
+        addMoney = (Button) findViewById(R.id.mPAddMoney);
+        IdEntered = (Button) findViewById(R.id.mPIdE);
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
+        employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
+        amt2add = (EditText) findViewById(R.id.moneyAmt);
+        total = (TextView) findViewById(R.id.txtVuTotal);
+        btnAddUser = (Button) findViewById(R.id.add_user);
+        btnExit = (Button) findViewById(R.id.btnExit);
+        listItems = (ListView) findViewById(R.id.lstMenu);
+        selectedThings = (ListView) findViewById(R.id.lstCart);
+        final TextView nameText = (TextView) findViewById(R.id.txtName);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        final TextView bal = (TextView) findViewById(R.id.balance);
+        final TextView currBalance = (TextView) findViewById(R.id.balance);
+        logout = (Button) findViewById(R.id.mPLogout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logOut();
+            }
+        });
+
+        employee_id_edit.setText("");
+        IdEntered.setVisibility(View.VISIBLE);
+        logout.setVisibility(View.GONE);
+        addMoney.setVisibility(View.GONE);
+        btnSubmit.setVisibility(View.GONE);
+        btnAddUser.setVisibility(View.VISIBLE);
+        btn2Admin.setVisibility(View.VISIBLE);
+
+
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +139,7 @@ public class MainPage extends AppCompatActivity {
         });
 
 //
-        btnAddUser = (Button) findViewById(R.id.add_user);
+
 
 
         btnAddUser.setOnClickListener(new View.OnClickListener() {
@@ -171,12 +203,11 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
-        amt2add = (EditText) findViewById(R.id.moneyAmt);
-        total = (TextView) findViewById(R.id.txtVuTotal);
+
 //        total.setText("howdy");
 //        setContentView(R.layout.activity_main_page);
         progressDialog = new ProgressDialog(this);
-        btnExit = (Button) findViewById(R.id.btnExit);
+
         btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -190,10 +221,6 @@ public class MainPage extends AppCompatActivity {
         tranDB = new TransactionDatabase(this);
         menuDB = new MenuDatabase(this);
 
-        listItems = (ListView) findViewById(R.id.lstMenu);
-        selectedThings = (ListView) findViewById(R.id.lstCart);
-        Button addMoney = (Button) findViewById(R.id.mPAddMoney);
-
 
 //       order.add(new selectedItems("pizza", "2", "600"));
 
@@ -204,14 +231,13 @@ public class MainPage extends AppCompatActivity {
 
         selectedItemsAdapter = new SelectAdapter(MainPage.this, R.layout.activity_selected, order);
         selectedThings.setAdapter(selectedItemsAdapter);
-        employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
+
         //Log.d(TAG, "onCreate: i am batman");
 
         renderMenuAdapter = new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items);
         listItems.setAdapter(renderMenuAdapter);
 
 
-        Button IdEntered = (Button) findViewById(R.id.mPIdE);
         IdEntered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,12 +254,18 @@ public class MainPage extends AppCompatActivity {
                     if (results.moveToFirst()) {
 
                         String tempId = employee_id_edit.getText().toString();
-                        final TextView nameText = (TextView) findViewById(R.id.txtName);
+
                         nameText.setText("Welcome " + db.getName(tempId));
-                        final TextView bal = (TextView) findViewById(R.id.balance);
+
                         bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+                        IdEntered.setVisibility(View.GONE);
+                        logout.setVisibility(View.VISIBLE);
+                        addMoney.setVisibility(View.VISIBLE);
+                        btnSubmit.setVisibility(View.VISIBLE);
+                        btnAddUser.setVisibility(View.GONE);
+                        btn2Admin.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
@@ -243,7 +275,7 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -425,11 +457,12 @@ public class MainPage extends AppCompatActivity {
                             db.updateinfo(employee_id_edit.getText().toString(), money);
                             balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: After Adding " + balNow);
-                            TextView currBalance = (TextView) findViewById(R.id.balance);
+
 
 //TODO put check here to see balance added or not and proceed accordingly
 
                             String tempId = employee_id_edit.getText().toString();
+
                             currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
 
                             dialog.cancel();
