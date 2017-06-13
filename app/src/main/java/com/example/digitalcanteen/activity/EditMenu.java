@@ -52,6 +52,7 @@ public class EditMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent add = new Intent(EditMenu.this,AddItem.class);
                 startActivity(add);
+                finish();
             }
         };
         newitem.setOnClickListener(toAdd);

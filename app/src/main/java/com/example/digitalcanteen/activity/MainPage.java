@@ -129,6 +129,7 @@ public class MainPage extends AppCompatActivity {
                                 boolean check = db.insertUser(addId, addName, 0.0);
                                 if (check) {
                                     Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                    addUser(addId, addName, 0.0);
                                     dialog.cancel();
                                 }
                             }
