@@ -28,7 +28,7 @@ public class Balance extends AppCompatActivity {
         db=new UserDatabase(Balance.this);
         employees=db.getAll();
         balanceAdapter = new BalanceAdapter(Balance.this,R.layout.template_accounts,employees);
-        View header = getLayoutInflater().inflate(R.layout.template_accounts,null);
+        View header = getLayoutInflater().inflate(R.layout.template_balance, null);
         eBalance.addHeaderView(header);
         eBalance.setAdapter(balanceAdapter);
 

@@ -73,7 +73,7 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_page);
-
+//        Log.d(TAG, "addUser: Network availability is "+isNetworkAvailable());
 
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
         btn2Admin.setOnClickListener(new View.OnClickListener() {
@@ -513,7 +513,12 @@ public class MainPage extends AppCompatActivity {
             }
 
         };
-
+//        if(isNetworkAvailable()){
+//            AppController.getInstance().starter();
+//        }
+//        else{
+//            AppController.getInstance().stopper();
+//        }
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
@@ -601,6 +606,8 @@ public class MainPage extends AppCompatActivity {
         };
 
         // Adding request to request queue
+//        Log.d(TAG, "addUser: Network availability is "+isNetworkAvailable());
+
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
@@ -616,4 +623,6 @@ public class MainPage extends AppCompatActivity {
             progressDialog.cancel();
         }
     }
+
+
 }
