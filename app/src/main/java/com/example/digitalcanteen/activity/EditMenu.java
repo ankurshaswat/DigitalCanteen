@@ -34,11 +34,11 @@ public class EditMenu extends AppCompatActivity {
 //        db.insertItem("burger",89.0);
         eItems = db.getAll();
 //        eItems=MainPage.items;'
-        for (int i = 0; i < MainPage.items.size(); i += 1) {
+//        for (int i = 0; i < MainPage.items.size(); i += 1) {
 //            Log.d(TAG, "onCreate: " + MainPage.items.get(i).getName());
 //            eItems.add(new menuItem(MainPage.items.get(i).getName(), MainPage.items.get(i).getPrice(), MainPage.items.get(i).getId()));
 
-        }
+//        }
         Log.d(TAG, "onCreate: " + eItems.size());
 
         currItems = (ListView) findViewById(R.id.listView);

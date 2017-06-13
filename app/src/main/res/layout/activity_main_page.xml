@@ -30,10 +30,10 @@
         android:layout_marginTop="8dp"
         android:text="Your Total is:-"
         android:textSize="35sp"
-        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintLeft_toRightOf="@+id/lstMenu"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currBalance" />
+        app:layout_constraintTop_toBottomOf="@+id/balance" />
 
     <Button
         android:id="@+id/btnSubmit"
@@ -135,51 +135,28 @@
         android:layout_width="85dp"
         android:layout_height="63dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:text="OK"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32999998" />
+        app:layout_constraintVertical_bias="0.288" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="7dp"
-        android:text="Your Balance Is :-"
-        android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/currBalance"
-        app:layout_constraintRight_toLeftOf="@+id/currBalance" />
-
-    <EditText
-        android:id="@+id/currBalance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.69"
-        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
-
-    <Button
-        android:id="@+id/employeeTransactions"
+        android:id="@+id/balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="7dp"
         android:layout_marginTop="8dp"
-        android:text="View Past Tansactions"
-        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        android:text="Enter Employee ID and press OK to see balance"
+        android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
+        app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
 
     <Button
         android:id="@+id/mainPAgeAdmin"
@@ -195,16 +172,13 @@
         android:id="@+id/add_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/mPAddMoney"
         app:layout_constraintRight_toRightOf="@+id/mPAddMoney"
-        app:layout_constraintTop_toBottomOf="@+id/employeeTransactions"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
 
 </android.support.constraint.ConstraintLayout>

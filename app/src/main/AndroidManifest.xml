@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.MainPage"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             android:name=".activity.AdminActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.MainPage"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".activity.RegisterActivity"
@@ -42,14 +42,30 @@
         <activity
             android:name=".activity.selected"
             android:screenOrientation="landscape" />
-        <activity android:name=".activity.OrderComplete" />
-        <activity android:name=".activity.EditMenu" />
-        <activity android:name=".activity.ChangeActivity" />
-        <activity android:name=".activity.AddMoreMoney" />
-        <activity android:name=".activity.CheckBalance" />
-        <activity android:name=".activity.AddItem" />
-        <activity android:name=".activity.Balance" />
-        <activity android:name=".activity.TransactionActivity"></activity>
+        <activity
+            android:name=".activity.OrderComplete"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.EditMenu"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.ChangeActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.AddMoreMoney"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.CheckBalance"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.AddItem"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.Balance"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.TransactionActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

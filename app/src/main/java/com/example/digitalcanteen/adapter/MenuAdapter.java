@@ -89,7 +89,7 @@ public class MenuAdapter extends ArrayAdapter {
         TextView txt2 = (TextView) row.findViewById(R.id.price);
         Button btplus = (Button) row.findViewById(R.id.add);
         Button btminus = (Button) row.findViewById(R.id.sub);
-        final EditText quantity = (EditText) row.findViewById(R.id.quantity);
+        final TextView quantity = (TextView) row.findViewById(R.id.quantity);
 
 //        for (int x = 0; x < items.size(); x += 1) {
 //            numTimesClicked[x] = items.get(x).getQuantity();

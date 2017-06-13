@@ -32,7 +32,10 @@ import com.example.digitalcanteen.database.UserDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +60,8 @@ public class MainPage extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private Button btnExit = null;
     private Button btnSubmit = null;
-    private Button btnAddUser=null;
+    private Button btnAddUser = null;
+    private Button btn2Admin = null;
     private EditText employee_id_edit = null;
     private UserDatabase db;
     private TransactionDatabase tranDB;
@@ -71,6 +75,17 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 
 
+        btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
+        btn2Admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent redirectToAdmin = new Intent(MainPage.this, AdminActivity.class);
+                startActivity(redirectToAdmin);
+                finish();
+            }
+        });
+
+
         btnAddUser = (Button) findViewById(R.id.add_user);
 
 
@@ -81,11 +96,10 @@ public class MainPage extends AppCompatActivity {
                 AlertDialog.Builder qBuilder = new AlertDialog.Builder(MainPage.this);
                 Log.d(TAG, "onClick: I am here");
                 View qView = getLayoutInflater().inflate(R.layout.adduser, null);
-                final EditText newName= (EditText) qView.findViewById(R.id.addName);
-                final EditText newCode=(EditText) qView.findViewById(R.id.addEC) ;
-                Button addSubmit=(Button) qView.findViewById(R.id.addSubmit);
-                Button addCancel=(Button) qView.findViewById(R.id.addCancel);
-
+                final EditText newName = (EditText) qView.findViewById(R.id.addName);
+                final EditText newCode = (EditText) qView.findViewById(R.id.addEC);
+                Button addSubmit = (Button) qView.findViewById(R.id.addSubmit);
+                Button addCancel = (Button) qView.findViewById(R.id.addCancel);
 
 
                 qBuilder.setView(qView);
@@ -95,15 +109,14 @@ public class MainPage extends AppCompatActivity {
                 addSubmit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String addId=newCode.getText().toString();
-                        String addName=newName.getText().toString();
+                        String addId = newCode.getText().toString();
+                        String addName = newName.getText().toString();
 
-                        if(addId.length()==0||addName.length()==0) {
+                        if (addId.length() == 0 || addName.length() == 0) {
                             Toast.makeText(getApplicationContext(), "No field can be Empty", Toast.LENGTH_SHORT)
                                     .show();
 
-                        }
-                        else{
+                        } else {
 //                            Date date_x = new Date();
 //                            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //                            final String date = sdf.format(date_x);
@@ -116,6 +129,7 @@ public class MainPage extends AppCompatActivity {
                                 boolean check = db.insertUser(addId, addName, 0.0);
                                 if (check) {
                                     Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                    dialog.cancel();
                                 }
                             }
 
@@ -125,8 +139,12 @@ public class MainPage extends AppCompatActivity {
                 });
 
 
-
-
+                addCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
 
 
             }
@@ -152,10 +170,7 @@ public class MainPage extends AppCompatActivity {
 
         listItems = (ListView) findViewById(R.id.lstMenu);
         selectedThings = (ListView) findViewById(R.id.lstCart);
-        Button addMoney= (Button) findViewById(R.id.mPAddMoney);
-
-
-
+        Button addMoney = (Button) findViewById(R.id.mPAddMoney);
 
 
 //       order.add(new selectedItems("pizza", "2", "600"));
@@ -184,18 +199,18 @@ public class MainPage extends AppCompatActivity {
                             .show();
                 }
 //                TODO checking if id is entered correctly
-                else{
+                else {
 
                     employee_id = employee_id_edit.getText().toString();
                     Cursor results = db.checkEmployeeId(employee_id);
-                    if(results.moveToFirst()){
-                        String tempId=employee_id_edit.getText().toString();
-                        final EditText currBalance=(EditText) findViewById(R.id.currBalance);
+                    if (results.moveToFirst()) {
 
-                        currBalance.setText(String.valueOf(db.getBal(tempId)));
-                        flagg=1;
-                    }
-                    else{
+                        String tempId = employee_id_edit.getText().toString();
+                        final TextView bal = (TextView) findViewById(R.id.balance);
+                        bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
+                        flagg = 1;
+                        Toast.makeText(MainPage.this, "Logged in Succesfully", Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
                     }
@@ -208,7 +223,31 @@ public class MainPage extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (flagg != 1) {
+                    Toast.makeText(MainPage.this, "Please Log In First to place order", Toast.LENGTH_SHORT).show();
+                } else {
+                    Date date_x = new Date();
+                    DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    final String date = sdf.format(date_x);
+                    for (int i = 0; i < order.size(); i++) {
+                        //here add each item to transactions table
+                        Log.d(TAG, "onClick: inserting " + order.get(i).getName());
+                        tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+                        addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+                    }
+                    db.updateinfo(employee_id, -1 * totalamt);
+                    Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_SHORT).show();
 
+
+                    items.clear();
+                    order.clear();
+                    flagg = 0;
+                    employee_id_edit.setText("");
+
+                    recreate();
+
+
+                }
 
 //                TODO : take list of selected items here and store
 //                TODO : check employee code.....if not already present start it with zero balance
@@ -340,7 +379,7 @@ public class MainPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-              if (flagg==1) {
+                if (flagg == 1) {
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainPage.this);
                     Log.d(TAG, "onClick: I am here");
                     View mView = getLayoutInflater().inflate(R.layout.addmoney, null);
@@ -356,17 +395,29 @@ public class MainPage extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             double money = Double.parseDouble(amount.getText().toString());
-                            double balNow=db.getBal(employee_id_edit.getText().toString());
+                            double balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: Balance Before adding" + balNow);
-                            balNow+=money;
+                            balNow += money;
                             db.updateinfo(employee_id_edit.getText().toString(), money);
-                            balNow=db.getBal(employee_id_edit.getText().toString());
+                            balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: After Adding " + balNow);
-                            EditText currBalance= (EditText) findViewById(R.id.currBalance);
+                            TextView currBalance = (TextView) findViewById(R.id.balance);
 
-                            String tempId=employee_id_edit.getText().toString();
-                            currBalance.setText(String.valueOf(db.getBal(tempId)));
+//TODO put check here to see balance added or not and proceed accordingly
 
+                            String tempId = employee_id_edit.getText().toString();
+                            currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
+
+                            dialog.cancel();
+
+                        }
+                    });
+
+
+                    aMCancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
                         }
                     });
                 }

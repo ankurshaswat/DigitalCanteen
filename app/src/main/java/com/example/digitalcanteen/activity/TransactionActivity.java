@@ -2,8 +2,8 @@ package com.example.digitalcanteen.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,8 +42,8 @@ public class TransactionActivity extends AppCompatActivity {
         View header = getLayoutInflater().inflate(R.layout.empaccounttemplate, null);
         transactions.addHeaderView(header);
 
-        oK = (Button) findViewById(R.id.transactionOK);
-        exit=(Button) findViewById(R.id.transactionExit);
+        oK = (Button) findViewById(R.id.transactionsOK);
+        exit = (Button) findViewById(R.id.transactionsExit);
 
         database = new TransactionDatabase(TransactionActivity.this);
         db  =new UserDatabase(TransactionActivity.this);
@@ -79,7 +79,7 @@ public class TransactionActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent redirectToMP = new Intent(TransactionActivity.this, MainPage.this);
+                Intent redirectToMP = new Intent(TransactionActivity.this, MainPage.class);
                 startActivity(redirectToMP);
                 finish();
             }
