@@ -94,17 +94,9 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main_page);
+//        Log.d(TAG, "addUser: Network availability is "+isNetworkAvailable());
 
-        logout = (Button) findViewById(R.id.mPLogout);
-        btnAddUser = (Button) findViewById(R.id.add_user);
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
-        addMoney = (Button) findViewById(R.id.mPAddMoney);
-        IdEntered = (Button) findViewById(R.id.mPIdE);
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
-        logout.setVisibility(View.GONE);
-        btnSubmit.setVisibility(View.GONE);
-        addMoney.setVisibility(View.GONE);
-
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +192,7 @@ public class MainPage extends AppCompatActivity {
 
         listItems = (ListView) findViewById(R.id.lstMenu);
         selectedThings = (ListView) findViewById(R.id.lstCart);
-
+        Button addMoney = (Button) findViewById(R.id.mPAddMoney);
 
 
 //       order.add(new selectedItems("pizza", "2", "600"));
@@ -219,7 +211,7 @@ public class MainPage extends AppCompatActivity {
         listItems.setAdapter(renderMenuAdapter);
 
 
-
+        Button IdEntered = (Button) findViewById(R.id.mPIdE);
         IdEntered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,13 +234,6 @@ public class MainPage extends AppCompatActivity {
                         bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
-                        IdEntered.setVisibility(View.GONE);
-                        logout.setVisibility(View.VISIBLE);
-                        addMoney.setVisibility(View.VISIBLE);
-                        btnSubmit.setVisibility(View.VISIBLE);
-                        btnAddUser.setVisibility(View.GONE);
-                        btn2Admin.setVisibility(View.GONE);
-
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
@@ -258,13 +243,7 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logOut();
-            }
-        });
-
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,7 +263,12 @@ public class MainPage extends AppCompatActivity {
                     Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_SHORT).show();
 
 
-                    logOut();
+                    items.clear();
+                    order.clear();
+                    flagg = 0;
+                    employee_id_edit.setText("");
+
+                    recreate();
 
 
                 }
