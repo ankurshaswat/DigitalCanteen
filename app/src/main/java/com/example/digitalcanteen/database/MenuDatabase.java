@@ -101,7 +101,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
         ContentValues newValues = new ContentValues();
         newValues.put("Cost", Cost);
         newValues.put("Item_name", item_name);
-        newValues.put("Status", String.valueOf(Status.UPDATED));
+        newValues.put("Status", String.valueOf(Status.NEW));
 
         String[] args = new String[]{String.valueOf(id)};
         long result = db.update("Menu", newValues, "ID=?", args);
@@ -157,7 +157,6 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     public enum Status {
         NEW,
-        UPDATED,
         SYNCED,
         DELETED
     }

@@ -457,8 +457,11 @@ public class MainPage extends AppCompatActivity {
                             double money = Double.parseDouble(amount.getText().toString());
                             double balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: Balance Before adding" + balNow);
-                            balNow += money;
+
+
                             db.updateinfo(employee_id_edit.getText().toString(), money);
+                            syncUser();
+
                             balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: After Adding " + balNow);
 
@@ -491,14 +494,8 @@ public class MainPage extends AppCompatActivity {
     private void syncUser() {
         List<Employee> list = db.get(UserDatabase.Status.NEW);
         for (Employee entry : list) {
-            addUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId());
+            addUpdateUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId());
         }
-
-        list = db.get(UserDatabase.Status.UPDATED);
-        for (Employee entry : list) {
-            updateUser(entry.getEmployee_id(), entry.getBalance(), entry.getId());
-        }
-
 
     }
 
@@ -602,7 +599,7 @@ public class MainPage extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void addUser(final String Employee_id, final String name, final Double Balance, final Integer ID) {
+    private void addUpdateUser(final String Employee_id, final String name, final Double Balance, final Integer ID) {
         // Tag used to cancel the request
         String tag_string_req = "req_register2";
 
@@ -610,7 +607,7 @@ public class MainPage extends AppCompatActivity {
 //        showDialog();
 
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_ADD_USER, new Response.Listener<String>() {
+                AppConfig.URL_ADD_UPDATE_USER, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -691,96 +688,6 @@ public class MainPage extends AppCompatActivity {
 //        checkNet();
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
-
-    private void updateUser(final String Employee_id, final Double Balance, final Integer ID) {
-        String tag_string_req = "req_register3";
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_UPDATE_USER, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response);
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        Log.d(TAG, "onResponse: Succesfully posted to net");
-                        db.updateStatus(ID);
-                    } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: from add user" + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Employee_code", Employee_id);
-                params.put("Balance", String.valueOf(Balance));
-                return params;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
-
-//    private void checkNet() {
-//        final String tag_string_req = "req_register3";
-//        StringRequest strReq = new StringRequest(Request.Method.POST,
-//                AppConfig.URL_TEST_CONNECTION, new Response.Listener<String>() {
-//
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d(TAG, "Register Response: Response received by checknet " + response);
-//                try {
-//                    JSONObject jObj = new JSONObject(response);
-//                    boolean error = jObj.getBoolean("error");
-//                    if (!error) {
-////                        Log.d(TAG, "onResponse: Succesfully posted to net");
-//                        AppController.getInstance().getRequestQueue().start();
-//                        AppController.getInstance().cancelPendingRequests2(tag_string_req);
-//                        Log.d(TAG, "onResponse: Queue Started due to proper response");
-//                    } else {
-//                        AppController.getInstance().getRequestQueue().stop();
-//                        Log.d(TAG, "onResponse: Queue Stopped due to error in response");
-////                        String errorMsg = jObj.getString("error_msg");
-////                        Toast.makeText(getApplicationContext(),
-////                                errorMsg, Toast.LENGTH_LONG).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                AppController.getInstance().getRequestQueue().stop();
-//                Log.d(TAG, "onErrorResponse: No net or interruption");
-////     Log.e(TAG, "Registration Error: " + error.getMessage());
-////                Toast.makeText(getApplicationContext(),
-////                        error.getMessage()+" Possibly no internet", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                return new HashMap<>();
-//            }
-//        };
-////        strReq.setPriority(Request.Priority.IMMEDIATE);
-//        AppController.getInstance().getRequestQueue().stop();
-////        Log.d(TAG, "checkNet: "+AppController.getInstance().getRequestQueue().;
-//        AppController.getInstance().addToRequestQueue2(strReq, tag_string_req);
-////        Log.d(TAG, "checkNet: Starting Queue for checkNet Function");
-//    }
 
     private void showProgressDialog() {
         if (!progressDialog.isShowing()) {

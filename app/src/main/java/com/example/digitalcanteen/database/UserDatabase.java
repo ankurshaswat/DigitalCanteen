@@ -107,7 +107,7 @@ public class UserDatabase extends SQLiteOpenHelper {
         Log.d(TAG, "updateinfo: " + amt);
 
         newValues.put("Balance", amt);
-        newValues.put("Status", String.valueOf(Status.UPDATED));
+        newValues.put("Status", String.valueOf(Status.NEW));
         newValues.put("Employee_code", employee_id);
 
         Log.d(TAG, "updateinfo: " + getBal(employee_id));
@@ -179,7 +179,6 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     public enum Status {
         NEW,
-        UPDATED,
         SYNCED
     }
 

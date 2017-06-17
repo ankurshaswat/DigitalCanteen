@@ -91,12 +91,7 @@ public class AddItem extends AppCompatActivity {
     private void syncItem() {
         List<menuItem> list = db.get(MenuDatabase.Status.NEW);
         for (menuItem entry : list) {
-            addItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
-        }
-
-        list = db.get(MenuDatabase.Status.UPDATED);
-        for (menuItem entry : list) {
-            updateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
+            addUpdateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
         }
 
         list = db.get(MenuDatabase.Status.DELETED);
@@ -106,10 +101,10 @@ public class AddItem extends AppCompatActivity {
     }
 
 
-    private void addItem(final String Item_name, final Double Cost, final Integer ID) {
+    private void addUpdateItem(final String Item_name, final Double Cost, final Integer ID) {
         String tag_string_req = "req_register4";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_ADD_MENU, new Response.Listener<String>() {
+                AppConfig.URL_ADD_UPDATE_MENU, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Register Response: " + response);
@@ -147,46 +142,6 @@ public class AddItem extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void updateItem(final String Item_name, final Double Cost, final Integer ID) {
-        String tag_string_req = "req_register5";
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                AppConfig.URL_ADD_MENU, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "Register Response: " + response);
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    boolean error = jObj.getBoolean("error");
-                    if (!error) {
-                        Log.d(TAG, "onResponse: Succesfully posted to net");
-                        db.updateStatus(ID);
-                    } else {
-                        String errorMsg = jObj.getString("error_msg");
-                        Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Registration Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("Item_name", Item_name);
-                params.put("Cost", String.valueOf(Cost));
-                return params;
-            }
-        };
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
     private void deleteItem(final String Item_name, final Integer ID) {
         String tag_string_req = "req_register6";
