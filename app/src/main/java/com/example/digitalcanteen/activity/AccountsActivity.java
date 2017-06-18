@@ -1,6 +1,7 @@
 package com.example.digitalcanteen.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.adapter.acccountAdapter;
 import com.example.digitalcanteen.dataObjects.EHistory;
+import com.example.digitalcanteen.dataObjects.Sale;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
 import java.text.DateFormat;
@@ -20,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class AccountsActivity extends AppCompatActivity {
@@ -31,6 +34,9 @@ public class AccountsActivity extends AppCompatActivity {
     private EditText strtDateBox = null;
     private EditText endDateBox = null;
     private ListView transactions = null;
+    private List<Sale> sales = new ArrayList<>();
+    private Cursor cursor = null;
+    private HashMap<String, Sale> map = new HashMap<String, Sale>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,28 +82,32 @@ public class AccountsActivity extends AppCompatActivity {
                     dob_var = (endDateBox.getText().toString());
                     endDateObject = formatter.parse(dob_var);
                     endDate = new SimpleDateFormat("yyyy-MM-dd").format(endDateObject);
+                    cursor = db.getAllHistoryCursor(strtDate, endDate);
 
-                    //adapterForAccounts.clear();
-                    //adapterForAccounts.addAll(db.getAllHistory(strtDate,endDate));
-                    // EmployeeHistory.clear();
-                    EmployeeHistory.clear();
-                    EmployeeHistory.addAll(db.getAllHistory(strtDate, endDate));
-//                    for (int i=0;i<EmployeeHistory.size();i++){
-//                        EHistory x=EmployeeHistory.get(i);
-//                        Log.d(TAG, "onClick: printing "+x.getName()+x.getEmployeeCode()+x.getCpi()+x.getQuantity()+x.getTotal()+x.getDate()+x.getId());
-//                    }
-                    // Log.d(TAG, "onClick: "+EmployeeHistory);
-                    // EmployeeHistory.clear();
-                    Log.d(TAG, "onClick: " + EmployeeHistory.size());
-                    adapterForAccounts.notifyDataSetChanged();
-                    //EmployeeHistory=new ArrayList<EHistory>();
-                    //adapterForAccounts.clear();
-                    //adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, EmployeeHistory);
-                    //adapterForAccounts.addAll();
-                    //adapterForAccounts.notifyDataSetChanged();
-                    Log.d(TAG, "onClick: notfied");
-                    //TODO   Here write rest code for adapter to fill list view with given date objects......i have made a template already for it
-                    //TODO please make a list of EHistory containig employee's transactions name it as employeeHistory
+                    while (cursor.moveToFirst()) {
+                        String name = cursor.getString(2);
+                        Double total = cursor.getDouble(5);
+                        Double cpi = cursor.getDouble(4);
+                        Integer quantity = cursor.getInt(3);
+
+                        if (!map.containsKey(name)) {
+                            map.put(name, new Sale(name, cpi, quantity, total));
+                        } else {
+                            Sale tempSale = map.get(name);
+                            Double tempTotal = tempSale.getTotal();
+                            Integer tempQuantity = tempSale.getQuan();
+                            tempTotal += total;
+                            tempQuantity += quantity;
+
+                            map.put(name, new Sale(name, cpi, tempQuantity, tempTotal));
+
+                        }
+
+                    }
+
+
+
+
 
 
                 } catch (java.text.ParseException e) {

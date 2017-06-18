@@ -13,11 +13,14 @@ public class Sale {
     private String name;
     private Double cpi;//cost per item
     private Integer quan;
+    private Double total;
 
-    public Sale(String name, Double cpi, Integer quan) {
+    public Sale(String name, Double cpi, Integer quan, Double total) {
         this.name = name;
         this.cpi = cpi;
         this.quan = quan;
+        this.total = total;
+
     }
 
     public String getName() {
@@ -42,6 +45,14 @@ public class Sale {
 
     public void setQuan(Integer quan) {
         this.quan = quan;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public void incr() {
