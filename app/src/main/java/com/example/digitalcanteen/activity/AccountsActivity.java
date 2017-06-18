@@ -15,6 +15,7 @@ import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.adapter.acccountAdapter;
 import com.example.digitalcanteen.dataObjects.EHistory;
 import com.example.digitalcanteen.dataObjects.Sale;
+import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
 import java.text.DateFormat;
@@ -37,6 +38,7 @@ public class AccountsActivity extends AppCompatActivity {
     private List<Sale> sales = new ArrayList<>();
     private Cursor cursor = null;
     private HashMap<String, Sale> map = new HashMap<String, Sale>();
+    private MenuDatabase menuDb = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +56,11 @@ public class AccountsActivity extends AppCompatActivity {
         transactions.addHeaderView(header);
 
 
-        adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, EmployeeHistory);
-//        EmployeeHistory = db.getAll();
-//        adapterForAccounts.notifyDataSetChanged();
-//
-//  transactions.setAdapter(adapterForAccounts);
-        transactions.setAdapter(adapterForAccounts);
+
         btnDone = (Button) findViewById(R.id.btnDone);
         strtDateBox = (EditText) findViewById(R.id.editStartDate);
         endDateBox = (EditText) findViewById(R.id.editEndDate);
-
+        menuDb = new MenuDatabase(AccountsActivity.this);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,22 +84,27 @@ public class AccountsActivity extends AppCompatActivity {
                     while (cursor.moveToFirst()) {
                         String name = cursor.getString(2);
                         Double total = cursor.getDouble(5);
-                        Double cpi = cursor.getDouble(4);
-                        Integer quantity = cursor.getInt(3);
+//                        Double cpi = cursor.getDouble(4);
+                        Double cpi = menuDb.getItemPrice(name);
+                        Integer quantity2 = cursor.getInt(3);
 
                         if (!map.containsKey(name)) {
-                            map.put(name, new Sale(name, cpi, quantity, total));
+                            map.put(name, new Sale(name, cpi, quantity2, total));
                         } else {
                             Sale tempSale = map.get(name);
                             Double tempTotal = tempSale.getTotal();
                             Integer tempQuantity = tempSale.getQuan();
                             tempTotal += total;
-                            tempQuantity += quantity;
+                            tempQuantity += quantity2;
 
                             map.put(name, new Sale(name, cpi, tempQuantity, tempTotal));
 
                         }
 
+                    }
+
+                    for (String KEY : map.keySet()) {
+                        sales.add(map.get(KEY));
                     }
 
 
@@ -120,6 +122,12 @@ public class AccountsActivity extends AppCompatActivity {
 
             }
         });
+        adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
+//        EmployeeHistory = db.getAll();
+//        adapterForAccounts.notifyDataSetChanged();
+//
+//  transactions.setAdapter(adapterForAccounts);
+        transactions.setAdapter(adapterForAccounts);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.digitalcanteen.R;
-import com.example.digitalcanteen.dataObjects.EHistory;
+import com.example.digitalcanteen.dataObjects.Sale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class acccountAdapter extends ArrayAdapter {
     private static final String TAG="AccountAdapter";
-    private static List<EHistory> EmpHistory = new ArrayList<>();
+    private static List<Sale> sales = new ArrayList<>();
 //    private int EId;
     Context con;
     private TextView name;
@@ -32,16 +32,16 @@ public class acccountAdapter extends ArrayAdapter {
     private TextView total;
     private TextView quantity;
 
-    public acccountAdapter(@NonNull Context context, @LayoutRes int resource,List<EHistory> EmpHistory) {
+    public acccountAdapter(@NonNull Context context, @LayoutRes int resource, List<Sale> EmpHistory) {
 
         super(context, resource);
         this.con = context;
-        acccountAdapter.EmpHistory = EmpHistory;
+        acccountAdapter.sales = EmpHistory;
     }
 
     @Override
     public int getCount() {
-        return EmpHistory.size();
+        return sales.size();
     }
 
     @NonNull
@@ -53,21 +53,21 @@ public class acccountAdapter extends ArrayAdapter {
 
         TextView name =(TextView) damian.findViewById(R.id.tempItemName);
         TextView cpi =(TextView) damian.findViewById(R.id.tempCPI);
-        TextView eId = (TextView) damian.findViewById(R.id.tempEId);
-        TextView date =(TextView) damian.findViewById(R.id.tempDate);
+//        TextView eId = (TextView) damian.findViewById(R.id.tempEId);
+//        TextView date =(TextView) damian.findViewById(R.id.tempDate);
         TextView total=(TextView) damian.findViewById(R.id.tempTotal);
         TextView quantity=(TextView) damian.findViewById(R.id.tempQuantity);
 
 //        int i=EmpHistory.size()-1;
 //        Log.d(TAG, "getView: " + EmpHistory.get(position).getName());
-        name.setText(EmpHistory.get(position).getName());
-        cpi.setText("" + EmpHistory.get(position).getCpi() + "");
-        eId.setText(EmpHistory.get(position).getEmployeeCode());
-        date.setText(EmpHistory.get(position).getDate());
+        name.setText(sales.get(position).getName());
+        cpi.setText("" + sales.get(position).getCpi() + "");
+//        eId.setText(.get(position).getEmployeeCode());
+//        date.setText(EmpHistory.get(position).getDate());
 //        Log.d(TAG, "getView: " + EmpHistory.get(position).getDate());
-        total.setText("" + EmpHistory.get(position).getTotal() + "");
+        total.setText("" + sales.get(position).getTotal() + "");
 //        Log.d(TAG, "getView: "+EmpHistory.get(position).getQuantity());
-        quantity.setText(String.valueOf(EmpHistory.get(position).getQuantity()));
+        quantity.setText(String.valueOf(sales.get(position).getQuan()));
 
         return damian;
             }
