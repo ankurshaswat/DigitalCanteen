@@ -27,7 +27,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -40,7 +40,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost REAL,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT)";
         db.execSQL(query);
     }
 
@@ -91,6 +91,22 @@ public class MenuDatabase extends SQLiteOpenHelper {
         Integer itemid = cur.getInt(0);
         cur.close();
         return itemid;
+    }
+
+    public Double getItemPrice(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=?", new String[]{name});
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=? AND NOT Status=?", new String[]{name, String.valueOf(Status.DELETED)});
+        if (cur.moveToFirst())
+//        Log.d(TAG, "getItem:toloooooooooooo      "+ cur.getInt(0)+"   "+cur.getString(1));
+        {
+            Double itemPrice = cur.getDouble(2);
+            cur.close();
+            return itemPrice;
+        } else {
+            cur.close();
+            return Double.valueOf(-1);
+        }
     }
 
     public boolean editItem(int id, String item_name, double Cost) {
