@@ -37,6 +37,7 @@ public class TransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
+
         Eid= (EditText) findViewById(R.id.transactionsEId);
         transactions = (ListView) findViewById(R.id.transactionsTransactions);
         View header = getLayoutInflater().inflate(R.layout.empaccounttemplate, null);
@@ -47,6 +48,8 @@ public class TransactionActivity extends AppCompatActivity {
 
         database = new TransactionDatabase(TransactionActivity.this);
         db  =new UserDatabase(TransactionActivity.this);
+
+
         oK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
