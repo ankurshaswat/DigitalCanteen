@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.adapter.acccountAdapter;
@@ -20,8 +19,6 @@ import com.example.digitalcanteen.dataObjects.Sale;
 import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,6 +32,7 @@ public class AccountsActivity extends AppCompatActivity {
     int currDay, currMonth, currYear;
     int endDay, endMonth, endYear;
     int strtDay, strtMonth, strtYear;
+    String strtDate, endDate;
     private Button btnGenerate = null;
     private Button btnDone = null;
     private TextView strtDateBox = null;
@@ -66,6 +64,7 @@ public class AccountsActivity extends AppCompatActivity {
 
 
         Date today = new Date();
+//        today.
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
         currYear = Integer.parseInt(formatterY.format(today));
@@ -84,11 +83,16 @@ public class AccountsActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Log.d(TAG, "onDateSet: Do something with date here");
-                        strtDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
+
 
                         strtDay = dayOfMonth;
                         strtMonth = month;
                         strtYear = year;
+
+                        String formatterD = String.format("%02d", strtDay);
+                        String formatterM = String.format("%02d", strtMonth);
+                        strtDateBox.setText("" + formatterD + "/" + formatterM + "/" + year + "");
+                        strtDate = "" + strtYear + "-" + formatterM + "-" + formatterD;
 
                     }
                 };
@@ -110,6 +114,11 @@ public class AccountsActivity extends AppCompatActivity {
                         endMonth = month;
                         endYear = year;
 
+                        String eformatterD = String.format("%02d", endDay);
+                        String eformatterM = String.format("%02d", endMonth);
+                        strtDateBox.setText("" + eformatterD + "/" + eformatterM + "/" + year + "");
+                        strtDate = "" + endYear + "-" + eformatterM + "-" + eformatterD;
+
                     }
                 };
                 final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
@@ -126,19 +135,13 @@ public class AccountsActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
 
-                Date strDateObject, endDateObject;
-                String strtDate, endDate;
+//                Date strDateObject, endDateObject;
+
 
                 try {
-                    String dob_var = (strtDateBox.getText().toString());
-                    strDateObject = formatter.parse(dob_var);
-                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
 
-                    dob_var = (endDateBox.getText().toString());
-                    endDateObject = formatter.parse(dob_var);
-                    endDate = new SimpleDateFormat("yyyy-MM-dd").format(endDateObject);
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
                     Log.d(TAG, "onClick: Got Cursor");
                     while (cursor.moveToNext()) {
@@ -170,9 +173,6 @@ public class AccountsActivity extends AppCompatActivity {
                         sales.add(map.get(KEY));
                     }
 
-
-                } catch (java.text.ParseException e) {
-                    Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
 
                 } catch (Exception e) {
                     Log.d(TAG, "onClick: " + Arrays.toString(e.getStackTrace()));
