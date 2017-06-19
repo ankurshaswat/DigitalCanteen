@@ -1,5 +1,6 @@
 package com.example.digitalcanteen.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -7,8 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.digitalcanteen.R;
@@ -30,10 +32,13 @@ public class AccountsActivity extends AppCompatActivity {
     private static final String TAG = "AccountsActivity";
     public List<EHistory> EmployeeHistory = new ArrayList<>();
     public acccountAdapter adapterForAccounts = null;
+    int currDay, currMonth, currYear;
+    int endDay, endMonth, endYear;
+    int strtDay, strtMonth, strtYear;
     private Button btnGenerate = null;
     private Button btnDone = null;
-    private EditText strtDateBox = null;
-    private EditText endDateBox = null;
+    private TextView strtDateBox = null;
+    private TextView endDateBox = null;
     private ListView transactions = null;
     private List<Sale> sales = new ArrayList<>();
     private Cursor cursor = null;
@@ -55,11 +60,66 @@ public class AccountsActivity extends AppCompatActivity {
         View header = getLayoutInflater().inflate(R.layout.accounttemplate, null);
         transactions.addHeaderView(header);
 
+        java.text.DateFormat formatterM = new java.text.SimpleDateFormat("MM");
+        java.text.DateFormat formatterD = new java.text.SimpleDateFormat("dd");
+        java.text.DateFormat formatterY = new java.text.SimpleDateFormat("yyyy");
 
+
+        Date today = new Date();
+        currDay = Integer.parseInt(formatterD.format(today));
+        currMonth = Integer.parseInt(formatterM.format(today));
+        currYear = Integer.parseInt(formatterY.format(today));
+
+        strtDateBox = (TextView) findViewById(R.id.editStartDate);
+
+        strtDateBox.setText("" + currDay + "/" + currMonth + "/" + currYear + "");
+        endDateBox = (TextView) findViewById(R.id.editEndDate);
+
+        endDateBox.setText("" + currDay + "/" + currMonth + "/" + currYear + "");
+
+        strtDateBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Log.d(TAG, "onDateSet: Do something with date here");
+                        strtDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
+
+                        strtDay = dayOfMonth;
+                        strtMonth = month;
+                        strtYear = year;
+
+                    }
+                };
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                dialog.show();
+            }
+        });
+
+        endDateBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Log.d(TAG, "onDateSet: Do something with date here");
+                        endDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
+
+                        endDay = dayOfMonth;
+                        endMonth = month;
+                        endYear = year;
+
+                    }
+                };
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                dialog.show();
+            }
+        });
 
         btnDone = (Button) findViewById(R.id.btnDone);
-        strtDateBox = (EditText) findViewById(R.id.editStartDate);
-        endDateBox = (EditText) findViewById(R.id.editEndDate);
+        strtDateBox = (TextView) findViewById(R.id.editStartDate);
+        endDateBox = (TextView) findViewById(R.id.editEndDate);
         menuDb = new MenuDatabase(AccountsActivity.this);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +161,9 @@ public class AccountsActivity extends AppCompatActivity {
 
                         }
 
+
                     }
+                    cursor.close();
 
                     for (String KEY : map.keySet()) {
                         sales.add(map.get(KEY));
