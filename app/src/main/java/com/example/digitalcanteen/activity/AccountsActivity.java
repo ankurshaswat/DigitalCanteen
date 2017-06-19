@@ -118,8 +118,8 @@ public class AccountsActivity extends AppCompatActivity {
         });
 
         btnDone = (Button) findViewById(R.id.btnDone);
-        strtDateBox = (TextView) findViewById(R.id.editStartDate);
-        endDateBox = (TextView) findViewById(R.id.editEndDate);
+        strtDateBox = (EditText) findViewById(R.id.editStartDate);
+        endDateBox = (EditText) findViewById(R.id.editEndDate);
         menuDb = new MenuDatabase(AccountsActivity.this);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,13 +140,14 @@ public class AccountsActivity extends AppCompatActivity {
                     endDateObject = formatter.parse(dob_var);
                     endDate = new SimpleDateFormat("yyyy-MM-dd").format(endDateObject);
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
-
-                    while (cursor.moveToFirst()) {
+                    Log.d(TAG, "onClick: Got Cursor");
+                    while (cursor.moveToNext()) {
+                        Log.d(TAG, "onClick: Noting ofr Item");
                         String name = cursor.getString(2);
-                        Double total = cursor.getDouble(5);
-//                        Double cpi = cursor.getDouble(4);
-                        Double cpi = menuDb.getItemPrice(name);
                         Integer quantity2 = cursor.getInt(3);
+//                        Double cpi = cursor.getDouble(4);
+                        Double total = cursor.getDouble(5);
+                        Double cpi = menuDb.getItemPrice(name);
 
                         if (!map.containsKey(name)) {
                             map.put(name, new Sale(name, cpi, quantity2, total));
@@ -168,10 +169,6 @@ public class AccountsActivity extends AppCompatActivity {
                     for (String KEY : map.keySet()) {
                         sales.add(map.get(KEY));
                     }
-
-
-
-
 
 
                 } catch (java.text.ParseException e) {
