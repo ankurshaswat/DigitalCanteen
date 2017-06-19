@@ -118,8 +118,8 @@ public class AccountsActivity extends AppCompatActivity {
         });
 
         btnDone = (Button) findViewById(R.id.btnDone);
-        strtDateBox = (EditText) findViewById(R.id.editStartDate);
-        endDateBox = (EditText) findViewById(R.id.editEndDate);
+        strtDateBox = (TextView) findViewById(R.id.editStartDate);
+        endDateBox = (TextView) findViewById(R.id.editEndDate);
         menuDb = new MenuDatabase(AccountsActivity.this);
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
