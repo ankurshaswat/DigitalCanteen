@@ -1,26 +1,27 @@
 package com.example.digitalcanteen.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.digitalcanteen.R;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AdminActivity extends AppCompatActivity {
 
 
     private static final String TAG = "AdminActivity";
+    int strtDay, strtMonth, strtYear;
+    int currDay, currMonth, currYear;
     private Button btnChangeDate = null;
     private Button btnExit = null;
     private Button btnAccounts = null;
@@ -33,8 +34,8 @@ public class AdminActivity extends AppCompatActivity {
     private Button toAccounts = null;
     private Button toETransactions = null;
     private Button toBalance = null;
+    private String strtDate;
 
-    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,28 +46,80 @@ public class AdminActivity extends AppCompatActivity {
         db = new TransactionDatabase(this);
         Log.d(TAG, "onCreate: i was here");
         checkBal = (Button) findViewById(R.id.btnCheckBal);
+
+        java.text.DateFormat formatterM = new java.text.SimpleDateFormat("MM");
+        java.text.DateFormat formatterD = new java.text.SimpleDateFormat("dd");
+        java.text.DateFormat formatterY = new java.text.SimpleDateFormat("yyyy");
+
+
+        Date today = new Date();
+//        today.
+        currDay = Integer.parseInt(formatterD.format(today));
+        currMonth = Integer.parseInt(formatterM.format(today));
+        currYear = Integer.parseInt(formatterY.format(today));
+
+        String formatterDD = String.format("%02d", currDay);
+        String formatterMM = String.format("%02d", currMonth);
+
+        edtDate.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        strtDate = "" + strtYear + "-" + formatterMM + "-" + formatterDD + "";
+        custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
+        edtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        Log.d(TAG, "onDateSet: Do something with date here");
+
+
+                        strtDay = dayOfMonth;
+                        strtMonth = month;
+                        strtYear = year;
+
+                        String formatterD = String.format("%02d", strtDay);
+                        String formatterM = String.format("%02d", strtMonth);
+                        edtDate.setText("" + formatterD + "/" + formatterM + "/" + year + "");
+                        strtDate = "" + strtYear + "-" + formatterM + "-" + formatterD;
+
+                    }
+                };
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                dialog.show();
+            }
+        });
+
+
+
         btnChangeDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
 
-                Date strDateObject;
-                String strtDate = null;
+                custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
 
-                try {
-                    String dob_var = (edtDate.getText().toString());
-                    strDateObject = formatter.parse(dob_var);
-                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
+//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+//
+//                Date strDateObject;
+//                String strtDate = null;
+//
+//
+//
+//                try {
+//                    String dob_var = (edtDate.getText().toString());
+//                    strDateObject = formatter.parse(dob_var);
+//                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
+//
+//
+//
+//                    //TODO     here check database for number of customers visited on that date
+//                    custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
+//                } catch (java.text.ParseException e) {
+//                    Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
+//
+//                }
 
 
-
-                    //TODO     here check database for number of customers visited on that date
-                    custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
-                } catch (java.text.ParseException e) {
-                    Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
-
-                }
 
 
                 //fire up a dialog here to change date

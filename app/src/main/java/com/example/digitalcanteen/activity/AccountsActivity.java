@@ -69,12 +69,15 @@ public class AccountsActivity extends AppCompatActivity {
         currMonth = Integer.parseInt(formatterM.format(today));
         currYear = Integer.parseInt(formatterY.format(today));
 
+        String formatterDD = String.format("%02d", currDay);
+        String formatterMM = String.format("%02d", currMonth);
+
         strtDateBox = (TextView) findViewById(R.id.editStartDate);
 
-        strtDateBox.setText("" + currDay + "/" + currMonth + "/" + currYear + "");
+        strtDateBox.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
         endDateBox = (TextView) findViewById(R.id.editEndDate);
 
-        endDateBox.setText("" + currDay + "/" + currMonth + "/" + currYear + "");
+        endDateBox.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
 
         strtDateBox.setOnClickListener(new View.OnClickListener() {
             @Override
