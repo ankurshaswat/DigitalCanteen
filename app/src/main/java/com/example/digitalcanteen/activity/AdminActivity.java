@@ -56,14 +56,19 @@ public class AdminActivity extends AppCompatActivity {
 //        today.
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
+//        currMonth+=1;
         currYear = Integer.parseInt(formatterY.format(today));
 
         String formatterDD = String.format("%02d", currDay);
         String formatterMM = String.format("%02d", currMonth);
+//        Log.d(TAG, "onCreate: "+strtYear);
 
         edtDate.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
-        strtDate = "" + strtYear + "-" + formatterMM + "-" + formatterDD + "";
+        strtDate = "" + currYear + "-" + formatterMM + "-" + formatterDD + "";
+        Log.d(TAG, "onCreate: " + strtDate);
+        Log.d(TAG, "onCreate: outside function" + db.numCustomers(strtDate));
         custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
+        Log.d(TAG, "onCreate: " + db.numCustomers(strtDate));
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,13 +79,18 @@ public class AdminActivity extends AppCompatActivity {
 
 
                         strtDay = dayOfMonth;
-                        strtMonth = month;
+                        strtMonth = month + 1;
                         strtYear = year;
 
                         String formatterD = String.format("%02d", strtDay);
                         String formatterM = String.format("%02d", strtMonth);
                         edtDate.setText("" + formatterD + "/" + formatterM + "/" + year + "");
                         strtDate = "" + strtYear + "-" + formatterM + "-" + formatterD;
+
+                        Log.d(TAG, "onCreate: in function " + strtDate);
+                        Log.d(TAG, "onCreate:in function " + db.numCustomers(strtDate));
+
+
 
                     }
                 };

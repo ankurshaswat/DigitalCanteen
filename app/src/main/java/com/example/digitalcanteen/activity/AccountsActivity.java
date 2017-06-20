@@ -20,7 +20,6 @@ import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +66,7 @@ public class AccountsActivity extends AppCompatActivity {
 //        today.
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
+//        currMonth+=;
         currYear = Integer.parseInt(formatterY.format(today));
 
         String formatterDD = String.format("%02d", currDay);
@@ -78,6 +78,9 @@ public class AccountsActivity extends AppCompatActivity {
         endDateBox = (TextView) findViewById(R.id.editEndDate);
 
         endDateBox.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        strtDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
+        endDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
+
 
         strtDateBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,13 +92,14 @@ public class AccountsActivity extends AppCompatActivity {
 
 
                         strtDay = dayOfMonth;
-                        strtMonth = month;
+                        strtMonth = month + 1;
                         strtYear = year;
 
                         String formatterD = String.format("%02d", strtDay);
                         String formatterM = String.format("%02d", strtMonth);
                         strtDateBox.setText("" + formatterD + "/" + formatterM + "/" + year + "");
                         strtDate = "" + strtYear + "-" + formatterM + "-" + formatterD;
+                        Log.d(TAG, "onDateSet: " + strtDate);
 
                     }
                 };
@@ -114,13 +118,14 @@ public class AccountsActivity extends AppCompatActivity {
                         endDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
 
                         endDay = dayOfMonth;
-                        endMonth = month;
+                        endMonth = month + 1;
                         endYear = year;
 
                         String eformatterD = String.format("%02d", endDay);
                         String eformatterM = String.format("%02d", endMonth);
-                        strtDateBox.setText("" + eformatterD + "/" + eformatterM + "/" + year + "");
-                        strtDate = "" + endYear + "-" + eformatterM + "-" + eformatterD;
+                        endDateBox.setText("" + eformatterD + "/" + eformatterM + "/" + year + "");
+                        endDate = "" + endYear + "-" + eformatterM + "-" + eformatterD;
+                        Log.d(TAG, "onDateSet: " + endDate);
 
                     }
                 };
@@ -136,6 +141,7 @@ public class AccountsActivity extends AppCompatActivity {
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG, "onClick: clicked");
 
 
 //                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
@@ -143,7 +149,7 @@ public class AccountsActivity extends AppCompatActivity {
 //                Date strDateObject, endDateObject;
 
 
-                try {
+//                try {
 
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
                     Log.d(TAG, "onClick: Got Cursor");
@@ -177,19 +183,26 @@ public class AccountsActivity extends AppCompatActivity {
                     }
 
 
-                } catch (Exception e) {
-                    Log.d(TAG, "onClick: " + Arrays.toString(e.getStackTrace()));
-                }
+//                } catch (Exception e) {
+//                    Log.d(TAG, "onClick: " + Arrays.toString(e.getStackTrace()));
+//                }
 
-
-            }
-        });
-        adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
+                adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
 //        EmployeeHistory = db.getAll();
 //        adapterForAccounts.notifyDataSetChanged();
 //
 //  transactions.setAdapter(adapterForAccounts);
-        transactions.setAdapter(adapterForAccounts);
+                transactions.setAdapter(adapterForAccounts);
+
+
+            }
+        });
+//        adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
+////        EmployeeHistory = db.getAll();
+////        adapterForAccounts.notifyDataSetChanged();
+////
+////  transactions.setAdapter(adapterForAccounts);
+//        transactions.setAdapter(adapterForAccounts);
 
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override

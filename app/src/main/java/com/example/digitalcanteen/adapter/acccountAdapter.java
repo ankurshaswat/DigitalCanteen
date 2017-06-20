@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,12 @@ public class acccountAdapter extends ArrayAdapter {
     private static List<Sale> sales = new ArrayList<>();
 //    private int EId;
     Context con;
-    private TextView name;
-    private TextView cpi;
-    private TextView eId;
-    private TextView date;
-    private TextView total;
-    private TextView quantity;
+//    private TextView name;
+//    private TextView cpi;
+//    private TextView eId;
+//    private TextView date;
+//    private TextView total;
+//    private TextView quantity;
 
     public acccountAdapter(@NonNull Context context, @LayoutRes int resource, List<Sale> EmpHistory) {
 
@@ -47,8 +48,10 @@ public class acccountAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+        Log.d(TAG, "getView:" + TAG);
 //        return super.getView(position, convertView, parent);
-            LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View damian = inflater.inflate(R.layout.accounttemplate, null, true);
 
         TextView name =(TextView) damian.findViewById(R.id.tempItemName);

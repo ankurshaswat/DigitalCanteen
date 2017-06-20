@@ -64,8 +64,7 @@ public class TransactionActivity extends AppCompatActivity {
                     Cursor results = db.checkEmployeeId(EmpId);
                     if(results.moveToFirst()){
                         eTransactions = database.getEmpHist(EmpId);
-                        View header = getLayoutInflater().inflate(R.layout.empaccounttemplate, null);
-                        transactions.addHeaderView(header);
+
                         transactionsAdapter = new EmpTransactionsAdapter(TransactionActivity.this,R.layout.empaccounttemplate,eTransactions);
                         transactions.setAdapter(transactionsAdapter);
                     }
