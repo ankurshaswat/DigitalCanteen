@@ -177,9 +177,35 @@ public class UserDatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean isSynced() {
+        return get(Status.NEW).size() == 0;
+    }
+
+    public boolean insertUserUpdated(String employee_id, String name, Double balance) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues new_content = new ContentValues();
+        Log.d(TAG, "insertUser: writing to new content");
+        new_content.put("Employee_code", employee_id);
+//        new_content.put("Name", employee_name);
+        new_content.put("Balance", balance);
+        new_content.put("Name", name);
+        new_content.put("Status", String.valueOf(Status.SYNCED));
+
+        Log.d(TAG, "insertUser: inseting to db");
+        long result = db.insert("Users", null, new_content);
+
+        return result != -1;
+    }
+
+    public void del() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("Users", null, null);
+    }
+
+
     public enum Status {
         NEW,
         SYNCED
     }
-
 }

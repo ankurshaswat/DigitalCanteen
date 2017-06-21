@@ -171,6 +171,30 @@ public class MenuDatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public boolean isSynced() {
+        return (get(MenuDatabase.Status.NEW).size() == 0 & get(Status.DELETED).size() == 0);
+    }
+
+    public boolean insertMenuUpdated(String Item_name, Double Cost) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues new_content = new ContentValues();
+        Log.d(TAG, "insertItem: writing to new content");
+
+        new_content.put("Item_name", Item_name);
+        new_content.put("Cost", Cost);
+        new_content.put("Status", String.valueOf(Status.SYNCED));
+
+        Log.d(TAG, "insertItem: inseting to db");
+        long result = db.insert("Menu", null, new_content);
+
+        return result != -1;
+    }
+
+    public void del() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("Menu", null, null);
+    }
     public enum Status {
         NEW,
         SYNCED,

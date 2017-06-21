@@ -66,7 +66,7 @@ public class AddItem extends AppCompatActivity {
                 }
                 if (flag==0){
                     db.insertItem(nName,nPrice);
-                    syncItem();
+                    checkNet();
                     Toast.makeText(AddItem.this, "Item Has Been Added", Toast.LENGTH_SHORT).show();
                     name.setText("");
                     price.setText("");
@@ -178,6 +178,44 @@ public class AddItem extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("Item_name", Item_name);
                 return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void checkNet() {
+        String tag_string_req = "req_register42";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_TEST_CONNECTION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        syncItem();
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+//                Toast.makeText(getApplicationContext(),
+//                        , Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                return new HashMap<>();
             }
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);

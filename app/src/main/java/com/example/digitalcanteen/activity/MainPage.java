@@ -185,7 +185,7 @@ public class MainPage extends AppCompatActivity {
                                 boolean check = db.insertUser(addId, addName, 0.0);
                                 if (check) {
                                     Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
-                                    syncUser();
+                                    checkNet();
                                     dialog.cancel();
                                 }
                             }
@@ -292,9 +292,10 @@ public class MainPage extends AppCompatActivity {
                         //here add each item to transactions table
                         Log.d(TAG, "onClick: inserting " + order.get(i).getName());
                         tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-                        syncTransaction();
+
 //     addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
                     }
+                    checkNet();
                     db.updateinfo(employee_id, -1 * totalamt);
                     Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_SHORT).show();
 
@@ -460,7 +461,7 @@ public class MainPage extends AppCompatActivity {
 
 
                             db.updateinfo(employee_id_edit.getText().toString(), money);
-                            syncUser();
+                            checkNet();
 
                             balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: After Adding " + balNow);
@@ -688,6 +689,95 @@ public class MainPage extends AppCompatActivity {
 //        checkNet();
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
+
+    private void checkNet() {
+        // Tag used to cancel the request
+        String tag_string_req = "req_register20";
+
+//        pDialog.setMessage("Registering ...");
+//        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_TEST_CONNECTION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+
+//                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+
+
+                        Log.d(TAG, "connected");
+                        syncUser();
+                        syncTransaction();
+//                        // User successfully stored in MySQL
+//                        // Now store the user in sqlite
+//                        String uid = jObj.getString("uid");
+//
+//                        JSONObject user = jObj.getJSONObject("user");
+//                        String name = user.getString("name");
+//                        String email = user.getString("email");
+//                        String created_at = user
+//                                .getString("created_at");
+//
+//                        // Inserting row in users table
+//                        db.addUser(name, email, uid, created_at);
+//
+//                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+//
+//                        // Launch login activity
+//                        Intent intent = new Intent(
+//                                RegisterActivity.this,
+//                                MainPage.class);
+//                        startActivity(intent);
+//                        finish();
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: from add user" + error.getMessage());
+//                Toast.makeText(getApplicationContext(),
+//                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
+//                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+
+
+//                Log.d(TAG, "insertUser: inseting to db");
+                return new HashMap<>();
+            }
+
+        };
+
+        // Adding request to request queue
+//        strReq.setPriority(Request.Priority.LOW);
+//        checkNet();
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
 
     private void showProgressDialog() {
         if (!progressDialog.isShowing()) {
