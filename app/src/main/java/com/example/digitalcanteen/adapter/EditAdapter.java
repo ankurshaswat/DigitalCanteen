@@ -83,7 +83,7 @@ public class EditAdapter extends ArrayAdapter {
 
 
                 db.deleteItem(eItems.get(position).getName());
-                syncItem();
+                checkNet();
 //attach testing to deleted or not.......
                 EditMenu.eItems.remove(position);
                 EditMenu.editItemsAdapter.notifyDataSetChanged();
@@ -118,7 +118,7 @@ public class EditAdapter extends ArrayAdapter {
                     public void onClick(View v) {
 
                         db.editItem(eItems.get(position).getId(), eItems.get(position).getName(), Double.parseDouble(newPrIce.getText().toString()));
-                        syncItem();
+                        checkNet();
                         EditMenu.eItems.get(position).setPrice(newPrIce.getText().toString());
                         EditMenu.editItemsAdapter.notifyDataSetChanged();
                         dialog.cancel();
@@ -233,6 +233,44 @@ public class EditAdapter extends ArrayAdapter {
                 Map<String, String> params = new HashMap<>();
                 params.put("Item_name", Item_name);
                 return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void checkNet() {
+        String tag_string_req = "req_register42";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_TEST_CONNECTION, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        syncItem();
+                    } else {
+                        String errorMsg = jObj.getString("error_msg");
+//                        Toast.makeText(con.getApplicationContext(),
+//                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+//                Toast.makeText(con.getApplicationContext(),
+//                        error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                return new HashMap<>();
             }
         };
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);

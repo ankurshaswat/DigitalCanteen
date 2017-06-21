@@ -4,63 +4,62 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="89dp">
 
     <TextView
         android:id="@+id/tempItemName2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="17dp"
         android:text="Item Name"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempCPI2"
+        app:layout_constraintDimensionRatio=""
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/tempQuantity2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="Quantity"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tempItemName2"
-        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempTotal2"
         app:layout_constraintLeft_toRightOf="@+id/tempItemName2"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toLeftOf="@+id/tempDate2" />
 
     <TextView
         android:id="@+id/tempTotal2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="Total"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tempItemName2"
-        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempDate2"
+        app:layout_constraintHorizontal_bias="0.798"
         app:layout_constraintLeft_toRightOf="@+id/tempItemName2"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toLeftOf="@+id/tempDate2" />
 
     <TextView
         android:id="@+id/tempDate2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="Date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tempItemName2"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toRightOf="@+id/tempItemName2"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tempCPI2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="CPI"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tempItemName2"
-        app:layout_constraintHorizontal_bias="0.19"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tempQuantity2"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintLeft_toRightOf="@+id/tempItemName2"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toLeftOf="@+id/tempDate2" />
 </android.support.constraint.ConstraintLayout>

@@ -86,4 +86,6 @@ public class AppController extends Application {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
     }
+
+
 }
