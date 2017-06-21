@@ -55,10 +55,18 @@ public class Sale {
         this.total = total;
     }
 
+
     public void incr() {
         //This function will be used with + sign to increase the quantity of the item
         this.quan++;
         //Notify adapter after update
+    }
+
+    @Override
+    public String toString() {
+//        return super.toString();
+        String sale = "" + getName() + " " + getTotal() + " " + getCpi() + " " + getQuan() + "";
+        return sale;
     }
 
     public boolean decr() {

@@ -105,9 +105,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="100dp"
         android:text="Set Date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/CustNum"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
@@ -126,5 +127,15 @@
         android:text="Sync User Data"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnCheckBal"
         app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/theDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="Set Date :-"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/edtDate"
+        app:layout_constraintLeft_toRightOf="@+id/edtDate" />
 
 </android.support.constraint.ConstraintLayout>

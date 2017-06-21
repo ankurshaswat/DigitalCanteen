@@ -34,6 +34,10 @@ public class AdminActivity extends AppCompatActivity {
     private Button toETransactions = null;
     private Button toBalance = null;
     private String strtDate;
+    private String setDate;
+    private TextView theDate;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,7 @@ public class AdminActivity extends AppCompatActivity {
         java.text.DateFormat formatterD = new java.text.SimpleDateFormat("dd");
         java.text.DateFormat formatterY = new java.text.SimpleDateFormat("yyyy");
 
-
+        theDate = (TextView) findViewById(R.id.theDate);
         Date today = new Date();
 //        today.
         currDay = Integer.parseInt(formatterD.format(today));
@@ -62,11 +66,12 @@ public class AdminActivity extends AppCompatActivity {
         String formatterMM = String.format("%02d", currMonth);
 //        Log.d(TAG, "onCreate: "+strtYear);
 
-        edtDate.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        theDate.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        setDate = "" + formatterDD + "/" + formatterMM + "/" + currYear + "";
         strtDate = "" + currYear + "-" + formatterMM + "-" + formatterDD + "";
         Log.d(TAG, "onCreate: " + strtDate);
         Log.d(TAG, "onCreate: outside function" + db.numCustomers(strtDate));
-        custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
+        custNum.setText(db.numCustomers(strtDate) + " customer came on " + setDate);
         Log.d(TAG, "onCreate: " + db.numCustomers(strtDate));
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,12 +89,17 @@ public class AdminActivity extends AppCompatActivity {
 
                         String formatterD = String.format("%02d", strtDay);
                         String formatterM = String.format("%02d", strtMonth);
-                        edtDate.setText("" + formatterD + "/" + formatterM + "/" + year + "");
+                        theDate.setText("" + formatterD + "/" + formatterM + "/" + year + "");
                         strtDate = "" + strtYear + "-" + formatterM + "-" + formatterD;
+                        setDate = "" + formatterD + "/" + formatterM + "/" + year + "";
 
                         Log.d(TAG, "onCreate: in function " + strtDate);
                         Log.d(TAG, "onCreate:in function " + db.numCustomers(strtDate));
-
+                        if (db.numCustomers(strtDate) != 1) {
+                            custNum.setText(db.numCustomers(strtDate) + " customers came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
+                        } else {
+                            custNum.setText(db.numCustomers(strtDate) + " customer came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
+                        }
 
 
                     }

@@ -41,6 +41,8 @@ public class AccountsActivity extends AppCompatActivity {
     private Cursor cursor = null;
     private HashMap<String, Sale> map = new HashMap<String, Sale>();
     private MenuDatabase menuDb = null;
+    private Button btnStartDate;
+    private Button btnEndDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ public class AccountsActivity extends AppCompatActivity {
         java.text.DateFormat formatterD = new java.text.SimpleDateFormat("dd");
         java.text.DateFormat formatterY = new java.text.SimpleDateFormat("yyyy");
 
+        btnStartDate = (Button) findViewById(R.id.btnStartDate);
+        btnEndDate = (Button) findViewById(R.id.btnEndDate);
 
         Date today = new Date();
 //        today.
@@ -82,7 +86,7 @@ public class AccountsActivity extends AppCompatActivity {
         endDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
 
 
-        strtDateBox.setOnClickListener(new View.OnClickListener() {
+        btnStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
@@ -94,6 +98,10 @@ public class AccountsActivity extends AppCompatActivity {
                         strtDay = dayOfMonth;
                         strtMonth = month + 1;
                         strtYear = year;
+                        map.clear();
+                        sales.clear();
+
+//                        adapterForAccounts.notifyDataSetChanged();
 
                         String formatterD = String.format("%02d", strtDay);
                         String formatterM = String.format("%02d", strtMonth);
@@ -103,12 +111,12 @@ public class AccountsActivity extends AppCompatActivity {
 
                     }
                 };
-                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth - 1, currDay);
                 dialog.show();
             }
         });
 
-        endDateBox.setOnClickListener(new View.OnClickListener() {
+        btnEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
@@ -120,6 +128,10 @@ public class AccountsActivity extends AppCompatActivity {
                         endDay = dayOfMonth;
                         endMonth = month + 1;
                         endYear = year;
+                        map.clear();
+                        sales.clear();
+
+//                        adapterForAccounts.notifyDataSetChanged();
 
                         String eformatterD = String.format("%02d", endDay);
                         String eformatterM = String.format("%02d", endMonth);
@@ -129,7 +141,7 @@ public class AccountsActivity extends AppCompatActivity {
 
                     }
                 };
-                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth - 1, currDay);
                 dialog.show();
             }
         });
@@ -188,12 +200,17 @@ public class AccountsActivity extends AppCompatActivity {
 //                }
 
                 adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
+//                Log.d(TAG, "onClick: "+sales.size());
+//                sales.clear();
 //        EmployeeHistory = db.getAll();
 //        adapterForAccounts.notifyDataSetChanged();
 //
 //  transactions.setAdapter(adapterForAccounts);
                 transactions.setAdapter(adapterForAccounts);
-
+//                sales.clear();
+//                map.clear();
+//                Log.d(TAG, "onClick: cleared");
+//
 
             }
         });

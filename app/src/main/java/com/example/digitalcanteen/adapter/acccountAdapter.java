@@ -38,6 +38,7 @@ public class acccountAdapter extends ArrayAdapter {
         super(context, resource);
         this.con = context;
         acccountAdapter.sales = EmpHistory;
+        Log.d(TAG, "acccountAdapter: ");
     }
 
     @Override
@@ -48,7 +49,9 @@ public class acccountAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
+        Log.d(TAG, "getView: " + sales.get(position).toString());
+//        Integer size = AccountsActivity.salesSize();
+//        Log.d(TAG, "getView: "+size);
         Log.d(TAG, "getView:" + TAG);
 //        return super.getView(position, convertView, parent);
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
