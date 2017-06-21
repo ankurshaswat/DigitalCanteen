@@ -23,6 +23,7 @@ public class EditMenu extends AppCompatActivity {
     private ListView currItems;
     private Button newitem;
     private MenuDatabase db;
+    private Button mMExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,15 @@ public class EditMenu extends AppCompatActivity {
 
 //        }
         Log.d(TAG, "onCreate: " + eItems.size());
-
+        mMExit = (Button) findViewById(R.id.mMExit);
+        mMExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent EXIT = new Intent(EditMenu.this, AdminActivity.class);
+                startActivity(EXIT);
+                finish();
+            }
+        });
         currItems = (ListView) findViewById(R.id.listView);
         editItemsAdapter = new EditAdapter(EditMenu.this, R.layout.edititem, eItems);
         currItems.setAdapter(editItemsAdapter);

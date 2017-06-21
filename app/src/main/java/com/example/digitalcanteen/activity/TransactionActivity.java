@@ -81,7 +81,7 @@ public class TransactionActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent redirectToMP = new Intent(TransactionActivity.this, MainPage.class);
+                Intent redirectToMP = new Intent(TransactionActivity.this, AdminActivity.class);
                 startActivity(redirectToMP);
                 finish();
             }

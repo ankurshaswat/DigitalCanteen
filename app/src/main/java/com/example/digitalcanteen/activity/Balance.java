@@ -1,8 +1,10 @@
 package com.example.digitalcanteen.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.digitalcanteen.R;
@@ -18,6 +20,7 @@ public class Balance extends AppCompatActivity {
     private ListView eBalance=null;
     private List<Employee> employees=new ArrayList<>();
     private UserDatabase db=null;
+    private Button exitBalance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,15 @@ public class Balance extends AppCompatActivity {
         View header = getLayoutInflater().inflate(R.layout.template_balance, null);
         eBalance.addHeaderView(header);
         eBalance.setAdapter(balanceAdapter);
+        exitBalance = (Button) findViewById(R.id.exitBalance);
+        exitBalance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent EXITB = new Intent(Balance.this, AdminActivity.class);
+                startActivity(EXITB);
+                finish();
+            }
+        });
 
 
 

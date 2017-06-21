@@ -80,7 +80,7 @@ public class ChangeActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent redirectToLogin = new Intent(ChangeActivity.this, MainPage.class);
+                Intent redirectToLogin = new Intent(ChangeActivity.this, EditMenu.class);
                 startActivity(redirectToLogin);
                 finish();
             }
