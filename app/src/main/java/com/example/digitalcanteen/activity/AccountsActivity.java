@@ -43,6 +43,8 @@ public class AccountsActivity extends AppCompatActivity {
     private MenuDatabase menuDb = null;
     private Button btnStartDate;
     private Button btnEndDate;
+    private Integer numTimes = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class AccountsActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Log.d(TAG, "onDateSet: Do something with date here");
 
-
+                        numTimes = 0;
                         strtDay = dayOfMonth;
                         strtMonth = month + 1;
                         strtYear = year;
@@ -124,7 +126,7 @@ public class AccountsActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Log.d(TAG, "onDateSet: Do something with date here");
                         endDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
-
+                        numTimes = 0;
                         endDay = dayOfMonth;
                         endMonth = month + 1;
                         endYear = year;
@@ -154,15 +156,7 @@ public class AccountsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked");
-
-
-//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
-
-//                Date strDateObject, endDateObject;
-
-
-//                try {
-
+                if (numTimes == 0) {
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
                     Log.d(TAG, "onClick: Got Cursor");
                     while (cursor.moveToNext()) {
@@ -199,14 +193,25 @@ public class AccountsActivity extends AppCompatActivity {
 //                    Log.d(TAG, "onClick: " + Arrays.toString(e.getStackTrace()));
 //                }
 
-                adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
+                    adapterForAccounts = new acccountAdapter(AccountsActivity.this, R.layout.accounttemplate, sales);
 //                Log.d(TAG, "onClick: "+sales.size());
 //                sales.clear();
 //        EmployeeHistory = db.getAll();
 //        adapterForAccounts.notifyDataSetChanged();
 //
 //  transactions.setAdapter(adapterForAccounts);
-                transactions.setAdapter(adapterForAccounts);
+                    transactions.setAdapter(adapterForAccounts);
+                    numTimes += 1;
+                }
+
+//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+
+//                Date strDateObject, endDateObject;
+
+
+//                try {
+
+
 //                sales.clear();
 //                map.clear();
 //                Log.d(TAG, "onClick: cleared");
