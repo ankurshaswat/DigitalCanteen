@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.digitalcanteen.R;
@@ -25,7 +24,7 @@ public class AdminActivity extends AppCompatActivity {
     private Button btnChangeDate = null;
     private Button btnExit = null;
     private Button btnAccounts = null;
-    private EditText edtDate = null;
+    private Button edtDate = null;
     private Button btnMM = null;
     private Button checkBal = null;
     private TextView custNum = null;
@@ -40,8 +39,8 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        edtDate = (EditText) findViewById(R.id.edtDate);
-        btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
+        edtDate = (Button) findViewById(R.id.edtDate);
+//        btnChangeDate = (Button) findViewById(R.id.btnChangeDate);
         custNum = (TextView) findViewById(R.id.CustNum);
         db = new TransactionDatabase(this);
         Log.d(TAG, "onCreate: i was here");
@@ -75,6 +74,7 @@ public class AdminActivity extends AppCompatActivity {
                 DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
                         Log.d(TAG, "onDateSet: Do something with date here");
 
 
@@ -94,50 +94,49 @@ public class AdminActivity extends AppCompatActivity {
 
                     }
                 };
-                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth, currDay);
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth - 1, currDay);
                 dialog.show();
             }
         });
 
 
-
-        btnChangeDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
-
-//                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
-//
-//                Date strDateObject;
-//                String strtDate = null;
+//        btnChangeDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
 //
+//                custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
 //
-//                try {
-//                    String dob_var = (edtDate.getText().toString());
-//                    strDateObject = formatter.parse(dob_var);
-//                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
+////                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+////
+////                Date strDateObject;
+////                String strtDate = null;
+////
+////
+////
+////                try {
+////                    String dob_var = (edtDate.getText().toString());
+////                    strDateObject = formatter.parse(dob_var);
+////                    strtDate = new SimpleDateFormat("yyyy-MM-dd").format(strDateObject);
+////
+////
+////
+////                    //TODO     here check database for number of customers visited on that date
+////                    custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
+////                } catch (java.text.ParseException e) {
+////                    Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
+////
+////                }
 //
 //
 //
-//                    //TODO     here check database for number of customers visited on that date
-//                    custNum.setText(db.numCustomers(strtDate) + " customer came on given date");
-//                } catch (java.text.ParseException e) {
-//                    Toast.makeText(getBaseContext(), "Please Enter Date In Correct Format", Toast.LENGTH_LONG).show();
 //
-//                }
-
-
-
-
-                //fire up a dialog here to change date
-                /////link here
-                //https://developer.android.com/guide/topics/ui/dialogs.html
-// do if free
-            }
-        });
+//                //fire up a dialog here to change date
+//                /////link here
+//                //https://developer.android.com/guide/topics/ui/dialogs.html
+//// do if free
+//            }
+//        });
 
         btnExit = (Button) findViewById(R.id.btnExit2);
         btnExit.setOnClickListener(new View.OnClickListener() {
