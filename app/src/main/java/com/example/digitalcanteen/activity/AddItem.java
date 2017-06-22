@@ -56,8 +56,9 @@ public class AddItem extends AppCompatActivity {
                 double nPrice = Double.parseDouble(price.getText().toString());
                 int flag=0;
                 for(menuItem m :db.getAll()){
-
-                    if(m.getName()==nName){
+                    Log.d(TAG, "onClick: " + m.getName() + " " + nName);
+                    if (m.getName().equals(nName)) {
+                        Log.d(TAG, "onClick: Im inside");
                         Toast.makeText(AddItem.this, "Item already exists", Toast.LENGTH_SHORT).show();
                         flag=1;
                         break;
