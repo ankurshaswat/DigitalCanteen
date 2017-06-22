@@ -100,7 +100,7 @@
         android:id="@+id/btnEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="760dp"
+        android:layout_marginLeft="932dp"
         android:layout_marginTop="16dp"
         android:text="Set End Date"
         app:layout_constraintLeft_toLeftOf="parent"
