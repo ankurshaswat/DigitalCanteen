@@ -23,10 +23,12 @@ import com.example.digitalcanteen.adapter.MenuAdapter;
 import com.example.digitalcanteen.adapter.SelectAdapter;
 import com.example.digitalcanteen.app.AppConfig;
 import com.example.digitalcanteen.app.AppController;
+import com.example.digitalcanteen.dataObjects.Collection;
 import com.example.digitalcanteen.dataObjects.EHistory;
 import com.example.digitalcanteen.dataObjects.Employee;
 import com.example.digitalcanteen.dataObjects.menuItem;
 import com.example.digitalcanteen.dataObjects.selectedItems;
+import com.example.digitalcanteen.database.CollectionDatabase;
 import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 import com.example.digitalcanteen.database.UserDatabase;
@@ -66,6 +68,7 @@ public class MainPage extends AppCompatActivity {
     private Button btn2Admin = null;
     private EditText employee_id_edit = null;
     private UserDatabase db;
+    private CollectionDatabase collDb;
     private TransactionDatabase tranDB;
     private MenuDatabase menuDB;
     private String employee_id;
@@ -100,7 +103,7 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
 //        AppController.getInstance().getRequestQueue().stop();
 //        Log.d(TAG, "addUser: Network availability is "+AppController.getInstance().isInternetAvailable());
-
+        collDb = new CollectionDatabase(this);
 
         addMoney = (Button) findViewById(R.id.mPAddMoney);
         IdEntered = (Button) findViewById(R.id.mPIdE);
@@ -115,7 +118,7 @@ public class MainPage extends AppCompatActivity {
         selectedThings = (ListView) findViewById(R.id.lstCart);
         final TextView nameText = (TextView) findViewById(R.id.txtName);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
-        final TextView bal = (TextView) findViewById(R.id.balance);
+//        final TextView bal = (TextView) findViewById(R.id.balance);
         final TextView currBalance = (TextView) findViewById(R.id.balance);
         logout = (Button) findViewById(R.id.mPLogout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +265,7 @@ public class MainPage extends AppCompatActivity {
 
                         nameText.setText("Welcome " + db.getName(tempId));
 
-                        bal.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
+                        currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
                         IdEntered.setVisibility(View.GONE);
@@ -291,11 +294,12 @@ public class MainPage extends AppCompatActivity {
                     Date date_x = new Date();
                     DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     final String date = sdf.format(date_x);
+                    int num = tranDB.getNextNum();
                     for (int i = 0; i < order.size(); i++) {
                         //here add each item to transactions table
                         Log.d(TAG, "onClick: inserting " + order.get(i).getName());
-                        tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
-
+                        tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date, num);
+                        menuDB.editItemNum(menuDB.getItem(order.get(i).getName()), order.get(i).getName(), Integer.valueOf(order.get(i).getQuantity()));
 //     addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
                     }
                     checkNet();
@@ -503,9 +507,15 @@ public class MainPage extends AppCompatActivity {
                             double money = Double.parseDouble(amount.getText().toString());
                             double balNow = db.getBal(employee_id_edit.getText().toString());
                             Log.d(TAG, "onClick: Balance Before adding" + balNow);
-
-
+                            Date date_x = new Date();
+                            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            final String date = sdf.format(date_x);
                             db.updateinfo(employee_id_edit.getText().toString(), money);
+                            if (collDb.checkCollection(date)) {
+                                collDb.addCollection(date, money);
+                            } else {
+                                collDb.insertItem(date, money);
+                            }
                             checkNet();
 
                             balNow = db.getBal(employee_id_edit.getText().toString());
@@ -545,15 +555,23 @@ public class MainPage extends AppCompatActivity {
 
     }
 
+    private void syncCollection() {
+        List<Collection> list = collDb.get(CollectionDatabase.Status.NEW);
+
+        for (Collection entry : list) {
+            addCollection(entry.getDate(), entry.getId(), entry.getCollection());
+        }
+    }
+
     private void syncTransaction() {
         List<EHistory> list = tranDB.get(TransactionDatabase.Status.NEW);
 
         for (EHistory entry : list) {
-            addTransaction(entry.getEmployeeCode(), entry.getName(), entry.getQuantity(), entry.getCpi(), entry.getDate(), entry.getId());
+            addTransaction(entry.getEmployeeCode(), entry.getName(), entry.getQuantity(), entry.getCpi(), entry.getDate(), entry.getId(), entry.getNum());
         }
     }
 
-    private void addTransaction(final String Employee_id, final String Order_name, final Integer Quantity, final Double cpi, final String date, final Integer ID) {
+    private void addTransaction(final String Employee_id, final String Order_name, final Integer Quantity, final Double cpi, final String date, final Integer ID, final Integer num) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
 
@@ -632,6 +650,7 @@ public class MainPage extends AppCompatActivity {
                 params.put("Cost_perItem", String.valueOf(cpi));
                 params.put("Date", date);
                 params.put("Total", String.valueOf(Quantity * cpi));
+                params.put("num", String.valueOf(num));
 //                Log.d(TAG, "insertUser: inseting to db");
                 return params;
             }
@@ -736,6 +755,96 @@ public class MainPage extends AppCompatActivity {
     }
 
 
+    private void addCollection(final String Date, final Integer id, final Double Collection) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_register2";
+
+//        pDialog.setMessage("Registering ...");
+//        showDialog();
+
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                AppConfig.URL_ADD_UPDATE_COLLECTION, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+
+//                hideDialog();
+
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean error = jObj.getBoolean("error");
+                    if (!error) {
+
+
+                        Log.d(TAG, "onResponse: Succesfully posted to net");
+                        collDb.updateStatus(id);
+//                        // User successfully stored in MySQL
+//                        // Now store the user in sqlite
+//                        String uid = jObj.getString("uid");
+//
+//                        JSONObject user = jObj.getJSONObject("user");
+//                        String name = user.getString("name");
+//                        String email = user.getString("email");
+//                        String created_at = user
+//                                .getString("created_at");
+//
+//                        // Inserting row in users table
+//                        db.addUser(name, email, uid, created_at);
+//
+//                        Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
+//
+//                        // Launch login activity
+//                        Intent intent = new Intent(
+//                                RegisterActivity.this,
+//                                MainPage.class);
+//                        startActivity(intent);
+//                        finish();
+                    } else {
+
+                        // Error occurred in registration. Get the error
+                        // message
+                        String errorMsg = jObj.getString("error_msg");
+                        Toast.makeText(getApplicationContext(),
+                                errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: from add user" + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage() + " Possibly no internet", Toast.LENGTH_LONG).show();
+//                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<>();
+                params.put("Date", Date);
+                params.put("Collection", String.valueOf(Collection));
+//        new_content.put("Name", employee_name);
+
+//                Log.d(TAG, "insertUser: inseting to db");
+                return params;
+            }
+
+        };
+
+        // Adding request to request queue
+//        strReq.setPriority(Request.Priority.LOW);
+//        checkNet();
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+
     private void checkNet() {
         // Tag used to cancel the request
         String tag_string_req = "req_register20";
@@ -761,6 +870,7 @@ public class MainPage extends AppCompatActivity {
                         Log.d(TAG, "connected");
                         syncUser();
                         syncTransaction();
+                        syncCollection();
 //                        // User successfully stored in MySQL
 //                        // Now store the user in sqlite
 //                        String uid = jObj.getString("uid");

@@ -496,7 +496,7 @@ public class AdminActivity extends AppCompatActivity {
     private void syncItem() {
         List<menuItem> list = menudb.get(MenuDatabase.Status.NEW);
         for (menuItem entry : list) {
-            addUpdateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
+            addUpdateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId(), menudb.getItemNum(entry.getName()));
         }
 
         list = menudb.get(MenuDatabase.Status.DELETED);
@@ -529,7 +529,7 @@ public class AdminActivity extends AppCompatActivity {
                             for (int i = 0; i < arr.length(); i++) {
                                 JSONArray temp = arr.getJSONArray(i);
 
-                                menudb.insertMenuUpdated(temp.getString(0), Double.valueOf(temp.getString(1)));
+                                menudb.insertMenuUpdated(temp.getString(0), Double.valueOf(temp.getString(1)), Integer.valueOf(temp.getString(2)));
                                 Log.d(TAG, "onResponse: inserting menu " + temp.getString(0));
                             }
 
@@ -561,7 +561,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-    private void addUpdateItem(final String Item_name, final Double Cost, final Integer ID) {
+    private void addUpdateItem(final String Item_name, final Double Cost, final Integer ID, final Integer num) {
         String tag_string_req = "req_register4";
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_ADD_UPDATE_MENU, new Response.Listener<String>() {
@@ -596,6 +596,7 @@ public class AdminActivity extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("Item_name", Item_name);
                 params.put("Cost", String.valueOf(Cost));
+                params.put("num", String.valueOf(num));
                 return params;
             }
         };

@@ -12,14 +12,28 @@ public class EHistory {
     private int Id;
     private String employeeCode;
     private double total;
+    private Integer num;
 
-    public EHistory(String name, double cpi, int quantity, String date, int id, String employeeCode, double total) {
+    public EHistory(String name, double cpi, int quantity, String date, int id, String employeeCode, double total, Integer num) {
         this.name = name;
         this.cpi = cpi;
         this.quantity = quantity;
         this.date = date;
         this.Id = id;
         this.employeeCode = employeeCode;
+        this.total = total;
+        this.num = num;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public void setTotal(double total) {
         this.total = total;
     }
 

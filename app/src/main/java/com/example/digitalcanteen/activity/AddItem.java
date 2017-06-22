@@ -92,7 +92,7 @@ public class AddItem extends AppCompatActivity {
     private void syncItem() {
         List<menuItem> list = db.get(MenuDatabase.Status.NEW);
         for (menuItem entry : list) {
-            addUpdateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId());
+            addUpdateItem(entry.getName(), Double.valueOf(entry.getPrice()), entry.getId(), db.getItemNum(entry.getName()));
         }
 
         list = db.get(MenuDatabase.Status.DELETED);
@@ -102,7 +102,7 @@ public class AddItem extends AppCompatActivity {
     }
 
 
-    private void addUpdateItem(final String Item_name, final Double Cost, final Integer ID) {
+    private void addUpdateItem(final String Item_name, final Double Cost, final Integer ID, final Integer num) {
         String tag_string_req = "req_register4";
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 AppConfig.URL_ADD_UPDATE_MENU, new Response.Listener<String>() {
@@ -137,6 +137,7 @@ public class AddItem extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("Item_name", Item_name);
                 params.put("Cost", String.valueOf(Cost));
+                params.put("num", String.valueOf(num));
                 return params;
             }
         };

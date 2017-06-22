@@ -28,7 +28,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT,num Integer)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -41,11 +41,11 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Transactions(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Order_name TEXT,Quantity Integer,Cost_perItem DOUBLE,Total DOUBLE,Date TEXT,Status TEXT,num Integer)";
         db.execSQL(query);
     }
 
-    public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date) {
+    public boolean insertTransaction(String Employee_id, String Order_name, Integer Quantity, Double cpi, String date, Integer num) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues new_content = new ContentValues();
 
@@ -59,6 +59,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         new_content.put("Cost_perItem", cpi);
         new_content.put("Date", date);
         new_content.put("Total", Quantity * cpi);
+        new_content.put("num", num);
         new_content.put("Status", String.valueOf(Status.NEW));
 
         Log.d(TAG, "insertUser: inseting to db");
@@ -81,6 +82,19 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         return numCustomers;
 
 
+    }
+
+    public Integer getNextNum() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT COUNT(*),MAX(num) FROM Transactions", null);
+        cur.moveToFirst();
+        if (cur.getInt(0) == 0) {
+            cur.close();
+            return 1;
+        }
+        Integer num = cur.getInt(1);
+        cur.close();
+        return num;
     }
 
     public List<EHistory> getEmpHist(String employee_id) {
@@ -111,7 +125,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot, cur.getInt(8)));
 
         }
         cur.close();
@@ -147,7 +161,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot, cur.getInt(8)));
 
         }
         cur.close();
@@ -198,7 +212,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 //            Log.d(TAG, "getAll: "+date_);
 
 
-            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
+            empHis.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot, cur.getInt(8)));
 
         }
         cur.close();
@@ -220,7 +234,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
 
             Double cpi = cur.getDouble(4);
             String date = cur.getString(6);
-            newItems.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot));
+            newItems.add(new EHistory(name, cpi, quan, date, cur.getInt(0), emp_code, tot, cur.getInt(8)));
         }
         cur.close();
         return newItems;

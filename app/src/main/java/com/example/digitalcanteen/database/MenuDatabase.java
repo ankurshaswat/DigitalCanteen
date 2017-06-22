@@ -27,7 +27,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT,num Integer)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -40,7 +40,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Menu(ID Integer PRIMARY KEY AUTOINCREMENT,Item_name TEXT,Cost DOUBLE,Status TEXT,num Integer)";
         db.execSQL(query);
     }
 
@@ -52,6 +52,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
         new_content.put("Item_name", Item_name);
         new_content.put("Cost", Cost);
         new_content.put("Status", String.valueOf(Status.NEW));
+        new_content.put("num", 0);
 
         Log.d(TAG, "insertItem: inseting to db");
         long result = db.insert("Menu", null, new_content);
@@ -68,7 +69,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     public List<menuItem> getAll() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE NOT Status=?", new String[]{String.valueOf(Status.DELETED)});
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE NOT Status=? ORDER BY num DESC", new String[]{String.valueOf(Status.DELETED)});
 
         List<menuItem> itemlist = new ArrayList<>();
         while (cur.moveToNext()) {
@@ -91,6 +92,17 @@ public class MenuDatabase extends SQLiteOpenHelper {
         Integer itemid = cur.getInt(0);
         cur.close();
         return itemid;
+    }
+
+    public int getItemNum(String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=?", new String[]{name});
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Item_name=? AND NOT Status=?", new String[]{name, String.valueOf(Status.DELETED)});
+        cur.moveToFirst();
+//        Log.d(TAG, "getItem:toloooooooooooo      "+ cur.getInt(0)+"   "+cur.getString(1));
+        Integer num = cur.getInt(4);
+        cur.close();
+        return num;
     }
 
     public Double getItemPrice(String name) {
@@ -126,6 +138,21 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     }
 
+    public boolean editItemNum(int id, String item_name, Integer add) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues newValues = new ContentValues();
+        newValues.put("num", getItemNum(item_name) + add);
+        newValues.put("Item_name", item_name);
+        newValues.put("Status", String.valueOf(Status.NEW));
+
+        String[] args = new String[]{String.valueOf(id)};
+        long result = db.update("Menu", newValues, "ID=?", args);
+        return result != -1;
+    }
+
     public boolean deleteItem(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -147,7 +174,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
 
     public List<menuItem> get(Status status) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Status=?", new String[]{String.valueOf(status)});
+        Cursor cur = db.rawQuery("SELECT * FROM Menu WHERE Status=? ORDER BY num DESC", new String[]{String.valueOf(status)});
 
         List<menuItem> newItems = new ArrayList<>();
         while (cur.moveToNext()) {
@@ -172,10 +199,10 @@ public class MenuDatabase extends SQLiteOpenHelper {
     }
 
     public boolean isSynced() {
-        return (get(MenuDatabase.Status.NEW).size() == 0 & get(Status.DELETED).size() == 0);
+        return (get(Status.NEW).size() == 0 & get(Status.DELETED).size() == 0);
     }
 
-    public boolean insertMenuUpdated(String Item_name, Double Cost) {
+    public boolean insertMenuUpdated(String Item_name, Double Cost, Integer num) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues new_content = new ContentValues();
         Log.d(TAG, "insertItem: writing to new content");
@@ -183,6 +210,7 @@ public class MenuDatabase extends SQLiteOpenHelper {
         new_content.put("Item_name", Item_name);
         new_content.put("Cost", Cost);
         new_content.put("Status", String.valueOf(Status.SYNCED));
+        new_content.put("num", num);
 
         Log.d(TAG, "insertItem: inseting to db");
         long result = db.insert("Menu", null, new_content);
