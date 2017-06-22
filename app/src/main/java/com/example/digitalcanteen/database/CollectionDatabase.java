@@ -114,6 +114,40 @@ public class CollectionDatabase extends SQLiteOpenHelper {
         return result != -1;
     }
 
+    public List<Collection> getAllHistory(String strtDate, String endDate) {
+
+        List<Collection> empHis = new ArrayList<>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //TODO change this query for dates
+        Cursor cur = db.rawQuery("SELECT * FROM Transactions WHERE (Date BETWEEN ? AND ?)", new String[]{strtDate, endDate});
+        while (cur.moveToNext()) {
+//            Integer iid = cur.getInt(0);
+//            String st1 = cur.getString(1);
+//            Double st2 = cur.getDouble(2);
+//            itemlist.add(new menuItem(st1, st2 + "", iid));
+            Integer iid = cur.getInt(0);
+            String Date = cur.getString(1);
+            Double col = cur.getDouble(2);
+
+            Log.d(TAG, "getAllHistory: setting date = " + Date);
+//            Date date_ = null;
+//            try {
+//                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+            empHis.add(new Collection(Date, iid, col));
+
+        }
+        cur.close();
+        Log.d(TAG, "getAllHistory: " + empHis.size());
+        return empHis;
+
+    }
+
+
     public List<Collection> get(CollectionDatabase.Status status) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cur = db.rawQuery("SELECT * FROM Collections WHERE Status=?", new String[]{String.valueOf(status)});
