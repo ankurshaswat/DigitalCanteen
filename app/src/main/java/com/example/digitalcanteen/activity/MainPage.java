@@ -72,6 +72,7 @@ public class MainPage extends AppCompatActivity {
     private Button logout = null;
     private Button IdEntered = null;
     private Button addMoney = null;
+    private Button tip = null;
 
     private void logOut() {
         items.clear();
@@ -84,7 +85,7 @@ public class MainPage extends AppCompatActivity {
         btnSubmit.setVisibility(View.GONE);
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
-
+        tip.setVisibility(View.GONE);
 
         recreate();
 
@@ -106,6 +107,7 @@ public class MainPage extends AppCompatActivity {
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
         employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
         amt2add = (EditText) findViewById(R.id.moneyAmt);
+        tip = (Button) findViewById(R.id.tip);
         total = (TextView) findViewById(R.id.txtVuTotal);
         btnAddUser = (Button) findViewById(R.id.add_user);
         btnExit = (Button) findViewById(R.id.btnExit);
@@ -123,6 +125,7 @@ public class MainPage extends AppCompatActivity {
             }
         });
 
+
         employee_id_edit.setText("");
         IdEntered.setVisibility(View.VISIBLE);
         logout.setVisibility(View.GONE);
@@ -130,7 +133,7 @@ public class MainPage extends AppCompatActivity {
         btnSubmit.setVisibility(View.GONE);
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
-
+        tip.setVisibility(View.GONE);
 
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +145,6 @@ public class MainPage extends AppCompatActivity {
         });
 
 //
-
 
 
         btnAddUser.setOnClickListener(new View.OnClickListener() {
@@ -269,6 +271,7 @@ public class MainPage extends AppCompatActivity {
                         btnSubmit.setVisibility(View.VISIBLE);
                         btnAddUser.setVisibility(View.GONE);
                         btn2Admin.setVisibility(View.GONE);
+                        tip.setVisibility(View.GONE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
@@ -434,6 +437,48 @@ public class MainPage extends AppCompatActivity {
             }
 
 
+        });
+
+        tip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainPage.this);
+                View mView = getLayoutInflater().inflate(R.layout.tip, null);
+                final EditText amount = (EditText) mView.findViewById(R.id.addMoneyAmount);
+                Button tipOK = (Button) mView.findViewById(R.id.addMoneyOK);
+                Button tipCancel = (Button) mView.findViewById(R.id.addMoneyCancel);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+
+                tipOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int check = 1;
+//                        Double tipAmount = Double.parseDouble(amount.getText().toString());
+                        for (int i = 0; i < order.size(); i += 1) {
+                            if (order.get(i).getName() == "tip") {
+                                check = 0;
+                                break;
+                            }
+                        }
+                        if (check == 1) {
+                            selectedItems tipObject = new selectedItems("tip", "1", amount.getText().toString());
+                            order.add(tipObject);
+                        } else {
+                            for (int i = 0; i < order.size(); i += 1) {
+                                if (order.get(i).getName() == "tip") {
+                                    order.get(i).setPrice(amount.getText().toString());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+            }
         });
 
         addMoney.setOnClickListener(new View.OnClickListener() {
