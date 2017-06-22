@@ -126,7 +126,7 @@
         android:layout_marginTop="8dp"
         android:text="Add Money"
         android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toRightOf="@+id/lstMenu"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
@@ -201,12 +201,12 @@
         android:id="@+id/mPLogout"
         android:layout_width="150dp"
         android:layout_height="75dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="Logout"
         android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@+id/mPAddMoney"
         app:layout_constraintRight_toRightOf="@+id/mPAddMoney"
         app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
@@ -215,10 +215,10 @@
         android:id="@+id/tip"
         android:layout_width="150dp"
         android:layout_height="75dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:text="Tip"
         android:textSize="24sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnSubmit"
-        app:layout_constraintRight_toLeftOf="@+id/btnSubmit" />
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu" />
 
 </android.support.constraint.ConstraintLayout>

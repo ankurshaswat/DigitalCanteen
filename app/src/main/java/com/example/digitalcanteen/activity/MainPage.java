@@ -274,7 +274,7 @@ public class MainPage extends AppCompatActivity {
                         btnSubmit.setVisibility(View.VISIBLE);
                         btnAddUser.setVisibility(View.GONE);
                         btn2Admin.setVisibility(View.GONE);
-                        tip.setVisibility(View.GONE);
+                        tip.setVisibility(View.VISIBLE);
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                 .show();
@@ -299,8 +299,12 @@ public class MainPage extends AppCompatActivity {
                         //here add each item to transactions table
                         Log.d(TAG, "onClick: inserting " + order.get(i).getName());
                         tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date, num);
-                        menuDB.editItemNum(menuDB.getItem(order.get(i).getName()), order.get(i).getName(), Integer.valueOf(order.get(i).getQuantity()));
+
+
+                        if (!order.get(i).getName().equals("tip")) {
+                            menuDB.editItemNum(menuDB.getItem(order.get(i).getName()), order.get(i).getName(), Integer.valueOf(order.get(i).getQuantity()));
 //     addTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date);
+                        }
                     }
                     checkNet();
                     db.updateinfo(employee_id, -1 * totalamt);
@@ -478,9 +482,17 @@ public class MainPage extends AppCompatActivity {
                                 }
                             }
                         }
+
+                        dialog.dismiss();
+
                     }
                 });
-
+                tipCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.cancel();
+                    }
+                });
 
             }
         });
