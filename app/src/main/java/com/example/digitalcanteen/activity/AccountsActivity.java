@@ -166,7 +166,9 @@ public class AccountsActivity extends AppCompatActivity {
 //                        Double cpi = cursor.getDouble(4);
                         Double total = cursor.getDouble(5);
                         Double cpi = menuDb.getItemPrice(name);
-
+                        if (cpi == -1) {
+                            cpi = null;
+                        }
                         if (!map.containsKey(name)) {
                             map.put(name, new Sale(name, cpi, quantity2, total));
                         } else {
