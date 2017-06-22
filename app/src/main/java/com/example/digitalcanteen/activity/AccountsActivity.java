@@ -69,6 +69,7 @@ public class AccountsActivity extends AppCompatActivity {
         btnEndDate = (Button) findViewById(R.id.btnEndDate);
 
         Date today = new Date();
+
 //        today.
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
@@ -125,7 +126,7 @@ public class AccountsActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Log.d(TAG, "onDateSet: Do something with date here");
-                        endDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
+//                        endDateBox.setText("" + dayOfMonth + "/" + month + "/" + year + "");
                         numTimes = 0;
                         endDay = dayOfMonth;
                         endMonth = month + 1;

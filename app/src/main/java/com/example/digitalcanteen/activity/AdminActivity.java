@@ -58,6 +58,7 @@ public class AdminActivity extends AppCompatActivity {
     private String strtDate;
     private String setDate;
     private TextView theDate;
+    private Button btnCollections;
 
 
 
@@ -99,6 +100,15 @@ public class AdminActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: outside function" + db.numCustomers(strtDate));
         custNum.setText(db.numCustomers(strtDate) + " customer came on " + setDate);
         Log.d(TAG, "onCreate: " + db.numCustomers(strtDate));
+        btnCollections = (Button) findViewById(R.id.btnCollections);
+        btnCollections.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toCollections = new Intent(AdminActivity.this, Collections.class);
+                startActivity(toCollections);
+                finish();
+            }
+        });
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
