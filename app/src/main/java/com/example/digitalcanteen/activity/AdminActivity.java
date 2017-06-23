@@ -21,6 +21,7 @@ import com.example.digitalcanteen.app.AppConfig;
 import com.example.digitalcanteen.app.AppController;
 import com.example.digitalcanteen.dataObjects.Employee;
 import com.example.digitalcanteen.dataObjects.menuItem;
+import com.example.digitalcanteen.database.CollectionDatabase;
 import com.example.digitalcanteen.database.MenuDatabase;
 import com.example.digitalcanteen.database.TransactionDatabase;
 import com.example.digitalcanteen.database.UserDatabase;
@@ -59,7 +60,8 @@ public class AdminActivity extends AppCompatActivity {
     private String setDate;
     private TextView theDate;
     private Button btnCollections;
-
+    private TextView showCollection;
+    private CollectionDatabase collectionDatabase;
 
 
     @Override
@@ -101,6 +103,10 @@ public class AdminActivity extends AppCompatActivity {
         custNum.setText(db.numCustomers(strtDate) + " customer came on " + setDate);
         Log.d(TAG, "onCreate: " + db.numCustomers(strtDate));
         btnCollections = (Button) findViewById(R.id.btnCollections);
+        showCollection = (TextView) findViewById(R.id.collectionView);
+        collectionDatabase = new CollectionDatabase(AdminActivity.this);
+        showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+
         btnCollections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,8 +139,10 @@ public class AdminActivity extends AppCompatActivity {
                         Log.d(TAG, "onCreate:in function " + db.numCustomers(strtDate));
                         if (db.numCustomers(strtDate) != 1) {
                             custNum.setText(db.numCustomers(strtDate) + " customers came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
+                            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
                         } else {
                             custNum.setText(db.numCustomers(strtDate) + " customer came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
+                            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
                         }
 
                     }

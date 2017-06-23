@@ -61,7 +61,7 @@
         android:id="@+id/CustNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="14dp"
+        android:layout_marginRight="16dp"
         android:text="Number Of Customers"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/theDate"
@@ -146,5 +146,16 @@
         android:text="Collections"
         app:layout_constraintBottom_toTopOf="@+id/pWiseTransactions"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/collectionView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="@+id/CustNum"
+        app:layout_constraintTop_toBottomOf="@+id/CustNum" />
 
 </android.support.constraint.ConstraintLayout>

@@ -57,6 +57,7 @@ public class MainPage extends AppCompatActivity {
     public static TextView total = null;
     //    private ListView selectedThings;
     public static double totalamt = 0;
+    public static TextView tipAmountView = null;
     private static int flagg = 0;
     private EditText amt2add = null;
     private ListView selectedThings;
@@ -127,6 +128,7 @@ public class MainPage extends AppCompatActivity {
                 logOut();
             }
         });
+        tipAmountView = (TextView) findViewById(R.id.tipAmountView);
 
 
         employee_id_edit.setText("");
@@ -463,6 +465,8 @@ public class MainPage extends AppCompatActivity {
                 tipOK.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        Double tempTotal = Double.parseDouble(total.getText().toString());
+//                        Double tempTip;
                         int check = 1;
 //                        Double tipAmount = Double.parseDouble(amount.getText().toString());
                         for (int i = 0; i < order.size(); i += 1) {
@@ -474,10 +478,14 @@ public class MainPage extends AppCompatActivity {
                         if (check == 1) {
                             selectedItems tipObject = new selectedItems("tip", "1", amount.getText().toString());
                             order.add(tipObject);
+                            tipAmountView.setText("Included Tip is:- " + amount.getText());
+                            MainPage.selectedItemsAdapter.notifyDataSetChanged();
                         } else {
                             for (int i = 0; i < order.size(); i += 1) {
                                 if (order.get(i).getName() == "tip") {
                                     order.get(i).setPrice(amount.getText().toString());
+                                    tipAmountView.setText("Included Tip is:- " + amount.getText());
+                                    MainPage.selectedItemsAdapter.notifyDataSetChanged();
                                     break;
                                 }
                             }

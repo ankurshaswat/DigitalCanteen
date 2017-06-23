@@ -39,7 +39,7 @@ public class Collections extends AppCompatActivity {
     private Double TOTAL = 0.0;
     private TextView showTotal;
     private Button exitCollection;
-
+    private Integer numTimesClicked = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +87,7 @@ public class Collections extends AppCompatActivity {
         btnStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numTimesClicked = 0;
                 DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -117,6 +118,7 @@ public class Collections extends AppCompatActivity {
         btnEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numTimesClicked = 0;
                 DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -147,17 +149,22 @@ public class Collections extends AppCompatActivity {
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                collectionList = collectionDb.getAllHistory(strtDate, endDate);
-                for (int i = 0; i < collectionList.size(); i += 1) {
-                    TOTAL += collectionList.get(i).getCollection();
+                if (numTimesClicked == 0) {
+                    collectionList = collectionDb.getAllHistory(strtDate, endDate);
+
+                    for (int i = 0; i < collectionList.size(); i += 1) {
+                        TOTAL += collectionList.get(i).getCollection();
+                    }
+                    showTotal.setText("Total:- " + String.valueOf(TOTAL));
+
+                    View header = getLayoutInflater().inflate(R.layout.collection_template, null);
+                    collectionsView.addHeaderView(header);
+
+
+                    collectionAdapter listAdapter = new collectionAdapter(Collections.this, R.layout.collection_template, collectionList);
+                    collectionsView.setAdapter(listAdapter);
                 }
-                showTotal.setText("Total:- " + String.valueOf(TOTAL));
-                View header = getLayoutInflater().inflate(R.layout.collection_template, null);
-                collectionsView.addHeaderView(header);
-
-                collectionAdapter listAdapter = new collectionAdapter(Collections.this, R.layout.collection_template, collectionList);
-                collectionsView.setAdapter(listAdapter);
-
+                numTimesClicked += 1;
 
             }
         });
