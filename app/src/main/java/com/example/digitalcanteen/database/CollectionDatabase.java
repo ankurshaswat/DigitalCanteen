@@ -121,7 +121,7 @@ public class CollectionDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //TODO change this query for dates
-        Cursor cur = db.rawQuery("SELECT * FROM Collections WHERE (Date BETWEEN ? AND ?)", new String[]{strtDate, endDate});
+        Cursor cur = db.rawQuery("SELECT * FROM Collections WHERE (Date BETWEEN ? AND ?) ORDER BY Date DESC", new String[]{strtDate, endDate});
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
 //            String st1 = cur.getString(1);

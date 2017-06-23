@@ -84,6 +84,11 @@ public class Collections extends AppCompatActivity {
         endDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
 
         collectionDb = new CollectionDatabase(Collections.this);
+
+
+        View header = getLayoutInflater().inflate(R.layout.collection_template, null);
+        collectionsView.addHeaderView(header);
+
         btnStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,8 +162,6 @@ public class Collections extends AppCompatActivity {
                     }
                     showTotal.setText("Total:- " + String.valueOf(TOTAL));
 
-                    View header = getLayoutInflater().inflate(R.layout.collection_template, null);
-                    collectionsView.addHeaderView(header);
 
 
                     collectionAdapter listAdapter = new collectionAdapter(Collections.this, R.layout.collection_template, collectionList);
