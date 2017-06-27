@@ -1,6 +1,7 @@
 package com.example.digitalcanteen.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -93,7 +96,6 @@ public class MainPage extends AppCompatActivity {
 
         recreate();
 
-
     }
 
     @Override
@@ -139,6 +141,8 @@ public class MainPage extends AppCompatActivity {
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
         tip.setVisibility(View.GONE);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -270,6 +274,12 @@ public class MainPage extends AppCompatActivity {
                         currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                        inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
                         IdEntered.setVisibility(View.GONE);
                         logout.setVisibility(View.VISIBLE);
                         addMoney.setVisibility(View.VISIBLE);
