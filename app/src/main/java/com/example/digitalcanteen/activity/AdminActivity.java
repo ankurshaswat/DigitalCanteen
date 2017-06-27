@@ -105,7 +105,13 @@ public class AdminActivity extends AppCompatActivity {
         btnCollections = (Button) findViewById(R.id.btnCollections);
         showCollection = (TextView) findViewById(R.id.collectionView);
         collectionDatabase = new CollectionDatabase(AdminActivity.this);
-        showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+
+        if (collectionDatabase.getAllHistory(strtDate, strtDate).size() == 0) {
+            showCollection.setText("No History");
+        } else {
+            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+
+        }
 
         btnCollections.setOnClickListener(new View.OnClickListener() {
             @Override

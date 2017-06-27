@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -141,6 +142,8 @@ public class MainPage extends AppCompatActivity {
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
         tip.setVisibility(View.GONE);
+
+        final Window window = getWindow();
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -502,13 +505,22 @@ public class MainPage extends AppCompatActivity {
                         }
 
                         dialog.dismiss();
+//                        View view = getcontex.getCurrentFocus();
+//                        if (view != null) {
+//                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                        }
+
 
                     }
                 });
                 tipCancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dialog.cancel();
+
+
+                        dialog.dismiss();
+//                        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
                     }
                 });
 
