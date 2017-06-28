@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 public class Collections extends AppCompatActivity {
     private static final String TAG = "CollectionsClass";
     public collectionAdapter CollectionAdapter;
     int currDay, currMonth, currYear;
     int endDay, endMonth, endYear;
     int strtDay, strtMonth, strtYear;
+    int weekBDay, weekBMonth, weekBYear;
     private List<Collection> collectionList = new ArrayList<>();
     private CollectionDatabase collectionDb;
     private ListView collectionsView = null;
@@ -55,6 +57,11 @@ public class Collections extends AppCompatActivity {
         showTotal = (TextView) findViewById(R.id.showTotal);
         exitCollection = (Button) findViewById(R.id.exitCollections);
 
+//        DateTime
+
+
+
+
         exitCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,21 +76,40 @@ public class Collections extends AppCompatActivity {
 
 
         Date today = new Date();
+        Date aWeekBefore = new Date();
+        aWeekBefore.setTime(aWeekBefore.getTime() - 604800000L);
+
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
 //        currMonth+=;
         currYear = Integer.parseInt(formatterY.format(today));
+        weekBDay = Integer.parseInt(formatterD.format(aWeekBefore));
+        weekBMonth = Integer.parseInt(formatterM.format(aWeekBefore));
+        weekBYear = Integer.parseInt(formatterY.format(aWeekBefore));
 
         String formatterDD = String.format("%02d", currDay);
         String formatterMM = String.format("%02d", currMonth);
 
+        String formatterDDD = String.format("%02d", weekBMonth);
+        String formatterMMM = String.format("%02d", weekBMonth);
         strtView.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
-        endView.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        endView.setText("" + formatterDDD + "/" + formatterMMM + "/" + weekBYear + "");
 
         strtDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
-        endDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
+        endDate = "" + weekBYear + "-" + formatterMMM + "-" + formatterDDD;
 
         collectionDb = new CollectionDatabase(Collections.this);
+        TOTAL = 0.0;
+        collectionList = collectionDb.getAllHistory(strtDate, endDate);
+
+        for (int i = 0; i < collectionList.size(); i += 1) {
+            TOTAL += collectionList.get(i).getCollection();
+        }
+        showTotal.setText("Total:- " + String.valueOf(TOTAL));
+
+
+        collectionAdapter listAdapter = new collectionAdapter(Collections.this, R.layout.collection_template, collectionList);
+        collectionsView.setAdapter(listAdapter);
 
 
         View header = getLayoutInflater().inflate(R.layout.collection_template, null);
@@ -146,7 +172,7 @@ public class Collections extends AppCompatActivity {
 
                     }
                 };
-                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth - 1, currDay);
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, weekBYear, weekBMonth - 1, weekBDay);
                 dialog.show();
             }
         });
@@ -155,6 +181,7 @@ public class Collections extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (numTimesClicked == 0) {
+                    TOTAL = 0.0;
                     collectionList = collectionDb.getAllHistory(strtDate, endDate);
 
                     for (int i = 0; i < collectionList.size(); i += 1) {
