@@ -77,12 +77,14 @@ public class Collections extends AppCompatActivity {
 
         Date today = new Date();
         Date aWeekBefore = new Date();
+
         aWeekBefore.setTime(aWeekBefore.getTime() - 604800000L);
 
+//        currMonth+=;
         currDay = Integer.parseInt(formatterD.format(today));
         currMonth = Integer.parseInt(formatterM.format(today));
-//        currMonth+=;
         currYear = Integer.parseInt(formatterY.format(today));
+
         weekBDay = Integer.parseInt(formatterD.format(aWeekBefore));
         weekBMonth = Integer.parseInt(formatterM.format(aWeekBefore));
         weekBYear = Integer.parseInt(formatterY.format(aWeekBefore));
@@ -90,13 +92,14 @@ public class Collections extends AppCompatActivity {
         String formatterDD = String.format("%02d", currDay);
         String formatterMM = String.format("%02d", currMonth);
 
-        String formatterDDD = String.format("%02d", weekBMonth);
+        String formatterDDD = String.format("%02d", weekBDay);
         String formatterMMM = String.format("%02d", weekBMonth);
-        strtView.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
-        endView.setText("" + formatterDDD + "/" + formatterMMM + "/" + weekBYear + "");
 
-        strtDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
-        endDate = "" + weekBYear + "-" + formatterMMM + "-" + formatterDDD;
+        endView.setText("" + formatterDD + "/" + formatterMM + "/" + currYear + "");
+        strtView.setText("" + formatterDDD + "/" + formatterMMM + "/" + weekBYear + "");
+
+        endDate = "" + currYear + "-" + formatterMM + "-" + formatterDD;
+        strtDate = "" + weekBYear + "-" + formatterMMM + "-" + formatterDDD;
 
         collectionDb = new CollectionDatabase(Collections.this);
         TOTAL = 0.0;
