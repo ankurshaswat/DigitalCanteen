@@ -50,11 +50,11 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:hint="Price"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/addName"
-        app:layout_constraintHorizontal_bias="0.799"
+        app:layout_constraintHorizontal_bias="0.805"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -85,4 +85,5 @@
         app:layout_constraintHorizontal_bias="0.699"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
