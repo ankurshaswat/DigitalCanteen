@@ -197,7 +197,7 @@ public class MainPage extends AppCompatActivity {
                             if (db.checkEmployeeId(addId).moveToFirst()) {
                                 Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                             } else {
-                                if (addRFID.length() == 0) {
+                                if (addRFID.length() == 10) {
                                     boolean check = db.insertUser(addId, addName, 0.0, addRFID);
                                     if (check) {
                                         Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
