@@ -91,8 +91,9 @@ public class SelectAdapter extends ArrayAdapter {
         for (int i = 0; i < order.size(); i++) {
             tot += Double.parseDouble(order.get(i).getPrice());
         }
+        Double roundOff = Math.round(tot * 100.0) / 100.0;
 
-        MainPage.total.setText("Your Total is :- Rs." + tot);
+        MainPage.total.setText("Your Total is :- Rs." + roundOff);
         MainPage.totalamt = tot;
 
     }

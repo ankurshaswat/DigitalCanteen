@@ -186,7 +186,7 @@ public class MenuAdapter extends ArrayAdapter {
                                 break;
                             } else {
                                 order.remove(z);
-                                row.setBackgroundColor(Color.WHITE);
+                                row.setBackgroundColor(Color.argb(00, 00, 00, 00));
 
                             }
                             break;
