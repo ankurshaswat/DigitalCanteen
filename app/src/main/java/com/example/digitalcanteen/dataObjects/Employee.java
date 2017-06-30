@@ -13,12 +13,22 @@ public class Employee {
     private String employee_name;
     private Double balance;
     private Integer id;
+    private String UID;
 
-    public Employee(String employee_id, String employee_name, Double balance, Integer id) {
+    public Employee(String employee_id, String employee_name, Double balance, Integer id, String UID) {
         this.employee_id = employee_id;
         this.employee_name = employee_name;
         this.balance = balance;
         this.id = id;
+        this.UID = UID;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 
     public String getEmployee_id() {

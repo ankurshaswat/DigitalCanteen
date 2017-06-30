@@ -181,7 +181,7 @@ public class MainPage extends AppCompatActivity {
                         String addName = newName.getText().toString();
 
                         if (addId.length() == 0 || addName.length() == 0) {
-                            Toast.makeText(getApplicationContext(), "No field can be Empty", Toast.LENGTH_SHORT)
+                            Toast.makeText(getApplicationContext(), "Name and ID cannot be empty", Toast.LENGTH_SHORT)
                                     .show();
 
                         } else {
@@ -194,7 +194,11 @@ public class MainPage extends AppCompatActivity {
                             if (db.checkEmployeeId(addId).moveToFirst()) {
                                 Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                             } else {
-                                boolean check = db.insertUser(addId, addName, 0.0);
+
+                                String UID = "-1";
+                                //TODO here if uid set then put UID
+
+                                boolean check = db.insertUser(addId, addName, 0.0, UID);
                                 if (check) {
                                     Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
                                     checkNet();
@@ -265,10 +269,11 @@ public class MainPage extends AppCompatActivity {
                 else {
 
                     employee_id = employee_id_edit.getText().toString();
+                    //NOTE here employee id can also store UID
                     Cursor results = db.checkEmployeeId(employee_id);
                     if (results.moveToFirst()) {
 
-                        String tempId = employee_id_edit.getText().toString();
+                        String tempId = results.getString(1);
 
                         nameText.setText("Welcome " + db.getName(tempId));
                         Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
@@ -589,7 +594,7 @@ public class MainPage extends AppCompatActivity {
     private void syncUser() {
         List<Employee> list = db.get(UserDatabase.Status.NEW);
         for (Employee entry : list) {
-            addUpdateUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId());
+            addUpdateUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId(), entry.getUID());
         }
 
     }
@@ -703,7 +708,7 @@ public class MainPage extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
-    private void addUpdateUser(final String Employee_id, final String name, final Double Balance, final Integer ID) {
+    private void addUpdateUser(final String Employee_id, final String name, final Double Balance, final Integer ID, final String UID) {
         // Tag used to cancel the request
         String tag_string_req = "req_register2";
 
@@ -779,6 +784,7 @@ public class MainPage extends AppCompatActivity {
                 params.put("Employee_code", Employee_id);
                 params.put("Name", name);
                 params.put("Balance", String.valueOf(Balance));
+                params.put("UID", UID);
 //        new_content.put("Name", employee_name);
 
 //                Log.d(TAG, "insertUser: inseting to db");

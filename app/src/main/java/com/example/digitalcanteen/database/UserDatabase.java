@@ -39,7 +39,7 @@ public class UserDatabase extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "onCreate: creating db");
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT,UID TEXT)";
         db.execSQL(query);
         Log.d(TAG, "onCreate: db created");
     }
@@ -52,18 +52,24 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onOpen(SQLiteDatabase db) {
-        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT)";
+        String query = "CREATE TABLE IF NOT EXISTS Users(ID Integer PRIMARY KEY AUTOINCREMENT,Employee_code TEXT,Name TEXT,Balance DOUBLE,Status TEXT,UID TEXT)";
         db.execSQL(query);
     }
 
     public Cursor checkEmployeeId(String employee_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        return db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+        Cursor results = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+        if (results.moveToFirst()) {
+            return results;
+        } else {
+            results.close();
+            return db.rawQuery("SELECT * FROM Users WHERE UID=?", new String[]{employee_id});
 
+        }
     }
 
-    public boolean insertUser(String employee_id, String name, Double balance) {
+    public boolean insertUser(String employee_id, String name, Double balance, String UID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues new_content = new ContentValues();
         Log.d(TAG, "insertUser: writing to new content");
@@ -71,6 +77,8 @@ public class UserDatabase extends SQLiteOpenHelper {
 //        new_content.put("Name", employee_name);
         new_content.put("Balance", balance);
         new_content.put("Name", name);
+        new_content.put("UID", UID);
+
         new_content.put("Status", String.valueOf(Status.NEW));
 
         Log.d(TAG, "insertUser: inseting to db");
@@ -86,7 +94,16 @@ public class UserDatabase extends SQLiteOpenHelper {
         Double balance = cur.getDouble(3);
         cur.close();
         return balance;
+    }
 
+
+    public String getUID(String employee_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM Users WHERE Employee_code=?", new String[]{employee_id});
+        cur.moveToFirst();
+        String UID = cur.getString(5);
+        cur.close();
+        return UID;
     }
 
     public String getName(String employee_id) {
@@ -101,11 +118,9 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     public boolean updateinfo(String employee_id, Double amt) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues newValues = new ContentValues();
         amt = amt + getBal(employee_id);
         Log.d(TAG, "updateinfo: " + amt);
-
         newValues.put("Balance", amt);
         newValues.put("Status", String.valueOf(Status.NEW));
         newValues.put("Employee_code", employee_id);
@@ -134,7 +149,7 @@ public class UserDatabase extends SQLiteOpenHelper {
             String emp_code = cur.getString(1);
             String name = cur.getString(2);
             Double bal = cur.getDouble(3);
-
+            String UID = cur.getString(5);
 
 //            Date date_ = null;
 //            try {
@@ -142,7 +157,7 @@ public class UserDatabase extends SQLiteOpenHelper {
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            empHis.add(new Employee(emp_code, name, bal, cur.getInt(0)));
+            empHis.add(new Employee(emp_code, name, bal, cur.getInt(0), UID));
 
         }
         cur.close();
@@ -160,7 +175,8 @@ public class UserDatabase extends SQLiteOpenHelper {
             String emp_code = cur.getString(1);
             String name = cur.getString(2);
             Double bal = cur.getDouble(3);
-            newItems.add(new Employee(emp_code, name, bal, cur.getInt(0)));
+            String UID = cur.getString(5);
+            newItems.add(new Employee(emp_code, name, bal, cur.getInt(0), UID));
         }
         cur.close();
         return newItems;
@@ -181,7 +197,7 @@ public class UserDatabase extends SQLiteOpenHelper {
         return get(Status.NEW).size() == 0;
     }
 
-    public boolean insertUserUpdated(String employee_id, String name, Double balance) {
+    public boolean insertUserUpdated(String employee_id, String name, Double balance, String UID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues new_content = new ContentValues();
         Log.d(TAG, "insertUser: writing to new content");
@@ -189,6 +205,7 @@ public class UserDatabase extends SQLiteOpenHelper {
 //        new_content.put("Name", employee_name);
         new_content.put("Balance", balance);
         new_content.put("Name", name);
+        new_content.put("UID", UID);
         new_content.put("Status", String.valueOf(Status.SYNCED));
 
         Log.d(TAG, "insertUser: inseting to db");
