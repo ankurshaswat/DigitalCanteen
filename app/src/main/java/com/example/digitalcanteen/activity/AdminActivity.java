@@ -328,13 +328,13 @@ public class AdminActivity extends AppCompatActivity {
     private void syncUser() {
         List<Employee> list = userdb.get(UserDatabase.Status.NEW);
         for (Employee entry : list) {
-            addUpdateUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId());
+            addUpdateUser(entry.getEmployee_id(), entry.getEmployee_name(), entry.getBalance(), entry.getId(),entry.getUID());
         }
 
         resetUserList();
     }
 
-    private void addUpdateUser(final String Employee_id, final String name, final Double Balance, final Integer ID) {
+    private void addUpdateUser(final String Employee_id, final String name, final Double Balance, final Integer ID,final String UID) {
         // Tag used to cancel the request
         String tag_string_req = "req_register2";
 
@@ -406,10 +406,11 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Employee_code", Employee_id);
                 params.put("Name", name);
                 params.put("Balance", String.valueOf(Balance));
+                params.put("UID",UID);
 //        new_content.put("Name", employee_name);
 
 //                Log.d(TAG, "insertUser: inseting to db");

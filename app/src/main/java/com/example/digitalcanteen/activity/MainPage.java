@@ -306,7 +306,7 @@ public class MainPage extends AppCompatActivity {
                         currBalance.setText("Your Balance is " + String.valueOf(roundOff));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
-
+                        Log.d(TAG, "onClick: "+db.getUID(tempId));
                         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
