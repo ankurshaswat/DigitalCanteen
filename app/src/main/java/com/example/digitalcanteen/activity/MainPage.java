@@ -9,8 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,7 +61,7 @@ public class MainPage extends AppCompatActivity {
     public static double totalamt = 0;
     public static TextView tipAmountView = null;
     private static int flagg = 0;
-    private EditText amt2add = null;
+    //    private EditText amt2add = null;
     private ListView selectedThings;
     private ListView listItems;
     private ProgressDialog progressDialog;
@@ -113,7 +111,7 @@ public class MainPage extends AppCompatActivity {
         IdEntered = (Button) findViewById(R.id.mPIdE);
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
         employee_id_edit = (EditText) findViewById(R.id.employeeCodeInput);
-        amt2add = (EditText) findViewById(R.id.moneyAmt);
+//        amt2add = (EditText) findViewById(R.id.moneyAmt);
         tip = (Button) findViewById(R.id.tip);
         total = (TextView) findViewById(R.id.txtVuTotal);
         btnAddUser = (Button) findViewById(R.id.add_user);
@@ -143,9 +141,9 @@ public class MainPage extends AppCompatActivity {
         btn2Admin.setVisibility(View.VISIBLE);
         tip.setVisibility(View.GONE);
 
-        final Window window = getWindow();
+//        final Window window = getWindow();
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         btn2Admin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,15 +271,14 @@ public class MainPage extends AppCompatActivity {
                         String tempId = employee_id_edit.getText().toString();
 
                         nameText.setText("Welcome " + db.getName(tempId));
-
-                        currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
+                        Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
+                        currBalance.setText("Your Balance is " + String.valueOf(roundOff));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
 
-                        InputMethodManager inputManager = (InputMethodManager)
-                                getSystemService(Context.INPUT_METHOD_SERVICE);
-
+                        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
 
                         IdEntered.setVisibility(View.GONE);
                         logout.setVisibility(View.VISIBLE);
@@ -323,7 +320,7 @@ public class MainPage extends AppCompatActivity {
                     }
                     checkNet();
                     db.updateinfo(employee_id, -1 * totalamt);
-                    Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_LONG).show();
 
 
                     items.clear();

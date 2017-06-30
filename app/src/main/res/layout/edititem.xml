@@ -11,7 +11,7 @@
         android:id="@+id/currName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="16dp"
         android:text="TextView"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/currPrice"
@@ -21,33 +21,29 @@
         android:id="@+id/currPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="TextView"
         android:textSize="18sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonEdit"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintLeft_toRightOf="@+id/currName"
-        app:layout_constraintRight_toLeftOf="@+id/buttonRemove" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/buttonEdit" />
 
     <Button
         android:id="@+id/buttonEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="16dp"
         android:text="Edit"
         app:layout_constraintBaseline_toBaselineOf="@+id/buttonRemove"
-        app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintLeft_toRightOf="@+id/currName"
         app:layout_constraintRight_toLeftOf="@+id/buttonRemove" />
 
     <Button
         android:id="@+id/buttonRemove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="Remove"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

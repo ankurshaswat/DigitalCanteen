@@ -31,7 +31,7 @@ public class BalanceAdapter extends ArrayAdapter {
 
     public BalanceAdapter(@NonNull Context context, @LayoutRes int resource,List<Employee> eBalance)  {
         super(context, resource);
-        this.eBalance=eBalance;
+        BalanceAdapter.eBalance = eBalance;
         this.con=context;
 
     }
@@ -50,7 +50,10 @@ public class BalanceAdapter extends ArrayAdapter {
         TextView balance = (TextView) raven.findViewById(R.id.balanceBalance);
 
         name.setText(eBalance.get(position).getEmployee_name());
-        balance.setText(String.valueOf(eBalance.get(position).getBalance()));
+
+
+        Double roundOff = Math.round(eBalance.get(position).getBalance() * 100.0) / 100.0;
+        balance.setText(String.valueOf(roundOff));
         return raven;
     }
 }
