@@ -135,6 +135,26 @@ public class UserDatabase extends SQLiteOpenHelper {
 
     }
 
+    public boolean updateUID(String employee_id, String UID) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues newValues = new ContentValues();
+
+
+        newValues.put("UID", UID);
+        newValues.put("Status", String.valueOf(Status.NEW));
+        newValues.put("Employee_code", employee_id);
+
+//        Log.d(TAG, "updateinfo: " + getBal(employee_id));
+
+//        String[] args = new String[]{employee_id};
+
+        long result = db.update("Users", newValues, "Employee_code=?", new String[]{employee_id});
+        return result != -1;
+
+
+    }
+
+
     public List<Employee> getAll() {
 
         List<Employee> empHis = new ArrayList<>();

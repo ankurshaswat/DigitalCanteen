@@ -764,6 +764,7 @@ public class MainPage extends AppCompatActivity {
                 params.put("Order_name", Order_name);
                 params.put("Quantity", String.valueOf(Quantity));
                 params.put("Cost_perItem", String.valueOf(cpi));
+                params.put("Cost_perItem", String.valueOf(cpi));
                 params.put("Date", date);
                 params.put("Total", String.valueOf(Quantity * cpi));
                 params.put("num", String.valueOf(num));
@@ -856,6 +857,7 @@ public class MainPage extends AppCompatActivity {
                 params.put("Employee_code", Employee_id);
                 params.put("Name", name);
                 params.put("Balance", String.valueOf(Balance));
+                params.put("UID", UID);
 //        new_content.put("Name", employee_name);
 
 //                Log.d(TAG, "insertUser: inseting to db");
