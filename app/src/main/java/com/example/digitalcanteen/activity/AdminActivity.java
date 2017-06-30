@@ -446,7 +446,7 @@ public class AdminActivity extends AppCompatActivity {
                                 JSONArray temp = arr.getJSONArray(i);
                                 JSONArray arr2 = temp;
 
-                                userdb.insertUserUpdated(arr2.getString(0), arr2.getString(1), Double.valueOf(arr2.getString(2)));
+                                userdb.insertUserUpdated(arr2.getString(0), arr2.getString(1), Double.valueOf(arr2.getString(2)), arr2.getString(3));
                                 Log.d(TAG, "onResponse: inserting user " + arr2.getString(0));
                             }
 

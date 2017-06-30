@@ -197,7 +197,7 @@ public class MainPage extends AppCompatActivity {
                             if (db.checkEmployeeId(addId).moveToFirst()) {
                                 Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                             } else {
-                                if (addRFID.length() != 0) {
+                                if (addRFID.length() == 0) {
                                     boolean check = db.insertUser(addId, addName, 0.0, addRFID);
                                     if (check) {
                                         Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
@@ -217,13 +217,16 @@ public class MainPage extends AppCompatActivity {
                                 String UID = "-1";
                                 //TODO here if uid set then put UID
 
-                                boolean check = db.insertUser(addId, addName, 0.0, UID);
-                                if (check) {
-                                    Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
-                                    checkNet();
-                                    dialog.cancel();
+//                                boolean check = db.insertUser(addId, addName, 0.0, UID);
+//                                if (check) {
+//                                    Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+//                                    checkNet();
+//                                    dialog.cancel();
+//                                }
+                            } else {
+                                    Toast.makeText(getApplicationContext(), "Incorrect RFID entered .Please try again", Toast.LENGTH_SHORT).show();
+                                    newRFID.setText("");
                                 }
-                            }
 
                                 }
 
@@ -231,7 +234,7 @@ public class MainPage extends AppCompatActivity {
                             }
 
                         }
-                    }
+
 
                 });
 
@@ -280,8 +283,7 @@ public class MainPage extends AppCompatActivity {
         renderMenuAdapter = new MenuAdapter(MainPage.this, R.layout.activity_layout_menu, items);
         listItems.setAdapter(renderMenuAdapter);
 
-
-        IdEntered.setOnClickListener(new View.OnClickListener() {
+        final View.OnClickListener oKpressed = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -324,63 +326,53 @@ public class MainPage extends AppCompatActivity {
 
 
             }
-        });
+        };
+        IdEntered.setOnClickListener(oKpressed);
         employee_id_edit.setOnKeyListener(new View.OnKeyListener() {
                                               @Override
                                               public boolean onKey(View v, int keyCode, KeyEvent event) {
                                                   if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                                                      if (employee_id_edit.getText().toString().length() == 10) {
-                                                          if (employee_id_edit.getText().toString().trim().isEmpty()) {
-                                                              Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+                                                      if (employee_id_edit.getText().toString().trim().isEmpty()) {
+                                                          Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+                                                                  .show();
+                                                      }
+//                TODO checking if id is entered correctly
+                                                      else {
+
+                                                          employee_id = employee_id_edit.getText().toString();
+                                                          //NOTE here employee id can also store UID
+                                                          Cursor results = db.checkEmployeeId(employee_id);
+                                                          if (results.moveToFirst()) {
+
+                                                              String tempId = results.getString(1);
+
+                                                              nameText.setText("Welcome " + db.getName(tempId));
+                                                              Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
+                                                              currBalance.setText("Your Balance is " + String.valueOf(roundOff));
+                                                              flagg = 1;
+                                                              Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+
+                                                              InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                              inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+
+                                                              IdEntered.setVisibility(View.GONE);
+                                                              logout.setVisibility(View.VISIBLE);
+                                                              addMoney.setVisibility(View.VISIBLE);
+                                                              btnSubmit.setVisibility(View.VISIBLE);
+                                                              btnAddUser.setVisibility(View.GONE);
+                                                              btn2Admin.setVisibility(View.GONE);
+                                                              tip.setVisibility(View.VISIBLE);
+                                                          } else {
+                                                              Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
                                                                       .show();
                                                           }
-//                TODO checking if id is entered correctly
-                                                          else {
-
-                                                              employee_id = employee_id_edit.getText().toString();
-                                                              Cursor results = db.checkEmployeeId(employee_id);
-                                                              if (results.moveToFirst()) {
-
-                                                                  String tempId = employee_id_edit.getText().toString();
-
-                                                                  nameText.setText("Welcome " + db.getName(tempId));
-                                                                  Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
-                                                                  currBalance.setText("Your Balance is " + String.valueOf(roundOff));
-                                                                  flagg = 1;
-                                                                  Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
-
-                                                                  InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                                                  inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-
-                                                                  IdEntered.setVisibility(View.GONE);
-                                                                  logout.setVisibility(View.VISIBLE);
-                                                                  addMoney.setVisibility(View.VISIBLE);
-                                                                  btnSubmit.setVisibility(View.VISIBLE);
-                                                                  btnAddUser.setVisibility(View.GONE);
-                                                                  btn2Admin.setVisibility(View.GONE);
-                                                                  tip.setVisibility(View.VISIBLE);
-                                                              } else {
-                                                                  Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
-                                                                          .show();
-                                                              }
-                                                          }
-
                                                       }
-//                        showId.setText(employee_id_edit.getText());
-
-                                                  } else {
-                                                      employee_id_edit.setText("");
-//                        employee_id_edit.setFocusableInTouchMode(true);
-//                        employee_id_edit.setSelection(0);
-//                        employee_id_edit.setFocusableInTouchMode(true);
-//                        InputMethodManager imm  = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                        imm.showSoftInput(employee_id_edit,InputMethodManager.SHOW_IMPLICIT);
                                                   }
 
+                                                  return false;
                                               }
-                return false
-                                          }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
