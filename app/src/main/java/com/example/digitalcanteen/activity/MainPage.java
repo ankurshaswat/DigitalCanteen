@@ -80,6 +80,8 @@ public class MainPage extends AppCompatActivity {
     private Button IdEntered = null;
     private Button addMoney = null;
     private Button tip = null;
+    private Button addRFID = null;
+    private String tempId;
 
     private void logOut() {
         items.clear();
@@ -93,6 +95,7 @@ public class MainPage extends AppCompatActivity {
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
         tip.setVisibility(View.GONE);
+        addRFID.setVisibility(View.GONE);
 
         recreate();
 
@@ -121,6 +124,7 @@ public class MainPage extends AppCompatActivity {
         selectedThings = (ListView) findViewById(R.id.lstCart);
         final TextView nameText = (TextView) findViewById(R.id.txtName);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        addRFID = (Button) findViewById(R.id.mPAR);
 //        final TextView bal = (TextView) findViewById(R.id.balance);
         final TextView currBalance = (TextView) findViewById(R.id.balance);
         logout = (Button) findViewById(R.id.mPLogout);
@@ -141,6 +145,76 @@ public class MainPage extends AppCompatActivity {
         btnAddUser.setVisibility(View.VISIBLE);
         btn2Admin.setVisibility(View.VISIBLE);
         tip.setVisibility(View.GONE);
+        addRFID.setVisibility(View.GONE);
+
+        addRFID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder qBuilder = new AlertDialog.Builder(MainPage.this);
+                Log.d(TAG, "onClick: I am here");
+                View qView = getLayoutInflater().inflate(R.layout.addrfid, null);
+//                final EditText newName = (EditText) qView.findViewById(R.id.addName);
+//                final EditText newCode = (EditText) qView.findViewById(R.id.addEC);
+//                final EditText newRFID = (EditText) qView.findViewById(R.id.newRFID);
+//                Button addSubmit = (Button) qView.findViewById(R.id.addSubmit);
+//                Button addCancel = (Button) qView.findViewById(R.id.addCancel);
+                final TextView showEmpId = (TextView) qView.findViewById(R.id.showEmployeeId);
+                final EditText addingRFID = (EditText) qView.findViewById(R.id.addingRFID);
+                Button addingSubmit = (Button) qView.findViewById(R.id.addingRFIDSubmit);
+                Button addingCancel = (Button) qView.findViewById(R.id.addRFIDCancel);
+                showEmpId.setText("Employee Id:- " + tempId);
+//                employee_id = employee_id_edit.getText().toString();
+                //NOTE here employee id can also store UID
+//                Cursor results = db.checkEmployeeId(employee_id);
+                qBuilder.setView(qView);
+                final AlertDialog dialog = qBuilder.create();
+                dialog.show();
+                addingSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String tempRFID = addingRFID.getText().toString();
+                        if (!tempRFID.isEmpty()) {
+                            Cursor results = db.checkEmployeeId(tempRFID);
+                            if (!results.moveToFirst()) {
+                                if (tempRFID.length() == 10) {
+                                    db.updateUID(tempId, tempRFID);
+                                    Toast.makeText(getApplicationContext(), "RFID added", Toast.LENGTH_SHORT).show();
+                                    checkNet();
+//                            dialog.cancel();
+                                    dialog.dismiss();
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "RFID incorrect .Please try again", Toast.LENGTH_SHORT)
+                                            .show();
+                                    addingRFID.setText("");
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "This RFID is already associated with a user.", Toast.LENGTH_SHORT)
+                                        .show();
+                                addingRFID.setText("");
+                            }
+//                        else{
+//                            Toast.makeText(getApplicationContext(), "Please try again", Toast.LENGTH_SHORT)
+//                                    .show();
+//                            addingRFID.setText("");
+//                        }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please Scan RFID card .", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                });
+                addingCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+                });
+
+
+            }
+        });
 
 //        final Window window = getWindow();
 
@@ -198,12 +272,20 @@ public class MainPage extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                             } else {
                                 if (addRFID.length() == 10) {
-                                    boolean check = db.insertUser(addId, addName, 0.0, addRFID);
-                                    if (check) {
-                                        Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
-                                        checkNet();
-                                        dialog.cancel();
+                                    Cursor result = db.checkEmployeeId(addRFID);
+                                    if (!result.moveToFirst()) {
+                                        Boolean check = db.insertUser(addId, addName, 0.0, addRFID);
+                                        if (check) {
+                                            Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                            checkNet();
+                                            dialog.cancel();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "Error occurred in Registration .Please try again", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "User Already Exists", Toast.LENGTH_SHORT).show();
                                     }
+
                                 } else if (addRFID.length() == 0) {
                                     boolean check = db.insertUser(addId, addName, 0.0, "-1");
                                     if (check) {
@@ -214,8 +296,8 @@ public class MainPage extends AppCompatActivity {
 //                                boolean check = db.insertUser(addId, addName, 0.0,addRFID);
 
 
-                                String UID = "-1";
-                                //TODO here if uid set then put UID
+                                    String UID = "-1";
+                                    //TODO here if uid set then put UID
 
 //                                boolean check = db.insertUser(addId, addName, 0.0, UID);
 //                                if (check) {
@@ -223,17 +305,17 @@ public class MainPage extends AppCompatActivity {
 //                                    checkNet();
 //                                    dialog.cancel();
 //                                }
-                            } else {
+                                } else {
                                     Toast.makeText(getApplicationContext(), "Incorrect RFID entered .Please try again", Toast.LENGTH_SHORT).show();
                                     newRFID.setText("");
                                 }
 
-                                }
-
-
                             }
 
+
                         }
+
+                    }
 
 
                 });
@@ -299,17 +381,22 @@ public class MainPage extends AppCompatActivity {
                     Cursor results = db.checkEmployeeId(employee_id);
                     if (results.moveToFirst()) {
 
-                        String tempId = results.getString(1);
+                        tempId = results.getString(1);
 
                         nameText.setText("Welcome " + db.getName(tempId));
                         Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
                         currBalance.setText("Your Balance is " + String.valueOf(roundOff));
                         flagg = 1;
                         Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "onClick: "+db.getUID(tempId));
+                        Log.d(TAG, "onClick: " + db.getUID(tempId));
                         InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
+                        if (!results.getString(5).equals("-1")) {
+                            addRFID.setVisibility(View.GONE);
+                        } else {
+                            addRFID.setVisibility(View.VISIBLE);
+                        }
 
                         IdEntered.setVisibility(View.GONE);
                         logout.setVisibility(View.VISIBLE);
@@ -329,49 +416,49 @@ public class MainPage extends AppCompatActivity {
         };
         IdEntered.setOnClickListener(oKpressed);
         employee_id_edit.setOnKeyListener(new View.OnKeyListener() {
-                                              @Override
-                                              public boolean onKey(View v, int keyCode, KeyEvent event) {
-                                                  if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                                                      if (employee_id_edit.getText().toString().trim().isEmpty()) {
-                                                          Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
-                                                                  .show();
-                                                      }
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (employee_id_edit.getText().toString().trim().isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+                                .show();
+                    }
 //                TODO checking if id is entered correctly
-                                                      else {
+                    else {
 
-                                                          employee_id = employee_id_edit.getText().toString();
-                                                          //NOTE here employee id can also store UID
-                                                          Cursor results = db.checkEmployeeId(employee_id);
-                                                          if (results.moveToFirst()) {
+                        employee_id = employee_id_edit.getText().toString();
+                        //NOTE here employee id can also store UID
+                        Cursor results = db.checkEmployeeId(employee_id);
+                        if (results.moveToFirst()) {
 
-                                                              String tempId = results.getString(1);
+                            String tempId = results.getString(1);
 
-                                                              nameText.setText("Welcome " + db.getName(tempId));
-                                                              Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
-                                                              currBalance.setText("Your Balance is " + String.valueOf(roundOff));
-                                                              flagg = 1;
-                                                              Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+                            nameText.setText("Welcome " + db.getName(tempId));
+                            Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
+                            currBalance.setText("Your Balance is " + String.valueOf(roundOff));
+                            flagg = 1;
+                            Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
 
-                                                              InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                                                              inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 
-                                                              IdEntered.setVisibility(View.GONE);
-                                                              logout.setVisibility(View.VISIBLE);
-                                                              addMoney.setVisibility(View.VISIBLE);
-                                                              btnSubmit.setVisibility(View.VISIBLE);
-                                                              btnAddUser.setVisibility(View.GONE);
-                                                              btn2Admin.setVisibility(View.GONE);
-                                                              tip.setVisibility(View.VISIBLE);
-                                                          } else {
-                                                              Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
-                                                                      .show();
-                                                          }
-                                                      }
-                                                  }
+                            IdEntered.setVisibility(View.GONE);
+                            logout.setVisibility(View.VISIBLE);
+                            addMoney.setVisibility(View.VISIBLE);
+                            btnSubmit.setVisibility(View.VISIBLE);
+                            btnAddUser.setVisibility(View.GONE);
+                            btn2Admin.setVisibility(View.GONE);
+                            tip.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                }
 
-                                                  return false;
-                                              }
+                return false;
+            }
         });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {

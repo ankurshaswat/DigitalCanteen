@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
     tools:context="com.example.digitalcanteen.activity.MainPage"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="89dp">
@@ -251,5 +250,18 @@
         app:layout_constraintLeft_toLeftOf="@+id/txtVuTotal"
         app:layout_constraintRight_toRightOf="@+id/txtVuTotal"
         app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
+
+    <Button
+        android:id="@+id/mPAR"
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="ADd RFID"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tip"
+        app:layout_constraintRight_toLeftOf="@+id/btnSubmit" />
 
 </android.support.constraint.ConstraintLayout>
