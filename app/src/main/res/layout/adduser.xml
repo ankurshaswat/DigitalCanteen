@@ -56,18 +56,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Submit"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addEC" />
+        app:layout_constraintTop_toBottomOf="@+id/newRFID" />
 
     <Button
         android:id="@+id/addCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Cancel"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newRFID" />
+
+    <EditText
+        android:id="@+id/newRFID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="RFID"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@+id/addEC"
+        app:layout_constraintRight_toRightOf="@+id/addEC"
         app:layout_constraintTop_toBottomOf="@+id/addEC" />
+
 </android.support.constraint.ConstraintLayout>

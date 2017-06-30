@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -166,6 +167,7 @@ public class MainPage extends AppCompatActivity {
                 View qView = getLayoutInflater().inflate(R.layout.adduser, null);
                 final EditText newName = (EditText) qView.findViewById(R.id.addName);
                 final EditText newCode = (EditText) qView.findViewById(R.id.addEC);
+                final EditText newRFID = (EditText) qView.findViewById(R.id.newRFID);
                 Button addSubmit = (Button) qView.findViewById(R.id.addSubmit);
                 Button addCancel = (Button) qView.findViewById(R.id.addCancel);
 
@@ -179,6 +181,7 @@ public class MainPage extends AppCompatActivity {
                     public void onClick(View v) {
                         String addId = newCode.getText().toString();
                         String addName = newName.getText().toString();
+                        String addRFID = newRFID.getText().toString();
 
                         if (addId.length() == 0 || addName.length() == 0) {
                             Toast.makeText(getApplicationContext(), "No field can be Empty", Toast.LENGTH_SHORT)
@@ -194,17 +197,31 @@ public class MainPage extends AppCompatActivity {
                             if (db.checkEmployeeId(addId).moveToFirst()) {
                                 Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_SHORT).show();
                             } else {
-                                boolean check = db.insertUser(addId, addName, 0.0);
-                                if (check) {
-                                    Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
-                                    checkNet();
-                                    dialog.cancel();
+                                if (addRFID.length() != 0) {
+                                    boolean check = db.insertUser(addId, addName, 0.0, addRFID);
+                                    if (check) {
+                                        Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                        checkNet();
+                                        dialog.cancel();
+                                    }
+                                } else if (addRFID.length() == 0) {
+                                    boolean check = db.insertUser(addId, addName, 0.0, "-1");
+                                    if (check) {
+                                        Toast.makeText(getApplicationContext(), "Registration Succesful", Toast.LENGTH_SHORT).show();
+                                        checkNet();
+                                        dialog.cancel();
+                                    }
+//                                boolean check = db.insertUser(addId, addName, 0.0,addRFID);
+
+
                                 }
+
+
                             }
 
                         }
-
                     }
+
                 });
 
 
@@ -296,6 +313,62 @@ public class MainPage extends AppCompatActivity {
 
             }
         });
+        employee_id_edit.setOnKeyListener(new View.OnKeyListener() {
+                                              @Override
+                                              public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                                  if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                                                      if (employee_id_edit.getText().toString().length() == 10) {
+                                                          if (employee_id_edit.getText().toString().trim().isEmpty()) {
+                                                              Toast.makeText(getApplicationContext(), "Employee code cannot be empty", Toast.LENGTH_SHORT)
+                                                                      .show();
+                                                          }
+//                TODO checking if id is entered correctly
+                                                          else {
+
+                                                              employee_id = employee_id_edit.getText().toString();
+                                                              Cursor results = db.checkEmployeeId(employee_id);
+                                                              if (results.moveToFirst()) {
+
+                                                                  String tempId = employee_id_edit.getText().toString();
+
+                                                                  nameText.setText("Welcome " + db.getName(tempId));
+                                                                  Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
+                                                                  currBalance.setText("Your Balance is " + String.valueOf(roundOff));
+                                                                  flagg = 1;
+                                                                  Toast.makeText(MainPage.this, "Login Succesfull", Toast.LENGTH_SHORT).show();
+
+                                                                  InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                                  inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+
+                                                                  IdEntered.setVisibility(View.GONE);
+                                                                  logout.setVisibility(View.VISIBLE);
+                                                                  addMoney.setVisibility(View.VISIBLE);
+                                                                  btnSubmit.setVisibility(View.VISIBLE);
+                                                                  btnAddUser.setVisibility(View.GONE);
+                                                                  btn2Admin.setVisibility(View.GONE);
+                                                                  tip.setVisibility(View.VISIBLE);
+                                                              } else {
+                                                                  Toast.makeText(getApplicationContext(), "Please enter the Employee Code correctly", Toast.LENGTH_SHORT)
+                                                                          .show();
+                                                              }
+                                                          }
+
+                                                      }
+//                        showId.setText(employee_id_edit.getText());
+
+                                                  } else {
+                                                      employee_id_edit.setText("");
+//                        employee_id_edit.setFocusableInTouchMode(true);
+//                        employee_id_edit.setSelection(0);
+//                        employee_id_edit.setFocusableInTouchMode(true);
+//                        InputMethodManager imm  = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        imm.showSoftInput(employee_id_edit,InputMethodManager.SHOW_IMPLICIT);
+                                                  }
+
+                                              }
+                return false
+                                          }
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
