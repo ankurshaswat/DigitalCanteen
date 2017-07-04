@@ -109,7 +109,7 @@ public class AdminActivity extends AppCompatActivity {
         if (collectionDatabase.getAllHistory(strtDate, strtDate).size() == 0) {
             showCollection.setText("No History");
         } else {
-            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+            showCollection.setText("Total Collection " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
 
         }
 

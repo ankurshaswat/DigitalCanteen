@@ -63,7 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
         android:text="Number Of Customers"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/theDate"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -154,7 +155,8 @@
         android:layout_marginLeft="0dp"
         android:layout_marginTop="8dp"
         android:text="History"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="@+id/CustNum"
         app:layout_constraintTop_toBottomOf="@+id/CustNum" />
 
