@@ -9,7 +9,11 @@ import android.util.Log;
 
 import com.example.digitalcanteen.dataObjects.Collection;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -128,17 +132,27 @@ public class CollectionDatabase extends SQLiteOpenHelper {
 //            Double st2 = cur.getDouble(2);
 //            itemlist.add(new menuItem(st1, st2 + "", iid));
             Integer iid = cur.getInt(0);
-            String Date = cur.getString(1);
+            String date = cur.getString(1);
             Double col = cur.getDouble(2);
+            Date date2;
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                date2 = originalFormat.parse(date);
+                date = targetFormat.format(date2);
+            } catch (ParseException e) {
+                Log.e(TAG, "getAllHistory: ", e);
+            }
 
-            Log.d(TAG, "getAllHistory: setting date = " + Date);
+
+            Log.d(TAG, "getAllHistory: setting date = " + date);
 //            Date date_ = null;
 //            try {
 //                date_ = new SimpleDateFormat("dd/MM/yyyy").parse(date);
 //            } catch (ParseException e) {
 //                e.printStackTrace();
 //            }
-            empHis.add(new Collection(Date, iid, col));
+            empHis.add(new Collection(date, iid, col));
 
         }
         cur.close();
