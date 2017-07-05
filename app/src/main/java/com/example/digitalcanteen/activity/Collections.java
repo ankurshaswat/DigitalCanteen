@@ -175,7 +175,9 @@ public class Collections extends AppCompatActivity {
 
                     }
                 };
-                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, weekBYear, weekBMonth - 1, weekBDay);
+//                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, weekBYear, weekBMonth - 1, weekBDay);
+                final DatePickerDialog dialog = new DatePickerDialog(v.getContext(), datePickerListener, currYear, currMonth - 1, currDay);
+
                 dialog.show();
             }
         });

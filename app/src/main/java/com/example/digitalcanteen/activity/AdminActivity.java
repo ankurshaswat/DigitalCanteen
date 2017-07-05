@@ -145,10 +145,25 @@ public class AdminActivity extends AppCompatActivity {
                         Log.d(TAG, "onCreate:in function " + db.numCustomers(strtDate));
                         if (db.numCustomers(strtDate) != 1) {
                             custNum.setText(db.numCustomers(strtDate) + " customers came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
-                            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+
+                            if (collectionDatabase.getAllHistory(strtDate, strtDate).size() != 0) {
+
+                                showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+                            } else {
+                                showCollection.setText("Collection on " + setDate + ":- 0");
+                            }
+
                         } else {
                             custNum.setText(db.numCustomers(strtDate) + " customer came on " + "" + formatterD + "/" + formatterM + "/" + year + "");
-                            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+//                            showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+                            if (collectionDatabase.getAllHistory(strtDate, strtDate).size() != 0) {
+
+                                showCollection.setText("Collection on " + setDate + ":- " + String.valueOf(collectionDatabase.getAllHistory(strtDate, strtDate).get(0).getCollection()));
+                            } else {
+                                showCollection.setText("Collection on " + setDate + ":- 0");
+                            }
+
+
                         }
 
                     }
