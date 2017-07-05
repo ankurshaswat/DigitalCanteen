@@ -160,7 +160,7 @@ public class UserDatabase extends SQLiteOpenHelper {
         List<Employee> empHis = new ArrayList<>();
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cur = db.rawQuery("SELECT * FROM Users", null);
+        Cursor cur = db.rawQuery("SELECT * FROM Users ORDER BY Name COLLATE NOCASE", null);
         while (cur.moveToNext()) {
 //            Integer iid = cur.getInt(0);
 //            String st1 = cur.getString(1);

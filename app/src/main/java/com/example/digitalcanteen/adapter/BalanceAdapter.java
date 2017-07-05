@@ -43,14 +43,21 @@ public class BalanceAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View raven, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View raven = inflater.inflate(R.layout.template_balance,null,true);
+
+        if (raven == null) {
+            raven = inflater.inflate(R.layout.template_balance, null, true);
+
+        }
         TextView name=(TextView) raven.findViewById(R.id.balanceName);
+        TextView serial = (TextView) raven.findViewById(R.id.sNum);
+        TextView empCode = (TextView) raven.findViewById(R.id.empCodeBal);
         TextView balance = (TextView) raven.findViewById(R.id.balanceBalance);
 
         name.setText(eBalance.get(position).getEmployee_name());
-
+        serial.setText(String.valueOf(position + 1));
+        empCode.setText(eBalance.get(position).getEmployee_id());
 
         Double roundOff = Math.round(eBalance.get(position).getBalance() * 100.0) / 100.0;
         balance.setText(String.valueOf(roundOff));

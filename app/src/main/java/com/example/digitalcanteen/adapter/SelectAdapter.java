@@ -27,8 +27,7 @@ import static com.example.digitalcanteen.activity.MainPage.items;
 public class SelectAdapter extends ArrayAdapter {
     private static final String TAG = "SelectedItems";
     private static List<selectedItems> order = new ArrayList<>();
-    Context con;
-    private Button remove;
+    private Context con;
 
     public SelectAdapter(Context context, int resource, List<selectedItems> order) {
         super(context, resource);
@@ -43,11 +42,15 @@ public class SelectAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View batman, @NonNull ViewGroup parent) {
         Log.d(TAG, "getView: inflating new view");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View batman = inflater.inflate(R.layout.activity_selected, null, true);
+
+        if (batman == null) {
+            batman = inflater.inflate(R.layout.activity_selected, null, true);
+
+        }
         Button remove = (Button) batman.findViewById(R.id.remove);
         TextView txt1 = (TextView) batman.findViewById(R.id.selectedName);
         TextView txt2 = (TextView) batman.findViewById(R.id.selectedPrice);
@@ -57,7 +60,7 @@ public class SelectAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 for (int x = 0; x < items.size(); x += 1) {
-                    if (items.get(x).getName() == order.get(position).getName()) {
+                    if (items.get(x).getName().equals(order.get(position).getName())) {
                         Log.d(TAG, "onClick: " + items.get(x).getName().equals(order.get(position).getName()));
                         Log.d(TAG, items.get(x).getName() + "      " + order.get(position).getName());
                         MenuAdapter.numTimesClicked[x] = 0;

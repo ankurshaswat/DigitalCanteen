@@ -62,11 +62,7 @@ public class MainPage extends AppCompatActivity {
     public static double totalamt = 0;
     public static TextView tipAmountView = null;
     private static int flagg = 0;
-    //    private EditText amt2add = null;
-    private ListView selectedThings;
-    private ListView listItems;
     private ProgressDialog progressDialog;
-    private Button btnExit = null;
     private Button btnSubmit = null;
     private Button btnAddUser = null;
     private Button btn2Admin = null;
@@ -119,9 +115,9 @@ public class MainPage extends AppCompatActivity {
         tip = (Button) findViewById(R.id.tip);
         total = (TextView) findViewById(R.id.txtVuTotal);
         btnAddUser = (Button) findViewById(R.id.add_user);
-        btnExit = (Button) findViewById(R.id.btnExit);
-        listItems = (ListView) findViewById(R.id.lstMenu);
-        selectedThings = (ListView) findViewById(R.id.lstCart);
+        Button btnExit = (Button) findViewById(R.id.btnExit);
+        ListView listItems = (ListView) findViewById(R.id.lstMenu);
+        ListView selectedThings = (ListView) findViewById(R.id.lstCart);
         final TextView nameText = (TextView) findViewById(R.id.txtName);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         addRFID = (Button) findViewById(R.id.mPAR);
@@ -179,6 +175,7 @@ public class MainPage extends AppCompatActivity {
                                 if (tempRFID.length() == 10) {
                                     db.updateUID(tempId, tempRFID);
                                     Toast.makeText(getApplicationContext(), "RFID added", Toast.LENGTH_SHORT).show();
+                                    addRFID.setVisibility(View.GONE);
                                     checkNet();
 //                            dialog.cancel();
                                     dialog.dismiss();
@@ -296,7 +293,7 @@ public class MainPage extends AppCompatActivity {
 //                                boolean check = db.insertUser(addId, addName, 0.0,addRFID);
 
 
-                                    String UID = "-1";
+//                                    String UID = "-1";
                                     //TODO here if uid set then put UID
 
 //                                boolean check = db.insertUser(addId, addName, 0.0, UID);
@@ -644,7 +641,7 @@ public class MainPage extends AppCompatActivity {
                         int check = 1;
 //                        Double tipAmount = Double.parseDouble(amount.getText().toString());
                         for (int i = 0; i < order.size(); i += 1) {
-                            if (order.get(i).getName() == "tip") {
+                            if (order.get(i).getName().equals("tip")) {
                                 check = 0;
                                 break;
                             }
@@ -656,7 +653,7 @@ public class MainPage extends AppCompatActivity {
                             MainPage.selectedItemsAdapter.notifyDataSetChanged();
                         } else {
                             for (int i = 0; i < order.size(); i += 1) {
-                                if (order.get(i).getName() == "tip") {
+                                if (order.get(i).getName().equals("tip")) {
                                     order.get(i).setPrice(amount.getText().toString());
                                     tipAmountView.setText("Included Tip is:- " + amount.getText());
                                     MainPage.selectedItemsAdapter.notifyDataSetChanged();
@@ -699,6 +696,11 @@ public class MainPage extends AppCompatActivity {
 
                     final EditText amount = (EditText) mView.findViewById(R.id.addMoneyAmount);
                     Button aMOK = (Button) mView.findViewById(R.id.addMoneyOK);
+
+                    Button aM100 = (Button) mView.findViewById(R.id.btn100);
+                    Button aM500 = (Button) mView.findViewById(R.id.btn500);
+                    Button aM2000 = (Button) mView.findViewById(R.id.btn2000);
+
                     Button aMCancel = (Button) mView.findViewById(R.id.addMoneyCancel);
                     mBuilder.setView(mView);
                     final AlertDialog dialog = mBuilder.create();
@@ -736,6 +738,24 @@ public class MainPage extends AppCompatActivity {
                         }
                     });
 
+                    aM100.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("100");
+                        }
+                    });
+                    aM500.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("500");
+                        }
+                    });
+                    aM2000.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("2000");
+                        }
+                    });
 
                     aMCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -845,7 +865,7 @@ public class MainPage extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Employee_code", Employee_id);
 //        new_content.put("Name", employee_name);
                 params.put("Order_name", Order_name);
@@ -940,7 +960,7 @@ public class MainPage extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 // Posting params to register url
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Employee_code", Employee_id);
                 params.put("Name", name);
                 params.put("Balance", String.valueOf(Balance));
@@ -1139,15 +1159,15 @@ public class MainPage extends AppCompatActivity {
     }
 
 
-    private void showProgressDialog() {
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
-    }
-
-    private void cancelProgressDialog() {
-        if (progressDialog.isShowing()) {
-            progressDialog.cancel();
-        }
-    }
+//    private void showProgressDialog() {
+//        if (!progressDialog.isShowing()) {
+//            progressDialog.show();
+//        }
+//    }
+//
+//    private void cancelProgressDialog() {
+//        if (progressDialog.isShowing()) {
+//            progressDialog.cancel();
+//        }
+//    }
 }

@@ -36,7 +36,7 @@ public class EmpTransactionsAdapter extends ArrayAdapter {
 
         super(context, resource);
         this.con = context;
-        this.EmpHistory = EmpHistory;
+        EmpTransactionsAdapter.EmpHistory = EmpHistory;
     }
 
     @Override
@@ -46,10 +46,14 @@ public class EmpTransactionsAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View damian, @NonNull ViewGroup parent) {
 //        return super.getView(position, convertView, parent);
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View damian = inflater.inflate(R.layout.empaccounttemplate, null, true);
+
+        if (damian == null) {
+            damian = inflater.inflate(R.layout.empaccounttemplate, null, true);
+
+        }
 
         TextView name =(TextView) damian.findViewById(R.id.tempItemName2);
         TextView cpi =(TextView) damian.findViewById(R.id.tempCPI2);
