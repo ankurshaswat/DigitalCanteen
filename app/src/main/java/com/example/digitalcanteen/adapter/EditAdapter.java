@@ -63,12 +63,15 @@ public class EditAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View ww, @NonNull ViewGroup parent) {
 //        return super.getView(position, convertView, parent);
         Log.d(TAG, "getView: i was here");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View ww = inflater.inflate(R.layout.edititem, null, true);
+        if (ww == null) {
+            ww = inflater.inflate(R.layout.edititem, null, true);
+
+        }
         TextView name = (TextView) ww.findViewById(R.id.currName);
         TextView price = (TextView) ww.findViewById(R.id.currPrice);
         Button edit = (Button) ww.findViewById(R.id.buttonEdit);

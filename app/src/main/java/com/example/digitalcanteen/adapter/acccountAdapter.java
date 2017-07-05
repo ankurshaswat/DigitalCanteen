@@ -48,14 +48,16 @@ public class acccountAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View damian, @NonNull ViewGroup parent) {
         Log.d(TAG, "getView: " + sales.get(position).toString());
 //        Integer size = AccountsActivity.salesSize();
 //        Log.d(TAG, "getView: "+size);
         Log.d(TAG, "getView:" + TAG);
 //        return super.getView(position, convertView, parent);
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View damian = inflater.inflate(R.layout.accounttemplate, null, true);
+        if (damian == null) {
+            damian = inflater.inflate(R.layout.accounttemplate, null, true);
+        }
 
         TextView name =(TextView) damian.findViewById(R.id.tempItemName);
         TextView cpi =(TextView) damian.findViewById(R.id.tempCPI);

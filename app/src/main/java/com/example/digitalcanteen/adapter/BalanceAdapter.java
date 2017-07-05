@@ -43,9 +43,13 @@ public class BalanceAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View raven, @NonNull ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View raven = inflater.inflate(R.layout.template_balance,null,true);
+
+        if (raven == null) {
+            raven = inflater.inflate(R.layout.template_balance, null, true);
+
+        }
         TextView name=(TextView) raven.findViewById(R.id.balanceName);
         TextView balance = (TextView) raven.findViewById(R.id.balanceBalance);
 

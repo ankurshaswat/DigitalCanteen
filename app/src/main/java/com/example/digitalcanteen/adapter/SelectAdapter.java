@@ -43,11 +43,15 @@ public class SelectAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View batman, @NonNull ViewGroup parent) {
         Log.d(TAG, "getView: inflating new view");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View batman = inflater.inflate(R.layout.activity_selected, null, true);
+
+        if (batman == null) {
+            batman = inflater.inflate(R.layout.activity_selected, null, true);
+
+        }
         Button remove = (Button) batman.findViewById(R.id.remove);
         TextView txt1 = (TextView) batman.findViewById(R.id.selectedName);
         TextView txt2 = (TextView) batman.findViewById(R.id.selectedPrice);

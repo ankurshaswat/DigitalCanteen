@@ -40,10 +40,14 @@ public class collectionAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(int position, @Nullable View bruce, @NonNull ViewGroup parent) {
 //        return super.getView(position, convertView, parent);
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View bruce = inflater.inflate(R.layout.collection_template, null, true);
+
+        if (bruce == null) {
+            bruce = inflater.inflate(R.layout.collection_template, null, true);
+
+        }
         TextView colDate = (TextView) bruce.findViewById(R.id.collectionsDate);
         TextView colTotal = (TextView) bruce.findViewById(R.id.collectionsTotal);
 
