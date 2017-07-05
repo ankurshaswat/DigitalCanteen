@@ -179,6 +179,7 @@ public class MainPage extends AppCompatActivity {
                                 if (tempRFID.length() == 10) {
                                     db.updateUID(tempId, tempRFID);
                                     Toast.makeText(getApplicationContext(), "RFID added", Toast.LENGTH_SHORT).show();
+                                    addRFID.setVisibility(View.GONE);
                                     checkNet();
 //                            dialog.cancel();
                                     dialog.dismiss();
