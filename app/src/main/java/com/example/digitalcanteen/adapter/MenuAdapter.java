@@ -28,17 +28,16 @@ import static com.example.digitalcanteen.activity.MainPage.order;
  */
 
 public class MenuAdapter extends ArrayAdapter {
-    private static final String TAG = "MenuAdapter";
     //    private final int layoutResource;
 //    private final LayoutInflater layoutInflater;
     private static List<menuItem> items = new ArrayList<>();
-    public static int[] numTimesClicked = new int[items.size()];
+    static int[] numTimesClicked = new int[items.size()];
     //    public TextView quantity;
-    Context con;
-    private TextView txt1;
-    private TextView txt2;
-    private Button btplus;
-    private Button btminus;
+    private Context con;
+//    private TextView txt1;
+//    private TextView txt2;
+//    private Button btplus;
+//    private Button btminus;
 //    private Button buttonOK;
 
 
@@ -77,14 +76,14 @@ public class MenuAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View row, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 //        Log.d(TAG, "getView: started");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (row == null) {
-            row = inflater.inflate(R.layout.activity_layout_menu, null, true);
+//        if (row == null) {
+        final View row = inflater.inflate(R.layout.activity_layout_menu, null, true);
 
-        }
+//        }
 
         TextView txt1 = (TextView) row.findViewById(R.id.name);
         TextView txt2 = (TextView) row.findViewById(R.id.price);
@@ -124,7 +123,7 @@ public class MenuAdapter extends ArrayAdapter {
                     int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
 //                        Log.d(TAG, "onClick: " + items.get(z).getName());
-                        if (items.get(position).getName() == (order.get(z).getName())) {
+                        if (items.get(position).getName().equals(order.get(z).getName())) {
 //                            Log.d(TAG, "onClick: fl0 " + items.get(position).getName());
                             order.get(z).setQuantity("" + numTimesClicked[position] + "");
 
@@ -152,7 +151,7 @@ public class MenuAdapter extends ArrayAdapter {
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
                 if (numTimesClicked[position] != 0) {
-                    v.setBackgroundColor(Color.YELLOW);
+                    row.setBackgroundColor(Color.YELLOW);
                }
             }
         };
@@ -171,7 +170,7 @@ public class MenuAdapter extends ArrayAdapter {
                     quantity.setText(result);
 //                    items.get(position).setQuantity(numTimesClicked[position]);
 //                    Log.d(TAG, "getView: "+items.get(position).getQuantity());
-                    int flag = 0;
+//                    int flag = 0;
                     for (int z = 0; z < order.size(); z += 1) {
                         if (items.get(position).getName().equals(order.get(z).getName())) {
 
@@ -184,12 +183,12 @@ public class MenuAdapter extends ArrayAdapter {
                                 tempPrice = numTimesClicked[position] * cpi;
 
                                 order.get(z).setPrice("" + tempPrice + "");
-                                v.setBackgroundColor(Color.YELLOW);
-                                flag = 1;
+                                row.setBackgroundColor(Color.YELLOW);
+//                                flag = 1;
                                 break;
                             } else {
                                 order.remove(z);
-                                v.setBackgroundColor(Color.argb(00, 00, 00, 00));
+                                row.setBackgroundColor(Color.argb(00, 00, 00, 00));
 
                             }
                             break;
