@@ -12,20 +12,40 @@
         android:id="@+id/balanceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="80dp"
         android:text="Name"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/empCodeBal"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/balanceBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="11dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="Balance"
         android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/balanceName"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/empCodeBal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="100dp"
+        android:text="Employee Code"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/balanceBalance"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/sNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="S.No."
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/balanceName"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

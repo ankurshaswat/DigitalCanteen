@@ -51,10 +51,13 @@ public class BalanceAdapter extends ArrayAdapter {
 
         }
         TextView name=(TextView) raven.findViewById(R.id.balanceName);
+        TextView serial = (TextView) raven.findViewById(R.id.sNum);
+        TextView empCode = (TextView) raven.findViewById(R.id.empCodeBal);
         TextView balance = (TextView) raven.findViewById(R.id.balanceBalance);
 
         name.setText(eBalance.get(position).getEmployee_name());
-
+        serial.setText(String.valueOf(position + 1));
+        empCode.setText(eBalance.get(position).getEmployee_id());
 
         Double roundOff = Math.round(eBalance.get(position).getBalance() * 100.0) / 100.0;
         balance.setText(String.valueOf(roundOff));
