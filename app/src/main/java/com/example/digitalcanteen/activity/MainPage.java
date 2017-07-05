@@ -700,6 +700,11 @@ public class MainPage extends AppCompatActivity {
 
                     final EditText amount = (EditText) mView.findViewById(R.id.addMoneyAmount);
                     Button aMOK = (Button) mView.findViewById(R.id.addMoneyOK);
+
+                    Button aM100 = (Button) mView.findViewById(R.id.btn100);
+                    Button aM500 = (Button) mView.findViewById(R.id.btn500);
+                    Button aM2000 = (Button) mView.findViewById(R.id.btn2000);
+
                     Button aMCancel = (Button) mView.findViewById(R.id.addMoneyCancel);
                     mBuilder.setView(mView);
                     final AlertDialog dialog = mBuilder.create();
@@ -737,6 +742,24 @@ public class MainPage extends AppCompatActivity {
                         }
                     });
 
+                    aM100.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("100");
+                        }
+                    });
+                    aM500.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("500");
+                        }
+                    });
+                    aM2000.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            amount.setText("2000");
+                        }
+                    });
 
                     aMCancel.setOnClickListener(new View.OnClickListener() {
                         @Override
