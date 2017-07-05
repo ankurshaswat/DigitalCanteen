@@ -77,11 +77,14 @@ public class MenuAdapter extends ArrayAdapter {
 
     @NonNull
     @Override
-    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View row, @NonNull ViewGroup parent) {
 //        Log.d(TAG, "getView: started");
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        final View  row = inflater.inflate(R.layout.activity_layout_menu, null, true);
+        if (row == null) {
+            row = inflater.inflate(R.layout.activity_layout_menu, null, true);
+
+        }
 
         TextView txt1 = (TextView) row.findViewById(R.id.name);
         TextView txt2 = (TextView) row.findViewById(R.id.price);
@@ -149,7 +152,7 @@ public class MenuAdapter extends ArrayAdapter {
 
                 MainPage.selectedItemsAdapter.notifyDataSetChanged();
                 if (numTimesClicked[position] != 0) {
-                   row.setBackgroundColor(Color.YELLOW);
+                    v.setBackgroundColor(Color.YELLOW);
                }
             }
         };
@@ -181,12 +184,12 @@ public class MenuAdapter extends ArrayAdapter {
                                 tempPrice = numTimesClicked[position] * cpi;
 
                                 order.get(z).setPrice("" + tempPrice + "");
-                                row.setBackgroundColor(Color.YELLOW);
+                                v.setBackgroundColor(Color.YELLOW);
                                 flag = 1;
                                 break;
                             } else {
                                 order.remove(z);
-                                row.setBackgroundColor(Color.argb(00, 00, 00, 00));
+                                v.setBackgroundColor(Color.argb(00, 00, 00, 00));
 
                             }
                             break;
