@@ -78,6 +78,7 @@ public class MainPage extends AppCompatActivity {
     private Button tip = null;
     private Button addRFID = null;
     private String tempId;
+//    private String tempid;
 
     private void logOut() {
         items.clear();
@@ -428,7 +429,7 @@ public class MainPage extends AppCompatActivity {
                         Cursor results = db.checkEmployeeId(employee_id);
                         if (results.moveToFirst()) {
 
-                            String tempId = results.getString(1);
+                            tempId = results.getString(1);
 
                             nameText.setText("Welcome " + db.getName(tempId));
                             Double roundOff = Math.round(db.getBal(tempId) * 100.0) / 100.0;
@@ -471,7 +472,7 @@ public class MainPage extends AppCompatActivity {
                     for (int i = 0; i < order.size(); i++) {
                         //here add each item to transactions table
                         Log.d(TAG, "onClick: inserting " + order.get(i).getName());
-                        tranDB.insertTransaction(employee_id, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date, num);
+                        tranDB.insertTransaction(tempId, order.get(i).getName(), Integer.parseInt(order.get(i).getQuantity()), Double.parseDouble(order.get(i).getPrice()) / Integer.parseInt(order.get(i).getQuantity()), date, num);
 
 
                         if (!order.get(i).getName().equals("tip")) {
@@ -480,7 +481,7 @@ public class MainPage extends AppCompatActivity {
                         }
                     }
                     checkNet();
-                    db.updateinfo(employee_id, -1 * totalamt);
+                    db.updateinfo(tempId, -1 * totalamt);
                     Toast.makeText(MainPage.this, "Order Succesful. You are being logged out", Toast.LENGTH_LONG).show();
 
 
@@ -710,12 +711,12 @@ public class MainPage extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             double money = Double.parseDouble(amount.getText().toString());
-                            double balNow = db.getBal(employee_id_edit.getText().toString());
+                            double balNow = db.getBal(tempId);
                             Log.d(TAG, "onClick: Balance Before adding" + balNow);
                             Date date_x = new Date();
                             DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             final String date = sdf.format(date_x);
-                            db.updateinfo(employee_id_edit.getText().toString(), money);
+                            db.updateinfo(tempId, money);
                             if (collDb.checkCollection(date)) {
                                 collDb.addCollection(date, money);
                             } else {
@@ -723,13 +724,13 @@ public class MainPage extends AppCompatActivity {
                             }
                             checkNet();
 
-                            balNow = db.getBal(employee_id_edit.getText().toString());
+                            balNow = db.getBal(tempId);
                             Log.d(TAG, "onClick: After Adding " + balNow);
 
 
 //TODO put check here to see balance added or not and proceed accordingly
 
-                            String tempId = employee_id_edit.getText().toString();
+//                            tempId = employee_id_edit.getText().toString();
 
                             currBalance.setText("Your Balance is " + String.valueOf(db.getBal(tempId)));
 
