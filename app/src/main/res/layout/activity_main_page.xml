@@ -99,7 +99,7 @@
         android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="Employee Code"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:textAlignment="center"
         android:textSize="35sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/mPIdE"
