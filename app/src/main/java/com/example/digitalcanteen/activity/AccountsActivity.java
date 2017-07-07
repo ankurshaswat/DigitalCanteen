@@ -156,6 +156,7 @@ public class AccountsActivity extends AppCompatActivity {
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Double grandTotal = 0.0;
                 Log.d(TAG, "onClick: clicked");
                 if (numTimes == 0) {
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
@@ -172,11 +173,13 @@ public class AccountsActivity extends AppCompatActivity {
                         }
                         if (!map.containsKey(name)) {
                             map.put(name, new Sale(name, cpi, quantity2, total));
+                            grandTotal+=total;
                         } else {
                             Sale tempSale = map.get(name);
                             Double tempTotal = tempSale.getTotal();
                             Integer tempQuantity = tempSale.getQuan();
                             tempTotal += total;
+                            grandTotal+=total;
                             tempQuantity += quantity2;
 
                             map.put(name, new Sale(name, cpi, tempQuantity, tempTotal));
@@ -189,6 +192,9 @@ public class AccountsActivity extends AppCompatActivity {
 
                     for (String KEY : map.keySet()) {
                         sales.add(map.get(KEY));
+//                        grandTotal+=grandTotal+map.get(KEY);
+//                        Double currentOnes = map.get(KEY).getCpi()*map.get(KEY).getQuan();
+//                        grandTotal+=grandTotal+currentOnes;
                     }
 
 
@@ -204,6 +210,8 @@ public class AccountsActivity extends AppCompatActivity {
 //
 //  transactions.setAdapter(adapterForAccounts);
                     transactions.setAdapter(adapterForAccounts);
+                    TextView gTView = (TextView) findViewById(R.id.listTotal);
+                    gTView.setText(String.valueOf(grandTotal));
                     numTimes += 1;
                 }
 

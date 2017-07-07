@@ -12,42 +12,43 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="Menu"
         android:textSize="24sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/anchor_DND"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/lstMenu"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/lstMenu"
+        app:layout_constraintHorizontal_bias="0.514" />
 
     <TextView
         android:id="@+id/txtVuTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:textSize="35sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintLeft_toLeftOf="@+id/balance"
+        app:layout_constraintRight_toRightOf="@+id/balance"
         app:layout_constraintTop_toBottomOf="@+id/balance" />
 
     <Button
         android:id="@+id/btnSubmit"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="8dp"
         android:backgroundTint="@android:color/holo_green_light"
         android:text="Submit"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -60,21 +61,6 @@
         android:text="Exit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/anchor_DND" />
-
-    <ListView
-        android:id="@+id/lstMenu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/anchor_DND"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/anchor_DND"
@@ -95,17 +81,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:ems="10"
         android:hint="Employee Code"
         android:inputType="number"
         android:textAlignment="center"
-        android:textSize="35sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/mPIdE"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
-        app:layout_constraintRight_toLeftOf="@+id/mPIdE" />
+        android:textSize="30sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/mainPAgeAdmin"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.21" />
 
     <ListView
         android:id="@+id/lstCart"
@@ -119,121 +106,116 @@
 
     <Button
         android:id="@+id/mPAddMoney"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Add Money"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toRightOf="@+id/tip"
-        app:layout_constraintRight_toLeftOf="@+id/btnSubmit"
-        app:layout_constraintTop_toBottomOf="@+id/tipAmountView" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
 
     <Button
         android:id="@+id/mPIdE"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
         android:backgroundTint="@android:color/holo_green_light"
         android:text="OK"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainPAgeAdmin"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/employeeCodeInput"
+        app:layout_constraintLeft_toRightOf="@+id/employeeCodeInput" />
 
     <TextView
         android:id="@+id/balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="Enter Employee ID and press OK"
-        android:textSize="35sp"
-        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="30sp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/txtName"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.339"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/txtName" />
 
     <Button
         android:id="@+id/mainPAgeAdmin"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Admin"
-        android:textSize="24sp"
-        app:layout_constraintLeft_toRightOf="@+id/anchor_DND"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_user"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Register"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintLeft_toRightOf="@+id/tip"
-        app:layout_constraintRight_toLeftOf="@+id/btnSubmit"
-        app:layout_constraintTop_toBottomOf="@+id/tipAmountView" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
 
     <TextView
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:text="Please Login To Proceed"
-        android:textSize="35sp"
-        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
-        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="30sp"
+        app:layout_constraintRight_toLeftOf="@+id/mPIdE"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/employeeCodeInput"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/employeeCodeInput" />
 
     <Button
         android:id="@+id/mPLogout"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:backgroundTint="@android:color/holo_red_dark"
         android:text="Cancel"
-        android:textSize="24sp"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tip"
+        app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintLeft_toRightOf="@+id/tip"
-        app:layout_constraintRight_toLeftOf="@+id/btnSubmit"
-        app:layout_constraintTop_toBottomOf="@+id/mPAddMoney" />
+        app:layout_constraintRight_toLeftOf="@+id/btnSubmit" />
 
     <Button
         android:id="@+id/tip"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:backgroundTint="@android:color/holo_purple"
         android:text="Tip"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnSubmit"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/lstMenu" />
 
     <TextView
@@ -253,14 +235,24 @@
 
     <Button
         android:id="@+id/mPAR"
-        android:layout_width="150dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:text="ADd RFID"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tip"
-        app:layout_constraintLeft_toRightOf="@+id/tip"
-        app:layout_constraintRight_toLeftOf="@+id/btnSubmit" />
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/tip"
+        app:layout_constraintLeft_toRightOf="@+id/lstMenu"
+        app:layout_constraintTop_toBottomOf="@+id/txtVuTotal" />
+
+    <ListView
+        android:id="@+id/lstMenu"
+        android:layout_width="414dp"
+        android:layout_height="394dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

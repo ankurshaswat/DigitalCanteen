@@ -37,25 +37,22 @@
         android:id="@+id/btnAccnts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Accounts"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Accounts"
-        app:layout_constraintBottom_toTopOf="@+id/btnExit2"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btnManageMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:text="Manage Menu"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnAccnts"
-        app:layout_constraintLeft_toRightOf="@+id/syncMenu"
-        app:layout_constraintRight_toLeftOf="@+id/btnAccnts" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/syncMenu"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/btnExit2"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/btnExit2" />
 
     <TextView
         android:id="@+id/CustNum"
@@ -115,18 +112,20 @@
         android:id="@+id/syncMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:text="Download Menu"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnManageMenu"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/syncUser"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/syncUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
         android:text="Download User Data"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnCheckBal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
