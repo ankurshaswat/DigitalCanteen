@@ -94,7 +94,7 @@ public class TransactionDatabase extends SQLiteOpenHelper {
         }
         Integer num = cur.getInt(1);
         cur.close();
-        return num;
+        return num + 1;
     }
 
     public List<EHistory> getEmpHist(String employee_id) {
