@@ -84,6 +84,7 @@ public class MainPage extends AppCompatActivity {
         items.clear();
         order.clear();
         flagg = 0;
+        totalamt = 0;
         employee_id_edit.setText("");
         IdEntered.setVisibility(View.VISIBLE);
         logout.setVisibility(View.GONE);
@@ -107,7 +108,7 @@ public class MainPage extends AppCompatActivity {
 //        AppController.getInstance().getRequestQueue().stop();
 //        Log.d(TAG, "addUser: Network availability is "+AppController.getInstance().isInternetAvailable());
         collDb = new CollectionDatabase(this);
-
+        totalamt = 0;
         addMoney = (Button) findViewById(R.id.mPAddMoney);
         IdEntered = (Button) findViewById(R.id.mPIdE);
         btn2Admin = (Button) findViewById(R.id.mainPAgeAdmin);
