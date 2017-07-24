@@ -44,7 +44,8 @@ public class AccountsActivity extends AppCompatActivity {
     private Button btnStartDate;
     private Button btnEndDate;
     private Integer numTimes = 0;
-
+    private Double total3;
+    private TextView gTView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class AccountsActivity extends AppCompatActivity {
 
         final TransactionDatabase db = new TransactionDatabase(this);
         btnGenerate = (Button) findViewById(R.id.btnGenerate);
-
+        gTView = (TextView) findViewById(R.id.listTotal);
         transactions = (ListView) findViewById(R.id.accntList);
 //        db.insertTransaction("g", "kuchbhi", 2, 3.0, "2017-06-06");
         EmployeeHistory = db.getAll();
@@ -161,25 +162,36 @@ public class AccountsActivity extends AppCompatActivity {
                 if (numTimes == 0) {
                     cursor = db.getAllHistoryCursor(strtDate, endDate);
                     Log.d(TAG, "onClick: Got Cursor");
+
+//                    if()
+                    total3 = 0d;
+
                     while (cursor.moveToNext()) {
                         Log.d(TAG, "onClick: Noting ofr Item");
                         String name = cursor.getString(2);
+                        if (name.equals("tip")) {
+                            continue;
+                        }
                         Integer quantity2 = cursor.getInt(3);
 //                        Double cpi = cursor.getDouble(4);
                         Double total = cursor.getDouble(5);
+//                        if(!name.equals("tip")){
+                        total3 += total;
+
+//                        }
                         Double cpi = menuDb.getItemPrice(name);
                         if (cpi == -1) {
                             cpi = null;
                         }
                         if (!map.containsKey(name)) {
                             map.put(name, new Sale(name, cpi, quantity2, total));
-                            grandTotal+=total;
+//                            grandTotal+=total;
                         } else {
                             Sale tempSale = map.get(name);
                             Double tempTotal = tempSale.getTotal();
                             Integer tempQuantity = tempSale.getQuan();
                             tempTotal += total;
-                            grandTotal+=total;
+//                            grandTotal+=total;
                             tempQuantity += quantity2;
 
                             map.put(name, new Sale(name, cpi, tempQuantity, tempTotal));
@@ -188,6 +200,7 @@ public class AccountsActivity extends AppCompatActivity {
 
 
                     }
+                    gTView.setText("Total:-" + String.valueOf(total3));
                     cursor.close();
 
                     for (String KEY : map.keySet()) {
@@ -210,8 +223,7 @@ public class AccountsActivity extends AppCompatActivity {
 //
 //  transactions.setAdapter(adapterForAccounts);
                     transactions.setAdapter(adapterForAccounts);
-                    TextView gTView = (TextView) findViewById(R.id.listTotal);
-                    gTView.setText(String.valueOf(grandTotal));
+
                     numTimes += 1;
                 }
 
